@@ -69,13 +69,17 @@
 
 
 
-<meta property="og:type" content="website">
+<meta name="description" content="提交的任务，经过map后（形成key/value对，还包括partition，partition表示为map片段分配对应的reducer）存入内存缓冲区，并做了一些预排序。 当缓存大小超过限制（默认：分配的内存的80%），开始进行spill spill会进行sort，会在partitions之间进行排序以及对相同的partition里面的元素进行排序。 spill时，默认将元素组成的形式（简单的">
+<meta property="og:type" content="article">
 <meta property="og:title" content="joyo">
-<meta property="og:url" content="http://yoursite.com/archives/index.html">
+<meta property="og:url" content="http://yoursite.com/2017/09/24/hadoop shuffle/index.html">
 <meta property="og:site_name" content="joyo">
+<meta property="og:description" content="提交的任务，经过map后（形成key/value对，还包括partition，partition表示为map片段分配对应的reducer）存入内存缓冲区，并做了一些预排序。 当缓存大小超过限制（默认：分配的内存的80%），开始进行spill spill会进行sort，会在partitions之间进行排序以及对相同的partition里面的元素进行排序。 spill时，默认将元素组成的形式（简单的">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-09-24T14:22:15.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="joyo">
+<meta name="twitter:description" content="提交的任务，经过map后（形成key/value对，还包括partition，partition表示为map片段分配对应的reducer）存入内存缓冲区，并做了一些预排序。 当缓存大小超过限制（默认：分配的内存的80%），开始进行spill spill会进行sort，会在partitions之间进行排序以及对相同的partition里面的元素进行排序。 spill时，默认将元素组成的形式（简单的">
 
 
 
@@ -105,13 +109,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/archives/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/09/24/hadoop shuffle/"/>
 
 
 
 
 
-  <title>归档 | joyo</title>
+  <title> | joyo</title>
   
 
 
@@ -130,7 +134,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -204,111 +208,152 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
-
-      <span class="archive-page-counter">
-        
-        
-        
-          
-        
-        嗯..! 目前共计 2 篇日志。 继续努力。
-      </span>
-
-      
-
-        
-        
-        
-
-        
-          
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2017">2017</h1>
-          </div>
-        
-        
-
-        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/24/hadoop shuffle/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="joyo">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2017/09/24/hadoop shuffle/" itemprop="url">
-              
-                <span itemprop="name">未命名</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline"></h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-09-24T22:22:15+08:00"
-              content="2017-09-24" >
-          09-24
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-24T22:22:15+08:00">
+                2017-09-24
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
 
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/09/24/vue/" itemprop="url">
-              
-                <span itemprop="name">vue</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-09-24T22:10:02+08:00"
-              content="2017-09-24" >
-          09-24
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
       
 
+      
+        <ol>
+<li>提交的任务，经过map后（形成key/value对，还包括partition，partition表示为map片段分配对应的reducer）存入内存缓冲区，并做了一些预排序。</li>
+<li>当缓存大小超过限制（默认：分配的内存的80%），开始进行spill</li>
+<li>spill会进行sort，会在partitions之间进行排序以及对相同的partition里面的元素进行排序。</li>
+<li>spill时，默认将元素组成<key, value-list="">的形式（简单的将values放到一起），如果定义了conbiner的话，会对values进行操作，如何在word count中，会将value相加。</key,></li>
+<li><p>map阶段结束时，会将所有的spills， merge为一个，并通知jobtracker。</p>
+</li>
+<li><p>reducer通过联系jobstracker，知道某个map的任务完成了，进而将map结果复制过来。相同的key的map，会传到同一个reducer。</p>
+</li>
+<li>将不同的map结果，进行merge，如果有conbiner也会执行。</li>
+<li>将合并后的结果，作为输入传给reducer。</li>
+</ol>
+
+      
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/24/vue/" rel="next" title="vue">
+                <i class="fa fa-chevron-left"></i> vue
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -316,6 +361,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
