@@ -53,7 +53,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="hadoop," />
+  <meta name="keywords" content="git," />
 
 
 
@@ -69,22 +69,21 @@
 
 
 
-<meta name="description" content="提交的任务，经过map后（形成key/value对，还包括partition，partition表示为map片段分配对应的reducer）存入内存缓冲区，并做了一些预排序。 当缓存大小超过限制（默认：分配的内存的80%），开始进行spill spill会进行sort，会在partitions之间进行排序以及对相同的partition里面的元素进行排序。 spill时，默认将元素组成的形式（简单">
-<meta name="keywords" content="hadoop">
+<meta name="description" content="创建一个叫做“feature_x”的分支，并切换过去：1git checkout -b feature_x，(git checkout -b feature_x origin/master 在远程origin/master的分支基础上，创建feature_x分支) 切换回主分支：1git checkout master 再把新建的分支删掉：1git branch -d feature_x 除非你">
+<meta name="keywords" content="git">
 <meta property="og:type" content="article">
-<meta property="og:title" content="hadoop shuffle">
-<meta property="og:url" content="http://yoursite.com/2017/09/24/hadoop shuffle/index.html">
+<meta property="og:title" content="git基本操作">
+<meta property="og:url" content="http://yoursite.com/2017/09/27/git/index.html">
 <meta property="og:site_name" content="joyo">
-<meta property="og:description" content="提交的任务，经过map后（形成key/value对，还包括partition，partition表示为map片段分配对应的reducer）存入内存缓冲区，并做了一些预排序。 当缓存大小超过限制（默认：分配的内存的80%），开始进行spill spill会进行sort，会在partitions之间进行排序以及对相同的partition里面的元素进行排序。 spill时，默认将元素组成的形式（简单">
+<meta property="og:description" content="创建一个叫做“feature_x”的分支，并切换过去：1git checkout -b feature_x，(git checkout -b feature_x origin/master 在远程origin/master的分支基础上，创建feature_x分支) 切换回主分支：1git checkout master 再把新建的分支删掉：1git branch -d feature_x 除非你">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://www.iforfee.com/hadoop/shuffle2.png">
-<meta property="og:image" content="http://www.iforfee.com/hadoop/shuffle1.png">
-<meta property="og:image" content="http://www.iforfee.com/hadoop/shuffle3.png">
-<meta property="og:updated_time" content="2017-09-24T14:59:09.000Z">
+<meta property="og:image" content="http://www.iforfee.com/git/git1.jpg">
+<meta property="og:image" content="http://www.iforfee.com/git/git2.jpg">
+<meta property="og:updated_time" content="2017-09-27T12:20:24.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="hadoop shuffle">
-<meta name="twitter:description" content="提交的任务，经过map后（形成key/value对，还包括partition，partition表示为map片段分配对应的reducer）存入内存缓冲区，并做了一些预排序。 当缓存大小超过限制（默认：分配的内存的80%），开始进行spill spill会进行sort，会在partitions之间进行排序以及对相同的partition里面的元素进行排序。 spill时，默认将元素组成的形式（简单">
-<meta name="twitter:image" content="http://www.iforfee.com/hadoop/shuffle2.png">
+<meta name="twitter:title" content="git基本操作">
+<meta name="twitter:description" content="创建一个叫做“feature_x”的分支，并切换过去：1git checkout -b feature_x，(git checkout -b feature_x origin/master 在远程origin/master的分支基础上，创建feature_x分支) 切换回主分支：1git checkout master 再把新建的分支删掉：1git branch -d feature_x 除非你">
+<meta name="twitter:image" content="http://www.iforfee.com/git/git1.jpg">
 
 
 
@@ -114,13 +113,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/09/24/hadoop shuffle/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/09/27/git/"/>
 
 
 
 
 
-  <title>hadoop shuffle | joyo</title>
+  <title>git基本操作 | joyo</title>
   
 
 
@@ -237,7 +236,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/24/hadoop shuffle/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/27/git/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="joyo">
@@ -254,7 +253,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">hadoop shuffle</h1>
+          <h1 class="post-title" itemprop="name headline">git基本操作</h1>
         
 
         <div class="post-meta">
@@ -266,8 +265,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-24T22:28:00+08:00">
-                2017-09-24
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-27T20:17:00+08:00">
+                2017-09-27
               </time>
             
 
@@ -289,8 +288,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/大数据/" itemprop="url" rel="index">
-                    <span itemprop="name">大数据</span>
+                  <a href="/categories/git/" itemprop="url" rel="index">
+                    <span itemprop="name">git</span>
                   </a>
                 </span>
 
@@ -326,17 +325,13 @@
       
 
       
-        <p><img src="http://www.iforfee.com/hadoop/shuffle2.png" alt="image"><br><img src="http://www.iforfee.com/hadoop/shuffle1.png" alt="image"></p>
-<ol>
-<li>提交的任务，经过map后（形成key/value对，还包括partition，partition表示为map片段分配对应的reducer）存入内存缓冲区，并做了一些预排序。</li>
-<li>当缓存大小超过限制（默认：分配的内存的80%），开始进行spill</li>
-<li>spill会进行sort，会在partitions之间进行排序以及对相同的partition里面的元素进行排序。</li>
-<li>spill时，默认将元素组成<key, value-list="">的形式（简单的将values放到一起），如果定义了conbiner的话，会对values进行操作，如何在word count中，会将value相加。</key,></li>
-<li>map阶段结束时，会将所有的spills， merge为一个，并通知jobtracker。<br><img src="http://www.iforfee.com/hadoop/shuffle3.png" alt="image"></li>
-<li>reducer通过联系jobstracker，知道某个map的任务完成了，进而将map结果复制过来。相同的key的map，会传到同一个reducer。</li>
-<li>将不同的map结果，进行merge，如果有conbiner也会执行。</li>
-<li>将合并后的结果，作为输入传给reducer。</li>
-</ol>
+        <p><img src="http://www.iforfee.com/git/git1.jpg" alt="image"><br><img src="http://www.iforfee.com/git/git2.jpg" alt="image"></p>
+<p>创建一个叫做“feature_x”的分支，并切换过去：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git checkout -b feature_x，(git checkout -b feature_x origin/master 在远程origin/master的分支基础上，创建feature_x分支)</div></pre></td></tr></table></figure></p>
+<p>切换回主分支：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git checkout master</div></pre></td></tr></table></figure></p>
+<p>再把新建的分支删掉：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git branch -d feature_x</div></pre></td></tr></table></figure></p>
+<p>除非你将分支推送到远端仓库，不然该分支就是 不为他人所见的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git push origin &lt;branch&gt;</div></pre></td></tr></table></figure></p>
+<p>替换本地改动<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git checkout -- &lt;filename&gt;</div><div class="line">此命令会使用 HEAD 中的最新内容替换掉你的工作目录中的文件。已添加到缓存区的改动，以及新文件，都不受影响。</div></pre></td></tr></table></figure></p>
+<p>丢弃本地改动和提交<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git fetch origin</div><div class="line">git reset --hard origin/master</div></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -354,7 +349,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/hadoop/" rel="tag"># hadoop</a>
+            <a href="/tags/git/" rel="tag"># git</a>
           
         </div>
       
@@ -367,8 +362,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/09/24/vue/" rel="next" title="vue">
-                <i class="fa fa-chevron-left"></i> vue
+              <a href="/2017/09/25/Aggregation-Template/" rel="next" title="Aggregation Template">
+                <i class="fa fa-chevron-left"></i> Aggregation Template
               </a>
             
           </div>
@@ -376,10 +371,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/09/25/filter-after-sum-aggregation/" rel="prev" title="在sum aggregation，进行过滤">
-                在sum aggregation，进行过滤 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
