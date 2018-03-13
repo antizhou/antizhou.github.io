@@ -72,7 +72,7 @@
 <meta name="description" content="再牛逼的梦想，也抵不过傻逼似的坚持~">
 <meta property="og:type" content="website">
 <meta property="og:title" content="joyo">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:url" content="http://www.iforfee.com/index.html">
 <meta property="og:site_name" content="joyo">
 <meta property="og:description" content="再牛逼的梦想，也抵不过傻逼似的坚持~">
 <meta property="og:locale" content="zh-Hans">
@@ -108,7 +108,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/"/>
+  <link rel="canonical" href="http://www.iforfee.com/"/>
 
 
 
@@ -232,7 +232,219 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/27/git/">
+    <link itemprop="mainEntityOfPage" href="http://www.iforfee.com/2018/03/13/jmm/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="joyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="joyo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/13/jmm/" itemprop="url">java内存模型</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-13T21:33:30+08:00">
+                2018-03-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="JMM"><a href="#JMM" class="headerlink" title="JMM"></a>JMM</h3><h5 id="并发编程模型的两个关键问题"><a href="#并发编程模型的两个关键问题" class="headerlink" title="并发编程模型的两个关键问题"></a>并发编程模型的两个关键问题</h5><p>线程之间如何通信和同步。</p>
+<p>如何通信</p>
+<ol>
+<li>共享内存</li>
+<li>消息传递</li>
+</ol>
+<p>如何同步</p>
+<ol>
+<li>显式</li>
+<li>隐式</li>
+</ol>
+<p>在共享内存并发模型中，同步是显式进行的。程序员必须显式指定某个方法或某段代码需要在线程之间互斥执行。在消息传递的并发模型里，由于消息的发送必须在消息的接受之前，因此同步是隐式进行的。</p>
+<h5 id="JMM的抽象结构"><a href="#JMM的抽象结构" class="headerlink" title="JMM的抽象结构"></a>JMM的抽象结构</h5><p>线程之间的共享变量存储在主内存，每个线程都有一个私有的本地内存，本地内存中存储了该线程以读/写共享变量的副本。本地内存是JMM的一个抽象概念，并不真实存在。它涵盖了缓存、写缓冲区、寄存器以及其他的硬件和编译器优化。</p>
+<h5 id="重排序"><a href="#重排序" class="headerlink" title="重排序"></a>重排序</h5><p>为了提高性能，需要对指令进行重排序。重排序分类：</p>
+<ol>
+<li>编译器</li>
+<li>处理器<ol>
+<li>指令级并行重排序</li>
+<li>内存系统重排序</li>
+</ol>
+</li>
+</ol>
+<h4 id="happens-before"><a href="#happens-before" class="headerlink" title="happens-before"></a>happens-before</h4><p>happens-before是JMM最核心的概念。</p>
+<p>一个happens-before规则对应于一个或多个编译器和处理器重排序规则。</p>
+<p>定义</p>
+<blockquote>
+<p>1.如果一个操作happens-before另一个操作，那么第一个操作的执行结果将对第二个操作可见，而且第一个操作的执行顺序排在第二个操作之前。</p>
+<p>2.两个操作之间存在happens-before关系，并不意味着Java平台的具体实现必须按照happens-before关系执行的顺序来执行。</p>
+</blockquote>
+<p>定义1是JMM对程序员的承诺；定义2是JMM对编译器和处理器重排序的约束原则。</p>
+<p>happens-before和as-if-serial是一回事，都有两重意思。从程序要的角度来说，好像是顺序执行的，但是只要不破坏结果，处理器和编译器怎么优化都可以</p>
+<ol>
+<li>as-is-serial语义保证<code>单线程</code>内程序的执行结果不变，happens-before语义保证正确同步的<code>多线程程序</code>执行结果不变。</li>
+<li>as-is-serial语义给程序要一个幻境：单线程程序是按照程序的顺序来执行的。happens-before关系给编写正确同步的程序要一个幻境：正确同步的多线程程序是按照happens-before指定的顺序来执行的。</li>
+</ol>
+<p>happens-before规则</p>
+<ol>
+<li>程序顺序规则</li>
+<li>监视器锁规则</li>
+<li>volatile变量规则</li>
+<li>传递性</li>
+<li>start()规则：如果线程A执行操作ThreatB.start()，那么A线程的ThreadB.start()操作happens-before于B线程中的任意操作。</li>
+<li>join()规则：线程A执行ThreadB.join()并成功返回，那么线程B中任意操作happens-before于线程A从ThreadB.join()操作成功返回。</li>
+</ol>
+<h4 id="重排序-1"><a href="#重排序-1" class="headerlink" title="重排序"></a>重排序</h4><blockquote>
+<p>happens-before依赖于重排序的实现。一个happens-before对应多个重排序。</p>
+</blockquote>
+<h6 id="1-数据依赖性"><a href="#1-数据依赖性" class="headerlink" title="1. 数据依赖性"></a>1. 数据依赖性</h6><p>数据依赖的操作不可重排序</p>
+<h6 id="2-as-if-serial语义"><a href="#2-as-if-serial语义" class="headerlink" title="2. as-if-serial语义"></a>2. as-if-serial语义</h6><p>不管怎么重排序（编译器和处理器为了提高并行度），（单线程）程序的执行结果不能被改变。编译器和处理器不会对存在数据依赖的操作重排序</p>
+<h4 id="顺序一致性内存模型"><a href="#顺序一致性内存模型" class="headerlink" title="顺序一致性内存模型"></a>顺序一致性内存模型</h4><p>顺序一致行内存模型是一个<code>理论参考模型</code>，在设计的时候，处理器的内存模型和编程语言的内存模型都会以顺序一致性内存模型作为参照</p>
+<ol>
+<li>JMM对正确同步的多线程程序的内存一致性做了如下保证：如果程序是正确同步的，程序的执行将具有顺序一致性。即程序的执行结果与该程序在顺序一致性内存模型中的执行结果相同。<h6 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h6></li>
+<li>一个线程中的所有操作必须按照程序的顺序来执行，即不进行重排序</li>
+<li>（不管程序是否同步）所有线程都只能看到一个单一的操作执行顺序。在顺序一致性内存模型中，每个操作都必须原子执行且立刻对所有线程可见。</li>
+</ol>
+<h4 id="volatile的内存语义"><a href="#volatile的内存语义" class="headerlink" title="volatile的内存语义"></a>volatile的内存语义</h4><h5 id="特性-1"><a href="#特性-1" class="headerlink" title="特性"></a>特性</h5><ol>
+<li>可见性</li>
+<li>原子性</li>
+</ol>
+<h5 id="内存语义"><a href="#内存语义" class="headerlink" title="内存语义"></a>内存语义</h5><ol>
+<li>当写一个volatile变量时，JMM会把线程对应的本地内存中的共享变量值刷新到主内存。</li>
+<li>当读一个volatile变量时，JMM会把该线程对应的本地内存置为无效。线程接下来从主内存中读取共享变量。</li>
+</ol>
+<h5 id="如何实现"><a href="#如何实现" class="headerlink" title="如何实现"></a>如何实现</h5><blockquote>
+<p>在指令序列中插入内存屏障来禁止特定类型的处理器排序。</p>
+</blockquote>
+<p>比如storestore屏障可以保证volatile之前的普通写操作，在volatile变量写入之前，被刷新到主内存。</p>
+<h5 id="JSR-33为什么要增强volatile的语义"><a href="#JSR-33为什么要增强volatile的语义" class="headerlink" title="JSR-33为什么要增强volatile的语义"></a>JSR-33为什么要增强volatile的语义</h5><blockquote>
+<p>为了提供一种比锁更轻量级的线程之间通信的机制。</p>
+</blockquote>
+<p>在JSR—33之前，普通变量和volatile可以重排序，会导致普通变量没有写入刷新到主内存。</p>
+<h4 id="锁的内存语义"><a href="#锁的内存语义" class="headerlink" title="锁的内存语义"></a>锁的内存语义</h4>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.iforfee.com/2017/09/27/git/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="joyo">
@@ -380,7 +592,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/25/Aggregation-Template/">
+    <link itemprop="mainEntityOfPage" href="http://www.iforfee.com/2017/09/25/Aggregation-Template/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="joyo">
@@ -522,7 +734,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/25/filter-after-sum-aggregation/">
+    <link itemprop="mainEntityOfPage" href="http://www.iforfee.com/2017/09/25/filter-after-sum-aggregation/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="joyo">
@@ -665,7 +877,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/24/hadoop shuffle/">
+    <link itemprop="mainEntityOfPage" href="http://www.iforfee.com/2017/09/24/hadoop shuffle/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="joyo">
@@ -817,7 +1029,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/24/vue/">
+    <link itemprop="mainEntityOfPage" href="http://www.iforfee.com/2017/09/24/vue/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="joyo">
@@ -995,7 +1207,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">6</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1006,7 +1218,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1017,7 +1229,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">6</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1058,8 +1270,8 @@
       <div class="footer-inner">
         <div class="copyright" >
   
-  &copy; 
-  <span itemprop="copyrightYear">2017</span>
+  &copy;  2017 &mdash; 
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-joyo"></i>
   </span>
