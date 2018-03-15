@@ -69,18 +69,18 @@
 
 
 
-<meta name="description" content="Lock1234567Lock lock = new ReentrantLock();lock.lock();try&amp;#123;    ...&amp;#125;finally&amp;#123;    lock.unlock();&amp;#125;  灵活 尝试非阻塞地获取锁 能被中断地获取锁 能超时获取锁 独占或共享的方式  队列同步器123456// overrideprotected boolean tryAc">
+<meta name="description" content="Lock1234567Lock lock = new ReentrantLock();lock.lock();try&amp;#123;    ...&amp;#125;finally&amp;#123;    lock.unlock();&amp;#125;  灵活 尝试非阻塞地获取锁 能被中断地获取锁 能超时获取锁 独占或共享的方式">
 <meta name="keywords" content="concurrent">
 <meta property="og:type" content="article">
 <meta property="og:title" content="锁">
 <meta property="og:url" content="http://www.iforfee.com/2018/03/14/java/锁/index.html">
 <meta property="og:site_name" content="joyo&#39;s world">
-<meta property="og:description" content="Lock1234567Lock lock = new ReentrantLock();lock.lock();try&amp;#123;    ...&amp;#125;finally&amp;#123;    lock.unlock();&amp;#125;  灵活 尝试非阻塞地获取锁 能被中断地获取锁 能超时获取锁 独占或共享的方式  队列同步器123456// overrideprotected boolean tryAc">
+<meta property="og:description" content="Lock1234567Lock lock = new ReentrantLock();lock.lock();try&amp;#123;    ...&amp;#125;finally&amp;#123;    lock.unlock();&amp;#125;  灵活 尝试非阻塞地获取锁 能被中断地获取锁 能超时获取锁 独占或共享的方式">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-15T16:06:36.000Z">
+<meta property="og:updated_time" content="2018-03-15T17:27:45.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="锁">
-<meta name="twitter:description" content="Lock1234567Lock lock = new ReentrantLock();lock.lock();try&amp;#123;    ...&amp;#125;finally&amp;#123;    lock.unlock();&amp;#125;  灵活 尝试非阻塞地获取锁 能被中断地获取锁 能超时获取锁 独占或共享的方式  队列同步器123456// overrideprotected boolean tryAc">
+<meta name="twitter:description" content="Lock1234567Lock lock = new ReentrantLock();lock.lock();try&amp;#123;    ...&amp;#125;finally&amp;#123;    lock.unlock();&amp;#125;  灵活 尝试非阻塞地获取锁 能被中断地获取锁 能超时获取锁 独占或共享的方式">
 
 
 
@@ -330,6 +330,7 @@
 <li>能超时获取锁</li>
 <li>独占或共享的方式</li>
 </ol>
+<a id="more"></a>
 <h2 id="队列同步器"><a href="#队列同步器" class="headerlink" title="队列同步器"></a>队列同步器</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">// override</div><div class="line">protected boolean tryAcquire(int arg)</div><div class="line">protected boolean tryRelease(int arg)</div><div class="line">protected int tryAcquireShared(int arg)</div><div class="line">protected boolean tryReleaseShared(int arg)</div><div class="line">protected boolean isHeldExclusively()</div></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">// 可用方法</div><div class="line">getState()</div><div class="line">setState(int newState)</div><div class="line">compareAndSetState(int expect, int update)</div></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">// 提供的模板方法</div><div class="line">// 独占、超时</div><div class="line">void acquire(int arg)</div><div class="line">void acquireInterruptibly(int arg)</div><div class="line">boolean tryAcquireNanos(int arg, long nanos)</div><div class="line"></div><div class="line">// 共享、超时</div><div class="line">void acquireShared(int arg)</div><div class="line">void acquireSharedInterruptibly(int arg)</div><div class="line">boolean tryAcquireSharedNanos(int arg)</div><div class="line"></div><div class="line">boolean release(int arg)</div><div class="line">boolean releaseShared(int arg)</div><div class="line"></div><div class="line">Collection&lt;Thread&gt; getQueuedThreads()</div></pre></td></tr></table></figure>

@@ -324,30 +324,20 @@
 
       
         
-          
-            <h2 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h2><p>ThreadPoolExecutor执行execute：</p>
+          <h2 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h2><p>ThreadPoolExecutor执行execute：</p>
 <ol>
 <li>如果当前运行的线程少于corePoolSize，则创建新线程来执行任务（需要获取全局锁）。</li>
 <li>如果运行的线程等于或多余corePoolSize，则将任务加入BlockingQueue</li>
 <li>如果无法将任务加入BlockingQueue（队列已满），则创建新的线程来处理任务（需要获取全局锁）。</li>
 <li>如果创建新线程将使当前运行的线程超过maximumPoolSize，任务将被拒绝，并调用RejectedExecutionHandler.rejectedExecution()方法。</li>
 </ol>
-<p><img src="/images/java/threadpool.jpeg" alt="image"></p>
-<h2 id="线程池的使用"><a href="#线程池的使用" class="headerlink" title="线程池的使用"></a>线程池的使用</h2><h3 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">public ThreadPoolExecutor(int corePoolSize,</div><div class="line">      int maximumPoolSize,</div><div class="line">      long keepAliveTime,</div><div class="line">      TimeUnit unit,</div><div class="line">      BlockingQueue&lt;Runnable&gt; workQueue,</div><div class="line">      RejectedExecutionHandler handler);</div></pre></td></tr></table></figure>
-<p>workQueue：任务队列(ArrayBlockingQueue、LinkedBlockingQueue、SynchronousQueue、PriorityBlockingQueue)<br>maximumPoolSize: 如果使用了无界的任务队列这个参数就没哟什么效果<br>RejectedExecutionHandler： 饱和策略</p>
-<h3 id="提交任务"><a href="#提交任务" class="headerlink" title="提交任务"></a>提交任务</h3><p>execute： 无返回值<br>sumbit：有返回值</p>
-<h3 id="关闭线程池-shutdown、shutdownNow"><a href="#关闭线程池-shutdown、shutdownNow" class="headerlink" title="关闭线程池(shutdown、shutdownNow)"></a>关闭线程池(shutdown、shutdownNow)</h3><p>原理：遍历线程池中的工作线程，逐个调用线程的interrupt方法来终端，所以无法响应中断的任务可能永远无法终止。<br>区别：shutdown将线程池状态设为SHUTDOWN，然后中断所有没在执行的任务；shutdownNow首先将线程池的状态设为STOP，然后尝试停止所有正在执行或暂停任务的线程，并返回等待执行任务的列表。</p>
-<h3 id="合理配置线程池"><a href="#合理配置线程池" class="headerlink" title="合理配置线程池"></a>合理配置线程池</h3><p>任务特性</p>
-<ol>
-<li>性质：CPU密集型任务、IO密集型任务、混合型任务</li>
-<li>优先级：高中低</li>
-<li>执行时间： 长、短</li>
-<li>依赖性：依赖其他资源，入数据库连接</li>
-</ol>
-<p>CPU密集型任务应配置尽可能小的线程，如配置coreNum + 1个线程的线程池。<br>IO密集型应配置尽可能多的线程，如2coreNum，由于不是一直在执行任务。<br>混合型的任务，如何可以拆分，将其拆分为一个CPU密集型任务和一个IO密集型任务，只要这两个任务执行的时间相差不是太大，那么分解后执行的吞吐量将高于串行执行的吞吐量。如果这两个执行时间相差太大，则没必要进行分解。<br>可以通过Runtime.getRuntime().availableProcessors()来获取当前设备的CPU个数。<br>建议使用有界队列，防止撑爆内存，拖垮系统，影响其他的任务。</p>
-<h3 id="线程池的监控"><a href="#线程池的监控" class="headerlink" title="线程池的监控"></a>线程池的监控</h3><p>通过自定义线程池，重写线程池的beforeExecute、afterExecute和terminated方法，也可以在任务执行前、后和线程池给关闭前执行一些代码来进行监控。</p>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/16/java/Java中的线程池/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -627,25 +617,14 @@
 
       
         
-          
-            <h2 id="CountDownLatch"><a href="#CountDownLatch" class="headerlink" title="CountDownLatch"></a>CountDownLatch</h2><p>依赖于AbstractQueuedSynchronizer实现的共享同步器<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">private static final class Sync extends AbstractQueuedSynchronizer &#123;</div><div class="line">    private static final long serialVersionUID = 4982264981922014374L;</div><div class="line"></div><div class="line">    Sync(int count) &#123;</div><div class="line">        setState(count);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    int getCount() &#123;</div><div class="line">        return getState();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    protected int tryAcquireShared(int acquires) &#123;</div><div class="line">        return (getState() == 0) ? 1 : -1;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    protected boolean tryReleaseShared(int releases) &#123;</div><div class="line">        // Decrement count; signal when transition to zero</div><div class="line">        for (;;) &#123;</div><div class="line">            int c = getState();</div><div class="line">            if (c == 0)</div><div class="line">                return false;</div><div class="line">            int nextc = c-1;</div><div class="line">            if (compareAndSetState(c, nextc))</div><div class="line">                return nextc == 0;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">public void await() throws InterruptedException &#123;</div><div class="line">    sync.acquireSharedInterruptibly(1);</div><div class="line">&#125;</div><div class="line"></div><div class="line">public void countDown() &#123;</div><div class="line">    sync.releaseShared(1);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="CyclicBarrier"><a href="#CyclicBarrier" class="headerlink" title="CyclicBarrier"></a>CyclicBarrier</h2><p>利用ReentrantLock和Condition，来阻塞调用await方法的线程。当满足一定条件，自动唤醒所有的线程。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">/** The lock for guarding barrier entry */</div><div class="line">private final ReentrantLock lock = new ReentrantLock();</div><div class="line">/** Condition to wait on until tripped */</div><div class="line">private final Condition trip = lock.newCondition();</div></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div></pre></td><td class="code"><pre><div class="line">public int await() throws InterruptedException, BrokenBarrierException &#123;</div><div class="line">    try &#123;</div><div class="line">        return dowait(false, 0L);</div><div class="line">    &#125; catch (TimeoutException toe) &#123;</div><div class="line">        throw new Error(toe); // cannot happen</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">/**</div><div class="line"> * Main barrier code, covering the various policies.</div><div class="line"> */</div><div class="line">private int dowait(boolean timed, long nanos)</div><div class="line">    throws InterruptedException, BrokenBarrierException,</div><div class="line">           TimeoutException &#123;</div><div class="line">    final ReentrantLock lock = this.lock;</div><div class="line">    lock.lock();</div><div class="line">    try &#123;</div><div class="line">        final Generation g = generation;</div><div class="line"></div><div class="line">        if (g.broken)</div><div class="line">            throw new BrokenBarrierException();</div><div class="line"></div><div class="line">        if (Thread.interrupted()) &#123;</div><div class="line">            breakBarrier();</div><div class="line">            throw new InterruptedException();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        int index = --count;</div><div class="line">        if (index == 0) &#123;  // tripped，当最后一个线程调用await时，唤醒所有线程</div><div class="line">            boolean ranAction = false;</div><div class="line">            try &#123;</div><div class="line">                final Runnable command = barrierCommand;</div><div class="line">                if (command != null)</div><div class="line">                    command.run();</div><div class="line">                ranAction = true;</div><div class="line">                nextGeneration();</div><div class="line">                return 0;</div><div class="line">            &#125; finally &#123;</div><div class="line">                if (!ranAction)</div><div class="line">                    breakBarrier();// 唤醒所有线程</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        // loop until tripped, broken, interrupted, or timed out</div><div class="line">        for (;;) &#123;</div><div class="line">            try &#123;</div><div class="line">                if (!timed)</div><div class="line">                    trip.await();</div><div class="line">                else if (nanos &gt; 0L)</div><div class="line">                    nanos = trip.awaitNanos(nanos);</div><div class="line">            &#125; catch (InterruptedException ie) &#123;</div><div class="line">                if (g == generation &amp;&amp; ! g.broken) &#123;</div><div class="line">                    breakBarrier();</div><div class="line">                    throw ie;</div><div class="line">                &#125; else &#123;</div><div class="line">                    // We&apos;re about to finish waiting even if we had not</div><div class="line">                    // been interrupted, so this interrupt is deemed to</div><div class="line">                    // &quot;belong&quot; to subsequent execution.</div><div class="line">                    Thread.currentThread().interrupt();</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            if (g.broken)</div><div class="line">                throw new BrokenBarrierException();</div><div class="line"></div><div class="line">            if (g != generation)</div><div class="line">                return index;</div><div class="line"></div><div class="line">            if (timed &amp;&amp; nanos &lt;= 0L) &#123;</div><div class="line">                breakBarrier();</div><div class="line">                throw new TimeoutException();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125; finally &#123;</div><div class="line">        lock.unlock();</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">private void breakBarrier() &#123;</div><div class="line">    generation.broken = true;</div><div class="line">    count = parties;</div><div class="line">    trip.signalAll();// 唤醒所有线程</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>CountDownLatch和CyclicBarrier的区别</p>
-<ol>
-<li>CountDownLatch只能用一次，CyclicBarrier可以使用reset()方法重置。</li>
-<li>…</li>
-</ol>
-<h2 id="Semaphore"><a href="#Semaphore" class="headerlink" title="Semaphore"></a>Semaphore</h2><blockquote>
-<p>用来控制同时访问特定资源的线程数量，它通过协调各个线程，以保证合理的使用公共资源。</p>
-</blockquote>
-<p>semapthore依赖于AbstractQueuedSynchronizer实现的同步器。可以用来做流量控制。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Semaphore s = new Semaphore(10);</div><div class="line"></div><div class="line">s.acquire();</div><div class="line">...</div><div class="line">...</div><div class="line">s.release();</div></pre></td></tr></table></figure></p>
-<h2 id="Exchanger"><a href="#Exchanger" class="headerlink" title="Exchanger"></a>Exchanger</h2><blockquote>
-<p>用于线程间的数据交换。它提供一个同步点，两个线程可以交换彼此数据。</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line">import java.util.concurrent.Exchanger;</div><div class="line">import java.util.concurrent.ExecutorService;</div><div class="line">import java.util.concurrent.Executors;</div><div class="line"></div><div class="line">/**</div><div class="line"> * @author joyo</div><div class="line"> * @date 2018/3/15</div><div class="line"> */</div><div class="line">public class ExchangerTest &#123;</div><div class="line">    private static final Exchanger&lt;String&gt; exgr = new Exchanger&lt;&gt;();</div><div class="line"></div><div class="line">    private static ExecutorService threadPool = Executors.newFixedThreadPool(2);</div><div class="line"></div><div class="line">    public static void main(String[] args) &#123;</div><div class="line"></div><div class="line">        threadPool.execute(new Runnable() &#123;</div><div class="line">            @Override</div><div class="line">            public void run() &#123;</div><div class="line">                try &#123;</div><div class="line">                    String A = &quot;银行流水A&quot;;</div><div class="line">                    exgr.exchange(A);</div><div class="line">                &#125; catch (InterruptedException e) &#123;</div><div class="line">                    e.printStackTrace();</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line"></div><div class="line">        threadPool.execute(new Runnable() &#123;</div><div class="line">            @Override</div><div class="line">            public void run() &#123;</div><div class="line">                try &#123;</div><div class="line">                    String B = &quot;银行流水A&quot;;</div><div class="line">                    String A = exgr.exchange(B);</div><div class="line">                    System.out.println(&quot;A和B数据是否一致：&quot; + A.equals(B) + &quot;, A录入的是：&quot; + A + &quot;， B录入的是:&quot; + B);</div><div class="line">                &#125; catch (InterruptedException e) &#123;</div><div class="line">                    e.printStackTrace();</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line"></div><div class="line">        threadPool.shutdown();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-          
+          <h2 id="CountDownLatch"><a href="#CountDownLatch" class="headerlink" title="CountDownLatch"></a>CountDownLatch</h2><p>依赖于AbstractQueuedSynchronizer实现的共享同步器</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/15/java/Java并发工具类/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -784,8 +763,7 @@
 
       
         
-          
-            <h2 id="Lock"><a href="#Lock" class="headerlink" title="Lock"></a>Lock</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Lock lock = new ReentrantLock();</div><div class="line">lock.lock();</div><div class="line">try&#123;</div><div class="line">    ...</div><div class="line">&#125;finally&#123;</div><div class="line">    lock.unlock();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+          <h2 id="Lock"><a href="#Lock" class="headerlink" title="Lock"></a>Lock</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Lock lock = new ReentrantLock();</div><div class="line">lock.lock();</div><div class="line">try&#123;</div><div class="line">    ...</div><div class="line">&#125;finally&#123;</div><div class="line">    lock.unlock();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <ol>
 <li>灵活</li>
 <li>尝试非阻塞地获取锁</li>
@@ -793,30 +771,13 @@
 <li>能超时获取锁</li>
 <li>独占或共享的方式</li>
 </ol>
-<h2 id="队列同步器"><a href="#队列同步器" class="headerlink" title="队列同步器"></a>队列同步器</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">// override</div><div class="line">protected boolean tryAcquire(int arg)</div><div class="line">protected boolean tryRelease(int arg)</div><div class="line">protected int tryAcquireShared(int arg)</div><div class="line">protected boolean tryReleaseShared(int arg)</div><div class="line">protected boolean isHeldExclusively()</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">// 可用方法</div><div class="line">getState()</div><div class="line">setState(int newState)</div><div class="line">compareAndSetState(int expect, int update)</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">// 提供的模板方法</div><div class="line">// 独占、超时</div><div class="line">void acquire(int arg)</div><div class="line">void acquireInterruptibly(int arg)</div><div class="line">boolean tryAcquireNanos(int arg, long nanos)</div><div class="line"></div><div class="line">// 共享、超时</div><div class="line">void acquireShared(int arg)</div><div class="line">void acquireSharedInterruptibly(int arg)</div><div class="line">boolean tryAcquireSharedNanos(int arg)</div><div class="line"></div><div class="line">boolean release(int arg)</div><div class="line">boolean releaseShared(int arg)</div><div class="line"></div><div class="line">Collection&lt;Thread&gt; getQueuedThreads()</div></pre></td></tr></table></figure>
-<ol>
-<li>独占式</li>
-<li>共享式</li>
-<li>超时获取</li>
-<li>同步队列</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div></pre></td><td class="code"><pre><div class="line">abstract static class Sync extends AbstractQueuedSynchronizer &#123;</div><div class="line">    private static final long serialVersionUID = -5179523762034025860L;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * Performs &#123;@link Lock#lock&#125;. The main reason for subclassing</div><div class="line">     * is to allow fast path for nonfair version.</div><div class="line">     */</div><div class="line">    abstract void lock();</div><div class="line"></div><div class="line">    /**</div><div class="line">     * Performs non-fair tryLock.  tryAcquire is implemented in</div><div class="line">     * subclasses, but both need nonfair try for trylock method.</div><div class="line">     */</div><div class="line">    final boolean nonfairTryAcquire(int acquires) &#123;</div><div class="line">        final Thread current = Thread.currentThread();</div><div class="line">        int c = getState();</div><div class="line">        if (c == 0) &#123;</div><div class="line">            if (compareAndSetState(0, acquires)) &#123;</div><div class="line">                setExclusiveOwnerThread(current);</div><div class="line">                return true;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        else if (current == getExclusiveOwnerThread()) &#123;</div><div class="line">            int nextc = c + acquires;</div><div class="line">            if (nextc &lt; 0) // overflow</div><div class="line">                throw new Error(&quot;Maximum lock count exceeded&quot;);</div><div class="line">            setState(nextc);</div><div class="line">            return true;</div><div class="line">        &#125;</div><div class="line">        return false;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    protected final boolean tryRelease(int releases) &#123;</div><div class="line">        int c = getState() - releases;</div><div class="line">        if (Thread.currentThread() != getExclusiveOwnerThread())</div><div class="line">            throw new IllegalMonitorStateException();</div><div class="line">        boolean free = false;</div><div class="line">        if (c == 0) &#123;</div><div class="line">            free = true;</div><div class="line">            setExclusiveOwnerThread(null);</div><div class="line">        &#125;</div><div class="line">        setState(c);</div><div class="line">        return free;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    protected final boolean isHeldExclusively() &#123;</div><div class="line">        // While we must in general read state before owner,</div><div class="line">        // we don&apos;t need to do so to check if current thread is owner</div><div class="line">        return getExclusiveOwnerThread() == Thread.currentThread();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    final ConditionObject newCondition() &#123;</div><div class="line">        return new ConditionObject();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    // Methods relayed from outer class</div><div class="line"></div><div class="line">    final Thread getOwner() &#123;</div><div class="line">        return getState() == 0 ? null : getExclusiveOwnerThread();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    final int getHoldCount() &#123;</div><div class="line">        return isHeldExclusively() ? getState() : 0;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    final boolean isLocked() &#123;</div><div class="line">        return getState() != 0;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * Reconstitutes the instance from a stream (that is, deserializes it).</div><div class="line">     */</div><div class="line">    private void readObject(java.io.ObjectInputStream s)</div><div class="line">        throws java.io.IOException, ClassNotFoundException &#123;</div><div class="line">        s.defaultReadObject();</div><div class="line">        setState(0); // reset to unlocked state</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="重入锁"><a href="#重入锁" class="headerlink" title="重入锁"></a>重入锁</h2><ol>
-<li>ReentrantLock</li>
-</ol>
-<h2 id="读写锁"><a href="#读写锁" class="headerlink" title="读写锁"></a>读写锁</h2><p>通过按位切割使用，在一个整型变量上维护多种状态。高16位表示读。低16位表示写。</p>
-<h3 id="读锁的获取与释放"><a href="#读锁的获取与释放" class="headerlink" title="读锁的获取与释放"></a>读锁的获取与释放</h3><h3 id="写锁的获取与释放"><a href="#写锁的获取与释放" class="headerlink" title="写锁的获取与释放"></a>写锁的获取与释放</h3><h3 id="锁降级"><a href="#锁降级" class="headerlink" title="锁降级"></a>锁降级</h3><blockquote>
-<p>拥有写锁，再获取读锁，随后释放写锁的过程。</p>
-</blockquote>
-<h2 id="LockSupport"><a href="#LockSupport" class="headerlink" title="LockSupport"></a>LockSupport</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">void park()</div><div class="line">void parkNanos(long nanos)</div><div class="line">void parkUntil(long deadline)</div><div class="line">void unpark(Thread thread)</div></pre></td></tr></table></figure>
-<h2 id="Condition"><a href="#Condition" class="headerlink" title="Condition"></a>Condition</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">public final void await()</div><div class="line">public final long awaitNanos(long nanosTimeout)</div><div class="line">public final boolean awaitUntil(Date deadline)</div><div class="line">public final boolean await(long time, TimeUnit unit)</div><div class="line"></div><div class="line">public final void signal()</div><div class="line">public final void signalAll()</div></pre></td></tr></table></figure>
-<p>依赖于LockSupport</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">public final void await() throws InterruptedException &#123;</div><div class="line">    if (Thread.interrupted())</div><div class="line">        throw new InterruptedException();</div><div class="line">    Node node = addConditionWaiter();</div><div class="line">    int savedState = fullyRelease(node);</div><div class="line">    int interruptMode = 0;</div><div class="line">    while (!isOnSyncQueue(node)) &#123;</div><div class="line">        LockSupport.park(this);</div><div class="line">        if ((interruptMode = checkInterruptWhileWaiting(node)) != 0)</div><div class="line">            break;</div><div class="line">    &#125;</div><div class="line">    if (acquireQueued(node, savedState) &amp;&amp; interruptMode != THROW_IE)</div><div class="line">        interruptMode = REINTERRUPT;</div><div class="line">    if (node.nextWaiter != null) // clean up if cancelled</div><div class="line">        unlinkCancelledWaiters();</div><div class="line">    if (interruptMode != 0)</div><div class="line">        reportInterruptAfterWait(interruptMode);</div><div class="line">&#125;</div><div class="line"></div><div class="line">public final void signal() &#123;</div><div class="line">    if (!isHeldExclusively())</div><div class="line">        throw new IllegalMonitorStateException();</div><div class="line">    Node first = firstWaiter;</div><div class="line">    if (first != null)</div><div class="line">        doSignal(first);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>实现：等待队列</p>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/14/java/锁/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -955,8 +916,7 @@
 
       
         
-          
-            <h2 id="线程的状态"><a href="#线程的状态" class="headerlink" title="线程的状态"></a>线程的状态</h2><table>
+          <h2 id="线程的状态"><a href="#线程的状态" class="headerlink" title="线程的状态"></a>线程的状态</h2><table>
 <thead>
 <tr>
 <th>名称</th>
@@ -990,36 +950,13 @@
 </tr>
 </tbody>
 </table>
-<p><img src="/images/thread-status-change.jpeg" alt="image"></p>
-<h2 id="Daemon线程"><a href="#Daemon线程" class="headerlink" title="Daemon线程"></a>Daemon线程</h2><p>线程默认不是daemon线程，需要setDaemon(true)。daemon线程的finally方法，不一定有机会执行。</p>
-<h2 id="启动和终止"><a href="#启动和终止" class="headerlink" title="启动和终止"></a>启动和终止</h2><h3 id="suspend-、resume-和stop"><a href="#suspend-、resume-和stop" class="headerlink" title="suspend()、resume()和stop()"></a>suspend()、resume()和stop()</h3><p>suspend方法在调用后，线程不会释放已经占有的资源，而是占用资源进入睡眠状态。<br>同样，stop方法在中介一个线程时不会保证线程的资源正常释放，通常是没有给予线程完成资源释放工作的机会。</p>
-<h2 id="进程间通信"><a href="#进程间通信" class="headerlink" title="进程间通信"></a>进程间通信</h2><h3 id="volatile和synchronized的方式"><a href="#volatile和synchronized的方式" class="headerlink" title="volatile和synchronized的方式"></a>volatile和synchronized的方式</h3><p>通过共享变量的方式</p>
-<h3 id="等待-通知机制"><a href="#等待-通知机制" class="headerlink" title="等待/通知机制"></a>等待/通知机制</h3><h4 id="wait-notify-notifyAll"><a href="#wait-notify-notifyAll" class="headerlink" title="wait/notify(notifyAll)"></a>wait/notify(notifyAll)</h4><p>指线程A调用了对象O的wait方法进入等待状态，而线程B通过调用对象O的notify或者notifyAll方法来唤醒A线程，A线程从wait方法返回继续执行。</p>
-<ol>
-<li>调用waie、notify、notifyAll方法时，需要先对调用对象加锁</li>
-<li>调用wait后，释放锁。线程状态由running变为waiting</li>
-<li>notify、notifyAll释放所之后，wait的线程才能获取锁。</li>
-<li>调用notify、notifyAll后，等待线程从等待队列中移到同步队列中，被移动的线程的状态由WATING变为BLOCKED</li>
-</ol>
-<p>使用方式：</p>
-<ol>
-<li>Thread.join</li>
-<li>线程池</li>
-<li>数据库连接池</li>
-</ol>
-<h4 id="LockSupport"><a href="#LockSupport" class="headerlink" title="LockSupport"></a>LockSupport</h4><ol>
-<li>Condition(await、signal、signalAll)</li>
-<li>AbstractQueuedSynchronizer<ol>
-<li>ReentrantLock</li>
-<li>CountDownLatch</li>
-<li>…</li>
-</ol>
-</li>
-</ol>
-<h3 id="ThreadLocal"><a href="#ThreadLocal" class="headerlink" title="ThreadLocal"></a>ThreadLocal</h3><h2 id="线程应用实例"><a href="#线程应用实例" class="headerlink" title="线程应用实例"></a>线程应用实例</h2><h3 id="等待超时模式"><a href="#等待超时模式" class="headerlink" title="等待超时模式"></a>等待超时模式</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">long future = System.currentTimeMillis() + mills;</div><div class="line">long remaining = mills;</div><div class="line">while(remaining &gt; 0)&#123;</div><div class="line">    wait(remaing);</div><div class="line">    remaining = future - System.currentTimeMillis();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div></pre></td><td class="code"><pre><div class="line">package com.iforfee.common.thread;</div><div class="line"></div><div class="line"></div><div class="line">import java.util.ArrayList;</div><div class="line">import java.util.Collections;</div><div class="line">import java.util.LinkedList;</div><div class="line">import java.util.List;</div><div class="line">import java.util.concurrent.atomic.AtomicLong;</div><div class="line"></div><div class="line">/**</div><div class="line"> * @author joyo</div><div class="line"> * @date 2018/3/14</div><div class="line"> */</div><div class="line">public class DefaultThreadPool&lt;Job extends Runnable&gt; implements ThreadPool&lt;Job&gt; &#123;</div><div class="line"></div><div class="line">    private static final int MAX_WORKER_NUMBERS = 10;</div><div class="line">    private static final int DEFAULT_WORKER_NUMBERS = 5;</div><div class="line">    private static final int MIN_WORKER_NUMBERS = 1;</div><div class="line"></div><div class="line">    private final LinkedList&lt;Job&gt; jobs = new LinkedList&lt;Job&gt;();</div><div class="line">    private final List&lt;Worker&gt; workers = Collections.synchronizedList(new ArrayList&lt;Worker&gt;());</div><div class="line"></div><div class="line">    private int workerNum = DEFAULT_WORKER_NUMBERS;</div><div class="line">    private AtomicLong threadNum = new AtomicLong();</div><div class="line"></div><div class="line">    public DefaultThreadPool() &#123;</div><div class="line">        initializeWokers(DEFAULT_WORKER_NUMBERS);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public DefaultThreadPool(int num) &#123;</div><div class="line">        workerNum = num &gt; MAX_WORKER_NUMBERS ? MAX_WORKER_NUMBERS : num &lt; MIN_WORKER_NUMBERS ? MIN_WORKER_NUMBERS : num;</div><div class="line">        initializeWokers(workerNum);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void execute(Job job) &#123;</div><div class="line">        if (job != null) &#123;</div><div class="line">            synchronized (jobs) &#123;</div><div class="line">                jobs.addLast(job);</div><div class="line">                jobs.notify();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void shutdown() &#123;</div><div class="line">        workers.forEach(job -&gt; job.shutdown());</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void addWorkers(int num) &#123;</div><div class="line">        synchronized (jobs) &#123;</div><div class="line">            if (num + this.workerNum &gt; MAX_WORKER_NUMBERS) &#123;</div><div class="line">                num = MAX_WORKER_NUMBERS - this.workerNum;</div><div class="line">            &#125;</div><div class="line">            initializeWokers(num);</div><div class="line">            this.workerNum += num;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void removeWorker(int num) &#123;</div><div class="line">        synchronized (jobs) &#123;</div><div class="line">            if (num &gt;= this.workerNum) &#123;</div><div class="line">                throw new IllegalArgumentException(&quot;beyond workerNum&quot;);</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            int count = 0;</div><div class="line">            while (count &lt; num) &#123;</div><div class="line">                Worker worker = workers.get(count);</div><div class="line">                if (workers.remove(worker)) &#123;</div><div class="line">                    worker.shutdown();</div><div class="line">                    count++;</div><div class="line">                &#125;</div><div class="line">                this.workerNum -= count;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public int getJobSize() &#123;</div><div class="line">        return jobs.size();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    private void initializeWokers(int num) &#123;</div><div class="line">        for (int i = 0; i &lt; num; i++) &#123;</div><div class="line">            Worker worker = new Worker();</div><div class="line">            workers.add(worker);</div><div class="line">            Thread thread = new Thread(worker, &quot;ThreadPool-Worker-&quot; + threadNum.incrementAndGet());</div><div class="line">            thread.start();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    class Worker implements Runnable &#123;</div><div class="line"></div><div class="line">        private volatile boolean running = true;</div><div class="line"></div><div class="line">        @Override</div><div class="line">        public void run() &#123;</div><div class="line">            while (running) &#123;</div><div class="line">                Job job = null;</div><div class="line">                synchronized (jobs) &#123;</div><div class="line">                    while (jobs.isEmpty()) &#123;</div><div class="line">                        try &#123;</div><div class="line">                            jobs.wait();</div><div class="line">                        &#125; catch (InterruptedException e) &#123;</div><div class="line">                            Thread.currentThread().interrupt();</div><div class="line">                            return;</div><div class="line">                        &#125;</div><div class="line">                    &#125;</div><div class="line">                    job = jobs.removeFirst();</div><div class="line">                &#125;</div><div class="line">                if (job != null) &#123;</div><div class="line">                    try &#123;</div><div class="line">                        job.run();</div><div class="line">                    &#125; catch (Exception ex) &#123;</div><div class="line">                        //ignore exception from job</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        public void shutdown() &#123;</div><div class="line">            running = false;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line">interface ThreadPool&lt;Job extends Runnable&gt; &#123;</div><div class="line">    void execute(Job job);</div><div class="line"></div><div class="line">    void shutdown();</div><div class="line"></div><div class="line">    void addWorkers(int num);</div><div class="line"></div><div class="line">    void removeWorker(int num);</div><div class="line"></div><div class="line">    int getJobSize();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="数据库连接池"><a href="#数据库连接池" class="headerlink" title="数据库连接池"></a>数据库连接池</h3><h3 id="web服务器"><a href="#web服务器" class="headerlink" title="web服务器"></a>web服务器</h3>
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/13/java/Java并发编程基础/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1066,7 +1003,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.iforfee.com/2018/03/13/wenzhu/">
+    <link itemprop="mainEntityOfPage" href="http://www.iforfee.com/2018/03/13/tree/wenzhu/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="joyo">
@@ -1085,7 +1022,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/03/13/wenzhu/" itemprop="url">文竹养育</a></h1>
+                <a class="post-title-link" href="/2018/03/13/tree/wenzhu/" itemprop="url">文竹养育</a></h1>
         
 
         <div class="post-meta">
@@ -1190,7 +1127,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.iforfee.com/2018/03/13/安全驾驶/">
+    <link itemprop="mainEntityOfPage" href="http://www.iforfee.com/2018/03/13/common-sense/安全驾驶/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="joyo">
@@ -1209,7 +1146,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/03/13/安全驾驶/" itemprop="url">安全驾驶</a></h1>
+                <a class="post-title-link" href="/2018/03/13/common-sense/安全驾驶/" itemprop="url">安全驾驶</a></h1>
         
 
         <div class="post-meta">
@@ -1260,61 +1197,16 @@
 
       
         
-          
-            <h1 id="安全驾驶"><a href="#安全驾驶" class="headerlink" title="安全驾驶"></a>安全驾驶</h1><p> 驾驶安全最关键的是在极端情况下的车辆控制，包括爆胎、雪天车辆打滑的情况。只有保证自己在极端情况下，具有控制车辆的能力，才能称得上是一个合格的驾驶者。</p>
-<h2 id="坐姿"><a href="#坐姿" class="headerlink" title="坐姿"></a>坐姿</h2><h2 id="刹车"><a href="#刹车" class="headerlink" title="刹车"></a>刹车</h2><table>
-<thead>
-<tr>
-<th>刹车速度（km/h）</th>
-<th>刹车距离（m）</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>20</td>
-<td>1</td>
-</tr>
-<tr>
-<td>40</td>
-<td>5</td>
-</tr>
-<tr>
-<td>80</td>
-<td>25</td>
-</tr>
-</tbody>
-</table>
-<p>车辆速度过大时（100km/h），这个时候急转就是go die。先刹车到车辆极限速度，保证安全后再进行躲避，否则宁愿直接装上去。</p>
-<h2 id="握姿"><a href="#握姿" class="headerlink" title="握姿"></a>握姿</h2><p>39点</p>
-<h2 id="电子控制系统"><a href="#电子控制系统" class="headerlink" title="电子控制系统"></a>电子控制系统</h2><ol>
-<li>VSA、ESP等通过对个别轮胎进行点刹等操作来控制车辆</li>
-<li>电子系统不能改变转弯极限</li>
-</ol>
-<h2 id="安全距离"><a href="#安全距离" class="headerlink" title="安全距离"></a>安全距离</h2><ol>
-<li>2秒守则</li>
-<li>刹车时，注意前后是否有大车</li>
-<li>大车的挂车，可能会横过来，注意保持距离</li>
-</ol>
-<h1 id="湿滑路面"><a href="#湿滑路面" class="headerlink" title="湿滑路面"></a>湿滑路面</h1><h2 id="如何刹车"><a href="#如何刹车" class="headerlink" title="如何刹车"></a>如何刹车</h2><ol>
-<li>ABS：一脚刹车</li>
-<li>无ABS： 刹车、缓脚</li>
-</ol>
-<h2 id="如何转弯"><a href="#如何转弯" class="headerlink" title="如何转弯"></a>如何转弯</h2><ol>
-<li>前驱车：降速后带油门过弯</li>
-<li>后驱车：降速后惯性过弯</li>
-</ol>
-<h2 id="如何起步"><a href="#如何起步" class="headerlink" title="如何起步"></a>如何起步</h2><ol>
-<li>2档/L档/S档起步</li>
-<li>换路面起步</li>
-</ol>
-<p>如何处理：<a href="http://icyroadsafety.com" target="_blank" rel="external">链接</a></p>
-<ol>
-<li>不踩刹车，完全失控可以刹车</li>
-<li>想侧滑方向同步转动方向盘</li>
-<li>避免惊慌和纠正过度</li>
-</ol>
-
-          
+          <blockquote>
+<p>驾驶安全最关键的是在极端情况下的车辆控制，包括爆胎、雪天车辆打滑的情况。只有保证自己在极端情况下，具有控制车辆的能力，才能称得上是一个合格的驾驶者。</p>
+</blockquote>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/13/common-sense/安全驾驶/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1361,7 +1253,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.iforfee.com/2018/03/13/jmm/">
+    <link itemprop="mainEntityOfPage" href="http://www.iforfee.com/2018/03/13/java/Java内存模型/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="joyo">
@@ -1380,7 +1272,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/03/13/jmm/" itemprop="url">java内存模型</a></h1>
+                <a class="post-title-link" href="/2018/03/13/java/Java内存模型/" itemprop="url">java内存模型</a></h1>
         
 
         <div class="post-meta">
@@ -1453,8 +1345,7 @@
 
       
         
-          
-            <h3 id="JMM"><a href="#JMM" class="headerlink" title="JMM"></a>JMM</h3><h5 id="并发编程模型的两个关键问题"><a href="#并发编程模型的两个关键问题" class="headerlink" title="并发编程模型的两个关键问题"></a>并发编程模型的两个关键问题</h5><p>线程之间如何通信和同步。</p>
+          <h3 id="JMM"><a href="#JMM" class="headerlink" title="JMM"></a>JMM</h3><h5 id="并发编程模型的两个关键问题"><a href="#并发编程模型的两个关键问题" class="headerlink" title="并发编程模型的两个关键问题"></a>并发编程模型的两个关键问题</h5><p>线程之间如何通信和同步。</p>
 <p>如何通信</p>
 <ol>
 <li>共享内存</li>
@@ -1466,67 +1357,13 @@
 <li>隐式</li>
 </ol>
 <p>在共享内存并发模型中，同步是显式进行的。程序员必须显式指定某个方法或某段代码需要在线程之间互斥执行。在消息传递的并发模型里，由于消息的发送必须在消息的接受之前，因此同步是隐式进行的。</p>
-<h5 id="JMM的抽象结构"><a href="#JMM的抽象结构" class="headerlink" title="JMM的抽象结构"></a>JMM的抽象结构</h5><p>线程之间的共享变量存储在主内存，每个线程都有一个私有的本地内存，本地内存中存储了该线程以读/写共享变量的副本。本地内存是JMM的一个抽象概念，并不真实存在。它涵盖了缓存、写缓冲区、寄存器以及其他的硬件和编译器优化。</p>
-<h5 id="重排序"><a href="#重排序" class="headerlink" title="重排序"></a>重排序</h5><p>为了提高性能，需要对指令进行重排序。重排序分类：</p>
-<ol>
-<li>编译器</li>
-<li>处理器<ol>
-<li>指令级并行重排序</li>
-<li>内存系统重排序</li>
-</ol>
-</li>
-</ol>
-<h4 id="happens-before"><a href="#happens-before" class="headerlink" title="happens-before"></a>happens-before</h4><p>happens-before是JMM最核心的概念。</p>
-<p>一个happens-before规则对应于一个或多个编译器和处理器重排序规则。</p>
-<p>定义</p>
-<blockquote>
-<p>1.如果一个操作happens-before另一个操作，那么第一个操作的执行结果将对第二个操作可见，而且第一个操作的执行顺序排在第二个操作之前。</p>
-<p>2.两个操作之间存在happens-before关系，并不意味着Java平台的具体实现必须按照happens-before关系执行的顺序来执行。</p>
-</blockquote>
-<p>定义1是JMM对程序员的承诺；定义2是JMM对编译器和处理器重排序的约束原则。</p>
-<p>happens-before和as-if-serial是一回事，都有两重意思。从程序要的角度来说，好像是顺序执行的，但是只要不破坏结果，处理器和编译器怎么优化都可以</p>
-<ol>
-<li>as-is-serial语义保证<code>单线程</code>内程序的执行结果不变，happens-before语义保证正确同步的<code>多线程程序</code>执行结果不变。</li>
-<li>as-is-serial语义给程序要一个幻境：单线程程序是按照程序的顺序来执行的。happens-before关系给编写正确同步的程序要一个幻境：正确同步的多线程程序是按照happens-before指定的顺序来执行的。</li>
-</ol>
-<p>happens-before规则</p>
-<ol>
-<li>程序顺序规则</li>
-<li>监视器锁规则</li>
-<li>volatile变量规则</li>
-<li>传递性</li>
-<li>start()规则：如果线程A执行操作ThreatB.start()，那么A线程的ThreadB.start()操作happens-before于B线程中的任意操作。</li>
-<li>join()规则：线程A执行ThreadB.join()并成功返回，那么线程B中任意操作happens-before于线程A从ThreadB.join()操作成功返回。</li>
-</ol>
-<h4 id="重排序-1"><a href="#重排序-1" class="headerlink" title="重排序"></a>重排序</h4><blockquote>
-<p>happens-before依赖于重排序的实现。一个happens-before对应多个重排序。</p>
-</blockquote>
-<h6 id="1-数据依赖性"><a href="#1-数据依赖性" class="headerlink" title="1. 数据依赖性"></a>1. 数据依赖性</h6><p>数据依赖的操作不可重排序</p>
-<h6 id="2-as-if-serial语义"><a href="#2-as-if-serial语义" class="headerlink" title="2. as-if-serial语义"></a>2. as-if-serial语义</h6><p>不管怎么重排序（编译器和处理器为了提高并行度），（单线程）程序的执行结果不能被改变。编译器和处理器不会对存在数据依赖的操作重排序</p>
-<h4 id="顺序一致性内存模型"><a href="#顺序一致性内存模型" class="headerlink" title="顺序一致性内存模型"></a>顺序一致性内存模型</h4><p>顺序一致行内存模型是一个<code>理论参考模型</code>，在设计的时候，处理器的内存模型和编程语言的内存模型都会以顺序一致性内存模型作为参照</p>
-<ol>
-<li>JMM对正确同步的多线程程序的内存一致性做了如下保证：如果程序是正确同步的，程序的执行将具有顺序一致性。即程序的执行结果与该程序在顺序一致性内存模型中的执行结果相同。<h6 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h6></li>
-<li>一个线程中的所有操作必须按照程序的顺序来执行，即不进行重排序</li>
-<li>（不管程序是否同步）所有线程都只能看到一个单一的操作执行顺序。在顺序一致性内存模型中，每个操作都必须原子执行且立刻对所有线程可见。</li>
-</ol>
-<h4 id="volatile的内存语义"><a href="#volatile的内存语义" class="headerlink" title="volatile的内存语义"></a>volatile的内存语义</h4><h5 id="特性-1"><a href="#特性-1" class="headerlink" title="特性"></a>特性</h5><ol>
-<li>可见性</li>
-<li>原子性</li>
-</ol>
-<h5 id="内存语义"><a href="#内存语义" class="headerlink" title="内存语义"></a>内存语义</h5><ol>
-<li>当写一个volatile变量时，JMM会把线程对应的本地内存中的共享变量值刷新到主内存。</li>
-<li>当读一个volatile变量时，JMM会把该线程对应的本地内存置为无效。线程接下来从主内存中读取共享变量。</li>
-</ol>
-<h5 id="如何实现"><a href="#如何实现" class="headerlink" title="如何实现"></a>如何实现</h5><blockquote>
-<p>在指令序列中插入内存屏障来禁止特定类型的处理器排序。</p>
-</blockquote>
-<p>比如storestore屏障可以保证volatile之前的普通写操作，在volatile变量写入之前，被刷新到主内存。</p>
-<h5 id="JSR-33为什么要增强volatile的语义"><a href="#JSR-33为什么要增强volatile的语义" class="headerlink" title="JSR-33为什么要增强volatile的语义"></a>JSR-33为什么要增强volatile的语义</h5><blockquote>
-<p>为了提供一种比锁更轻量级的线程之间通信的机制。</p>
-</blockquote>
-<p>在JSR—33之前，普通变量和volatile可以重排序，会导致普通变量没有写入刷新到主内存。</p>
-<h4 id="锁的内存语义"><a href="#锁的内存语义" class="headerlink" title="锁的内存语义"></a>锁的内存语义</h4>
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/13/java/Java内存模型/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>

@@ -69,18 +69,18 @@
 
 
 
-<meta name="description" content="JMM并发编程模型的两个关键问题线程之间如何通信和同步。 如何通信  共享内存 消息传递  如何同步  显式 隐式  在共享内存并发模型中，同步是显式进行的。程序员必须显式指定某个方法或某段代码需要在线程之间互斥执行。在消息传递的并发模型里，由于消息的发送必须在消息的接受之前，因此同步是隐式进行的。 JMM的抽象结构线程之间的共享变量存储在主内存，每个线程都有一个私有的本地内存，本地内存中存储了该">
+<meta name="description" content="JMM并发编程模型的两个关键问题线程之间如何通信和同步。 如何通信  共享内存 消息传递  如何同步  显式 隐式  在共享内存并发模型中，同步是显式进行的。程序员必须显式指定某个方法或某段代码需要在线程之间互斥执行。在消息传递的并发模型里，由于消息的发送必须在消息的接受之前，因此同步是隐式进行的。">
 <meta name="keywords" content="jmm">
 <meta property="og:type" content="article">
 <meta property="og:title" content="java内存模型">
-<meta property="og:url" content="http://www.iforfee.com/2018/03/13/jmm/index.html">
+<meta property="og:url" content="http://www.iforfee.com/2018/03/13/java/Java内存模型/index.html">
 <meta property="og:site_name" content="joyo&#39;s world">
-<meta property="og:description" content="JMM并发编程模型的两个关键问题线程之间如何通信和同步。 如何通信  共享内存 消息传递  如何同步  显式 隐式  在共享内存并发模型中，同步是显式进行的。程序员必须显式指定某个方法或某段代码需要在线程之间互斥执行。在消息传递的并发模型里，由于消息的发送必须在消息的接受之前，因此同步是隐式进行的。 JMM的抽象结构线程之间的共享变量存储在主内存，每个线程都有一个私有的本地内存，本地内存中存储了该">
+<meta property="og:description" content="JMM并发编程模型的两个关键问题线程之间如何通信和同步。 如何通信  共享内存 消息传递  如何同步  显式 隐式  在共享内存并发模型中，同步是显式进行的。程序员必须显式指定某个方法或某段代码需要在线程之间互斥执行。在消息传递的并发模型里，由于消息的发送必须在消息的接受之前，因此同步是隐式进行的。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-13T13:34:34.000Z">
+<meta property="og:updated_time" content="2018-03-15T17:29:03.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="java内存模型">
-<meta name="twitter:description" content="JMM并发编程模型的两个关键问题线程之间如何通信和同步。 如何通信  共享内存 消息传递  如何同步  显式 隐式  在共享内存并发模型中，同步是显式进行的。程序员必须显式指定某个方法或某段代码需要在线程之间互斥执行。在消息传递的并发模型里，由于消息的发送必须在消息的接受之前，因此同步是隐式进行的。 JMM的抽象结构线程之间的共享变量存储在主内存，每个线程都有一个私有的本地内存，本地内存中存储了该">
+<meta name="twitter:description" content="JMM并发编程模型的两个关键问题线程之间如何通信和同步。 如何通信  共享内存 消息传递  如何同步  显式 隐式  在共享内存并发模型中，同步是显式进行的。程序员必须显式指定某个方法或某段代码需要在线程之间互斥执行。在消息传递的并发模型里，由于消息的发送必须在消息的接受之前，因此同步是隐式进行的。">
 
 
 
@@ -110,7 +110,7 @@
 
 
 
-  <link rel="canonical" href="http://www.iforfee.com/2018/03/13/jmm/"/>
+  <link rel="canonical" href="http://www.iforfee.com/2018/03/13/java/Java内存模型/"/>
 
 
 
@@ -233,7 +233,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.iforfee.com/2018/03/13/jmm/">
+    <link itemprop="mainEntityOfPage" href="http://www.iforfee.com/2018/03/13/java/Java内存模型/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="joyo">
@@ -334,6 +334,7 @@
 <li>隐式</li>
 </ol>
 <p>在共享内存并发模型中，同步是显式进行的。程序员必须显式指定某个方法或某段代码需要在线程之间互斥执行。在消息传递的并发模型里，由于消息的发送必须在消息的接受之前，因此同步是隐式进行的。</p>
+<a id="more"></a>
 <h5 id="JMM的抽象结构"><a href="#JMM的抽象结构" class="headerlink" title="JMM的抽象结构"></a>JMM的抽象结构</h5><p>线程之间的共享变量存储在主内存，每个线程都有一个私有的本地内存，本地内存中存储了该线程以读/写共享变量的副本。本地内存是JMM的一个抽象概念，并不真实存在。它涵盖了缓存、写缓冲区、寄存器以及其他的硬件和编译器优化。</p>
 <h5 id="重排序"><a href="#重排序" class="headerlink" title="重排序"></a>重排序</h5><p>为了提高性能，需要对指令进行重排序。重排序分类：</p>
 <ol>
@@ -433,7 +434,7 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/03/13/安全驾驶/" rel="prev" title="安全驾驶">
+              <a href="/2018/03/13/common-sense/安全驾驶/" rel="prev" title="安全驾驶">
                 安全驾驶 <i class="fa fa-chevron-right"></i>
               </a>
             

@@ -78,7 +78,7 @@
 <meta property="og:description" content="实现原理ThreadPoolExecutor执行execute：  如果当前运行的线程少于corePoolSize，则创建新线程来执行任务（需要获取全局锁）。 如果运行的线程等于或多余corePoolSize，则将任务加入BlockingQueue 如果无法将任务加入BlockingQueue（队列已满），则创建新的线程来处理任务（需要获取全局锁）。 如果创建新线程将使当前运行的线程超过maxim">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.iforfee.com/images/java/threadpool.jpeg">
-<meta property="og:updated_time" content="2018-03-15T17:16:28.000Z">
+<meta property="og:updated_time" content="2018-03-15T17:27:09.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java中的线程池">
 <meta name="twitter:description" content="实现原理ThreadPoolExecutor执行execute：  如果当前运行的线程少于corePoolSize，则创建新线程来执行任务（需要获取全局锁）。 如果运行的线程等于或多余corePoolSize，则将任务加入BlockingQueue 如果无法将任务加入BlockingQueue（队列已满），则创建新的线程来处理任务（需要获取全局锁）。 如果创建新线程将使当前运行的线程超过maxim">
@@ -331,6 +331,7 @@
 <li>如果无法将任务加入BlockingQueue（队列已满），则创建新的线程来处理任务（需要获取全局锁）。</li>
 <li>如果创建新线程将使当前运行的线程超过maximumPoolSize，任务将被拒绝，并调用RejectedExecutionHandler.rejectedExecution()方法。</li>
 </ol>
+<a id="more"></a>
 <p><img src="/images/java/threadpool.jpeg" alt="image"></p>
 <h2 id="线程池的使用"><a href="#线程池的使用" class="headerlink" title="线程池的使用"></a>线程池的使用</h2><h3 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">public ThreadPoolExecutor(int corePoolSize,</div><div class="line">      int maximumPoolSize,</div><div class="line">      long keepAliveTime,</div><div class="line">      TimeUnit unit,</div><div class="line">      BlockingQueue&lt;Runnable&gt; workQueue,</div><div class="line">      RejectedExecutionHandler handler);</div></pre></td></tr></table></figure>
 <p>workQueue：任务队列(ArrayBlockingQueue、LinkedBlockingQueue、SynchronousQueue、PriorityBlockingQueue)<br>maximumPoolSize: 如果使用了无界的任务队列这个参数就没哟什么效果<br>RejectedExecutionHandler： 饱和策略</p>
