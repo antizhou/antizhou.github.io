@@ -53,7 +53,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="concurrent," />
 
 
 
@@ -69,17 +69,18 @@
 
 
 
-<meta name="description" content="常见叶子发黄的原因 【文竹小枝发黄但不脱离】是因为盆土硬实，通气差根系的活力减退。所以要疏松盆土表面 【文竹叶尖枯黄或脱落】主要是浇水少，盆土偏干。应保持盆土湿润，并经常向植株喷洒水分，摆放在空气湿度大的地方。 【文竹枝梢颜色暗黄或呈黄绿色】是因强光照射或浇水过多所致。应将其移至荫蔽处或是有窗帘的窗边，避免强光直接照射，同时注意浇水不要太多。">
+<meta name="description" content="实现原理ThreadPoolExecutor执行execute：  如果当前运行的线程少于corePoolSize，则创建新线程来执行任务（需要获取全局锁）。 如果运行的线程等于或多余corePoolSize，则将任务加入BlockingQueue 如果无法将任务加入BlockingQueue（队列已满），则创建新的线程来处理任务（需要获取全局锁）。 如果创建新线程将使当前运行的线程超过maxim">
+<meta name="keywords" content="concurrent">
 <meta property="og:type" content="article">
-<meta property="og:title" content="文竹养育">
-<meta property="og:url" content="http://www.iforfee.com/2018/03/13/wenzhu/index.html">
+<meta property="og:title" content="Java中的线程池">
+<meta property="og:url" content="http://www.iforfee.com/2018/03/16/java/Java中的线程池/index.html">
 <meta property="og:site_name" content="joyo&#39;s world">
-<meta property="og:description" content="常见叶子发黄的原因 【文竹小枝发黄但不脱离】是因为盆土硬实，通气差根系的活力减退。所以要疏松盆土表面 【文竹叶尖枯黄或脱落】主要是浇水少，盆土偏干。应保持盆土湿润，并经常向植株喷洒水分，摆放在空气湿度大的地方。 【文竹枝梢颜色暗黄或呈黄绿色】是因强光照射或浇水过多所致。应将其移至荫蔽处或是有窗帘的窗边，避免强光直接照射，同时注意浇水不要太多。">
+<meta property="og:description" content="实现原理ThreadPoolExecutor执行execute：  如果当前运行的线程少于corePoolSize，则创建新线程来执行任务（需要获取全局锁）。 如果运行的线程等于或多余corePoolSize，则将任务加入BlockingQueue 如果无法将任务加入BlockingQueue（队列已满），则创建新的线程来处理任务（需要获取全局锁）。 如果创建新线程将使当前运行的线程超过maxim">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-13T13:47:14.000Z">
+<meta property="og:updated_time" content="2018-03-15T17:05:09.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="文竹养育">
-<meta name="twitter:description" content="常见叶子发黄的原因 【文竹小枝发黄但不脱离】是因为盆土硬实，通气差根系的活力减退。所以要疏松盆土表面 【文竹叶尖枯黄或脱落】主要是浇水少，盆土偏干。应保持盆土湿润，并经常向植株喷洒水分，摆放在空气湿度大的地方。 【文竹枝梢颜色暗黄或呈黄绿色】是因强光照射或浇水过多所致。应将其移至荫蔽处或是有窗帘的窗边，避免强光直接照射，同时注意浇水不要太多。">
+<meta name="twitter:title" content="Java中的线程池">
+<meta name="twitter:description" content="实现原理ThreadPoolExecutor执行execute：  如果当前运行的线程少于corePoolSize，则创建新线程来执行任务（需要获取全局锁）。 如果运行的线程等于或多余corePoolSize，则将任务加入BlockingQueue 如果无法将任务加入BlockingQueue（队列已满），则创建新的线程来处理任务（需要获取全局锁）。 如果创建新线程将使当前运行的线程超过maxim">
 
 
 
@@ -109,13 +110,13 @@
 
 
 
-  <link rel="canonical" href="http://www.iforfee.com/2018/03/13/wenzhu/"/>
+  <link rel="canonical" href="http://www.iforfee.com/2018/03/16/java/Java中的线程池/"/>
 
 
 
 
 
-  <title>文竹养育 | joyo's world</title>
+  <title>Java中的线程池 | joyo's world</title>
   
 
 
@@ -232,7 +233,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.iforfee.com/2018/03/13/wenzhu/">
+    <link itemprop="mainEntityOfPage" href="http://www.iforfee.com/2018/03/16/java/Java中的线程池/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="joyo">
@@ -249,7 +250,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">文竹养育</h1>
+          <h1 class="post-title" itemprop="name headline">Java中的线程池</h1>
         
 
         <div class="post-meta">
@@ -261,8 +262,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-13T21:46:55+08:00">
-                2018-03-13
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-16T00:33:47+08:00">
+                2018-03-16
               </time>
             
 
@@ -271,6 +272,28 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -299,11 +322,26 @@
       
 
       
-        <h2 id="常见叶子发黄的原因"><a href="#常见叶子发黄的原因" class="headerlink" title="常见叶子发黄的原因"></a>常见叶子发黄的原因</h2><ol>
-<li>【文竹小枝发黄但不脱离】是因为盆土硬实，通气差根系的活力减退。所以要疏松盆土表面</li>
-<li>【文竹叶尖枯黄或脱落】主要是浇水少，盆土偏干。应保持盆土湿润，并经常向植株喷洒水分，摆放在空气湿度大的地方。</li>
-<li>【文竹枝梢颜色暗黄或呈黄绿色】是因强光照射或浇水过多所致。应将其移至荫蔽处或是有窗帘的窗边，避免强光直接照射，同时注意浇水不要太多。</li>
+        <h2 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h2><p>ThreadPoolExecutor执行execute：</p>
+<ol>
+<li>如果当前运行的线程少于corePoolSize，则创建新线程来执行任务（需要获取全局锁）。</li>
+<li>如果运行的线程等于或多余corePoolSize，则将任务加入BlockingQueue</li>
+<li>如果无法将任务加入BlockingQueue（队列已满），则创建新的线程来处理任务（需要获取全局锁）。</li>
+<li>如果创建新线程将使当前运行的线程超过maximumPoolSize，任务将被拒绝，并调用RejectedExecutionHandler.rejectedExecution()方法。</li>
 </ol>
+<h2 id="线程池的使用"><a href="#线程池的使用" class="headerlink" title="线程池的使用"></a>线程池的使用</h2><h3 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">public ThreadPoolExecutor(int corePoolSize,</div><div class="line">      int maximumPoolSize,</div><div class="line">      long keepAliveTime,</div><div class="line">      TimeUnit unit,</div><div class="line">      BlockingQueue&lt;Runnable&gt; workQueue,</div><div class="line">      RejectedExecutionHandler handler);</div></pre></td></tr></table></figure>
+<p>workQueue：任务队列(ArrayBlockingQueue、LinkedBlockingQueue、SynchronousQueue、PriorityBlockingQueue)<br>maximumPoolSize: 如果使用了无界的任务队列这个参数就没哟什么效果<br>RejectedExecutionHandler： 饱和策略</p>
+<h3 id="提交任务"><a href="#提交任务" class="headerlink" title="提交任务"></a>提交任务</h3><p>execute： 无返回值<br>sumbit：有返回值</p>
+<h3 id="关闭线程池"><a href="#关闭线程池" class="headerlink" title="关闭线程池"></a>关闭线程池</h3><p>shutdown： 将线程池状态设为SHUTDOWN，遍历线程池中的工作线程，逐个调用线程的interrupt方法来终端，所以无法响应中断的任务可能永远无法终止。<br>shutdownNow： 首先将线程池的状态设为STOP，然后尝试停止所有正在执行或暂停任务的线程，并返回登台执行任务的列表。</p>
+<h3 id="合理配置线程池"><a href="#合理配置线程池" class="headerlink" title="合理配置线程池"></a>合理配置线程池</h3><p>任务特性</p>
+<ol>
+<li>性质：CPU密集型任务、IO密集型任务、混合型任务</li>
+<li>优先级：高中低</li>
+<li>执行时间： 长、短</li>
+<li>依赖性：依赖其他资源，入数据库连接</li>
+</ol>
+<p>CPU密集型任务应配置尽可能小的线程，如配置coreNum + 1个线程的线程池。<br>IO密集型应配置尽可能多的线程，如2coreNum，由于不是一直在执行任务。<br>混合型的任务，如何可以拆分，将其拆分为一个CPU密集型任务和一个IO密集型任务，只要这两个任务执行的时间相差不是太大，那么分解后执行的吞吐量将高于串行执行的吞吐量。如果这两个执行时间相差太大，则没必要进行分解。<br>可以通过Runtime.getRuntime().availableProcessors()来获取当前设备的CPU个数。<br>建议使用有界队列，防止撑爆内存，拖垮系统，影响其他的任务。</p>
+<h3 id="线程池的监控"><a href="#线程池的监控" class="headerlink" title="线程池的监控"></a>线程池的监控</h3><p>通过自定义线程池，重写线程池的beforeExecute、afterExecute和terminated方法，也可以在任务执行前、后和线程池给关闭前执行一些代码来进行监控。</p>
 
       
     </div>
@@ -319,6 +357,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/concurrent/" rel="tag"># concurrent</a>
+          
+        </div>
+      
 
       
       
@@ -328,8 +372,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/03/13/安全驾驶/" rel="next" title="安全驾驶">
-                <i class="fa fa-chevron-left"></i> 安全驾驶
+              <a href="/2018/03/15/java/Java并发容器和框架/" rel="next" title="Java并发容器和框架">
+                <i class="fa fa-chevron-left"></i> Java并发容器和框架
               </a>
             
           </div>
@@ -337,10 +381,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/03/13/java/Java并发编程基础/" rel="prev" title="Java并发编程基础">
-                Java并发编程基础 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -487,7 +527,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#常见叶子发黄的原因"><span class="nav-number">1.</span> <span class="nav-text">常见叶子发黄的原因</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#实现原理"><span class="nav-number">1.</span> <span class="nav-text">实现原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程池的使用"><span class="nav-number">2.</span> <span class="nav-text">线程池的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建"><span class="nav-number">2.1.</span> <span class="nav-text">创建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#提交任务"><span class="nav-number">2.2.</span> <span class="nav-text">提交任务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关闭线程池"><span class="nav-number">2.3.</span> <span class="nav-text">关闭线程池</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#合理配置线程池"><span class="nav-number">2.4.</span> <span class="nav-text">合理配置线程池</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程池的监控"><span class="nav-number">2.5.</span> <span class="nav-text">线程池的监控</span></a></li></ol></li></ol></div>
             
 
           </div>
