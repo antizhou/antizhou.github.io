@@ -332,10 +332,11 @@
 <li>如果无法将任务加入BlockingQueue（队列已满），则创建新的线程来处理任务（需要获取全局锁）。</li>
 <li>如果创建新线程将使当前运行的线程超过maximumPoolSize，任务将被拒绝，并调用RejectedExecutionHandler.rejectedExecution()方法。</li>
 </ol>
+<p><img src="/images/java/threadpool.png" alt="image"></p>
 <h2 id="线程池的使用"><a href="#线程池的使用" class="headerlink" title="线程池的使用"></a>线程池的使用</h2><h3 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">public ThreadPoolExecutor(int corePoolSize,</div><div class="line">      int maximumPoolSize,</div><div class="line">      long keepAliveTime,</div><div class="line">      TimeUnit unit,</div><div class="line">      BlockingQueue&lt;Runnable&gt; workQueue,</div><div class="line">      RejectedExecutionHandler handler);</div></pre></td></tr></table></figure>
 <p>workQueue：任务队列(ArrayBlockingQueue、LinkedBlockingQueue、SynchronousQueue、PriorityBlockingQueue)<br>maximumPoolSize: 如果使用了无界的任务队列这个参数就没哟什么效果<br>RejectedExecutionHandler： 饱和策略</p>
 <h3 id="提交任务"><a href="#提交任务" class="headerlink" title="提交任务"></a>提交任务</h3><p>execute： 无返回值<br>sumbit：有返回值</p>
-<h3 id="关闭线程池"><a href="#关闭线程池" class="headerlink" title="关闭线程池"></a>关闭线程池</h3><p>shutdown： 将线程池状态设为SHUTDOWN，遍历线程池中的工作线程，逐个调用线程的interrupt方法来终端，所以无法响应中断的任务可能永远无法终止。<br>shutdownNow： 首先将线程池的状态设为STOP，然后尝试停止所有正在执行或暂停任务的线程，并返回登台执行任务的列表。</p>
+<h3 id="关闭线程池-shutdown、shutdownNow"><a href="#关闭线程池-shutdown、shutdownNow" class="headerlink" title="关闭线程池(shutdown、shutdownNow)"></a>关闭线程池(shutdown、shutdownNow)</h3><p>原理：遍历线程池中的工作线程，逐个调用线程的interrupt方法来终端，所以无法响应中断的任务可能永远无法终止。<br>区别：shutdown将线程池状态设为SHUTDOWN，然后中断所有没在执行的任务；shutdownNow首先将线程池的状态设为STOP，然后尝试停止所有正在执行或暂停任务的线程，并返回等待执行任务的列表。</p>
 <h3 id="合理配置线程池"><a href="#合理配置线程池" class="headerlink" title="合理配置线程池"></a>合理配置线程池</h3><p>任务特性</p>
 <ol>
 <li>性质：CPU密集型任务、IO密集型任务、混合型任务</li>
