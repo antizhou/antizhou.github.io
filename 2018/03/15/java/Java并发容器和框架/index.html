@@ -69,18 +69,18 @@
 
 
 
-<meta name="description" content="ConcurrentHashMapConcurrentLinkedQueue阻塞队列Fork/Join框架">
+<meta name="description" content="ConcurrentHashMapConcurrentLinkedQueue阻塞队列 阻塞队列是一个支持两个附加操作的队列。这两个附加的操作支持阻塞地插入和移除方法。  支持阻塞的插入方法：意思是当队列满时，队列会阻塞插入元素的线程，直到队列不满。 支持阻塞地移除方法：意思是当队列空时，获取元素的线程会等待队列变空。   12345678910111213141516171819202122232">
 <meta name="keywords" content="concurrent">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java并发容器和框架">
 <meta property="og:url" content="http://www.iforfee.com/2018/03/15/java/Java并发容器和框架/index.html">
 <meta property="og:site_name" content="joyo&#39;s world">
-<meta property="og:description" content="ConcurrentHashMapConcurrentLinkedQueue阻塞队列Fork/Join框架">
+<meta property="og:description" content="ConcurrentHashMapConcurrentLinkedQueue阻塞队列 阻塞队列是一个支持两个附加操作的队列。这两个附加的操作支持阻塞地插入和移除方法。  支持阻塞的插入方法：意思是当队列满时，队列会阻塞插入元素的线程，直到队列不满。 支持阻塞地移除方法：意思是当队列空时，获取元素的线程会等待队列变空。   12345678910111213141516171819202122232">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-15T16:06:36.000Z">
+<meta property="og:updated_time" content="2018-03-17T06:56:24.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java并发容器和框架">
-<meta name="twitter:description" content="ConcurrentHashMapConcurrentLinkedQueue阻塞队列Fork/Join框架">
+<meta name="twitter:description" content="ConcurrentHashMapConcurrentLinkedQueue阻塞队列 阻塞队列是一个支持两个附加操作的队列。这两个附加的操作支持阻塞地插入和移除方法。  支持阻塞的插入方法：意思是当队列满时，队列会阻塞插入元素的线程，直到队列不满。 支持阻塞地移除方法：意思是当队列空时，获取元素的线程会等待队列变空。   12345678910111213141516171819202122232">
 
 
 
@@ -322,7 +322,49 @@
       
 
       
-        <h2 id="ConcurrentHashMap"><a href="#ConcurrentHashMap" class="headerlink" title="ConcurrentHashMap"></a>ConcurrentHashMap</h2><h2 id="ConcurrentLinkedQueue"><a href="#ConcurrentLinkedQueue" class="headerlink" title="ConcurrentLinkedQueue"></a>ConcurrentLinkedQueue</h2><h2 id="阻塞队列"><a href="#阻塞队列" class="headerlink" title="阻塞队列"></a>阻塞队列</h2><h2 id="Fork-Join框架"><a href="#Fork-Join框架" class="headerlink" title="Fork/Join框架"></a>Fork/Join框架</h2>
+        <h2 id="ConcurrentHashMap"><a href="#ConcurrentHashMap" class="headerlink" title="ConcurrentHashMap"></a>ConcurrentHashMap</h2><h2 id="ConcurrentLinkedQueue"><a href="#ConcurrentLinkedQueue" class="headerlink" title="ConcurrentLinkedQueue"></a>ConcurrentLinkedQueue</h2><h2 id="阻塞队列"><a href="#阻塞队列" class="headerlink" title="阻塞队列"></a>阻塞队列</h2><blockquote>
+<p>阻塞队列是一个支持两个附加操作的队列。这两个附加的操作支持阻塞地插入和移除方法。</p>
+<ol>
+<li>支持阻塞的插入方法：意思是当队列满时，队列会阻塞插入元素的线程，直到队列不满。</li>
+<li>支持阻塞地移除方法：意思是当队列空时，获取元素的线程会等待队列变空。</li>
+</ol>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">public interface BlockingQueue&lt;E&gt; extends Queue&lt;E&gt; &#123;</div><div class="line">    boolean add(E e);</div><div class="line"></div><div class="line">    boolean offer(E e);</div><div class="line"></div><div class="line">    void put(E e) throws InterruptedException;</div><div class="line"></div><div class="line">    boolean offer(E e, long timeout, TimeUnit unit)</div><div class="line">        throws InterruptedException;</div><div class="line"></div><div class="line">    E take() throws InterruptedException;</div><div class="line"></div><div class="line">    E poll(long timeout, TimeUnit unit)</div><div class="line">        throws InterruptedException;</div><div class="line"></div><div class="line">    int remainingCapacity();</div><div class="line"></div><div class="line">    boolean remove(Object o);</div><div class="line"></div><div class="line">    public boolean contains(Object o);</div><div class="line"></div><div class="line">    int drainTo(Collection&lt;? super E&gt; c);</div><div class="line"></div><div class="line">    int drainTo(Collection&lt;? super E&gt; c, int maxElements);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>方法/处理方式</th>
+<th>抛出异常</th>
+<th>返回特殊值</th>
+<th>一直阻塞</th>
+<th>超时退出</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>插入</td>
+<td>add(e)</td>
+<td>offer(e)</td>
+<td>put(e)</td>
+<td>offer(e, time, unit)</td>
+</tr>
+<tr>
+<td>移除</td>
+<td>remove()</td>
+<td>poll ()</td>
+<td>take()</td>
+<td>poll(time, unit)</td>
+</tr>
+<tr>
+<td>检查</td>
+<td>element()</td>
+<td>peek()</td>
+<td>不可用</td>
+<td>不可用</td>
+</tr>
+</tbody>
+</table>
+<h3 id="DelayedWorkQueue"><a href="#DelayedWorkQueue" class="headerlink" title="DelayedWorkQueue"></a>DelayedWorkQueue</h3><h2 id="Fork-Join框架"><a href="#Fork-Join框架" class="headerlink" title="Fork/Join框架"></a>Fork/Join框架</h2>
       
     </div>
     
@@ -511,7 +553,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ConcurrentHashMap"><span class="nav-number">1.</span> <span class="nav-text">ConcurrentHashMap</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ConcurrentLinkedQueue"><span class="nav-number">2.</span> <span class="nav-text">ConcurrentLinkedQueue</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#阻塞队列"><span class="nav-number">3.</span> <span class="nav-text">阻塞队列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Fork-Join框架"><span class="nav-number">4.</span> <span class="nav-text">Fork/Join框架</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ConcurrentHashMap"><span class="nav-number">1.</span> <span class="nav-text">ConcurrentHashMap</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ConcurrentLinkedQueue"><span class="nav-number">2.</span> <span class="nav-text">ConcurrentLinkedQueue</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#阻塞队列"><span class="nav-number">3.</span> <span class="nav-text">阻塞队列</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DelayedWorkQueue"><span class="nav-number">3.1.</span> <span class="nav-text">DelayedWorkQueue</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Fork-Join框架"><span class="nav-number">4.</span> <span class="nav-text">Fork/Join框架</span></a></li></ol></div>
             
 
           </div>

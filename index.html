@@ -324,26 +324,14 @@
 
       
         
-          
-            <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><h3 id="Executor两级调用模型"><a href="#Executor两级调用模型" class="headerlink" title="Executor两级调用模型"></a>Executor两级调用模型</h3><p><img src="/images/java/thread-pool-model.png" alt="image"></p>
-<h3 id="Executor的结构和成员"><a href="#Executor的结构和成员" class="headerlink" title="Executor的结构和成员"></a>Executor的结构和成员</h3><p><img src="/images/java/memberofexecutor.png" alt="image"></p>
-<h3 id="Executor框架的使用"><a href="#Executor框架的使用" class="headerlink" title="Executor框架的使用"></a>Executor框架的使用</h3><p><img src="/images/java/useofexecutor.png" alt="image"></p>
-<h2 id="ThreadPoolExecutor"><a href="#ThreadPoolExecutor" class="headerlink" title="ThreadPoolExecutor"></a>ThreadPoolExecutor</h2><h3 id="FixedThreadPool"><a href="#FixedThreadPool" class="headerlink" title="FixedThreadPool"></a>FixedThreadPool</h3><p>FixedThreadPool适用于为了满足管理资源的需求，而需要限制当前线程数量的应用场景，它适用于负载比较重的服务器。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">public static ExecutorService newFixedThreadPool(int nThreads) &#123;</div><div class="line">    return new ThreadPoolExecutor(nThreads, nThreads,</div><div class="line">                                  0L, TimeUnit.MILLISECONDS,</div><div class="line">                                  new LinkedBlockingQueue&lt;Runnable&gt;());</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>其corePoolSize和maximumPoolSize都被设为nThreads的值。当线程池中的线程数大于corePoolSize时，keepAliveTime为多余的空闲线程等待新任务的最长时间，超过这个时间后多余的线程将被终止。具体在FixedThreadPool的执行过程如下：</p>
-<p>如果当前运行的线程数少于corePoolSize，就创建新的线程执行任务<br>在线程池如果当前运行的线程数等于corePoolSize时，将任务加入到LinkedBlockingQueue等待执行<br>线程执行完1中的任务后，会在循环中反复从LinkedBlockingQueue获取任务来执行<br>由于LinkedBlockingQueue使用的无界队列，所以线程池中线程数不会超过corePoolSize，因此不断加入线程池中的任务将被执行，因为不会马上被执行的任务都加入到LinkedBlockingQueue等待了。</p>
-<h3 id="SingleThreadExecutor"><a href="#SingleThreadExecutor" class="headerlink" title="SingleThreadExecutor"></a>SingleThreadExecutor</h3><p>SingleThreadExecutor适用于需要保证顺序地执行各个任务，并且在任意时间点不会有多个线程在活动的场景。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">public static ExecutorService newSingleThreadExecutor() &#123;</div><div class="line">    return new FinalizableDelegatedExecutorService</div><div class="line">        (new ThreadPoolExecutor(1, 1,</div><div class="line">                                0L, TimeUnit.MILLISECONDS,</div><div class="line">                                new LinkedBlockingQueue&lt;Runnable&gt;()));</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>corePoolSize和maximumPoolSize都为1，且工作队列为无界队列，所以，当启动了一个线程后，以后所有的工作直接加入工作队列中。</p>
-<h3 id="CachedThreadPool"><a href="#CachedThreadPool" class="headerlink" title="CachedThreadPool"></a>CachedThreadPool</h3><p>CachedThreadPool是大小无界的线程池，适用于执行很多的短期异步任务的小程序，或者负载比较轻的服务器;是一个根据需要创建线程的线程池</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">public static ExecutorService newCachedThreadPool() &#123;</div><div class="line">    return new ThreadPoolExecutor(0, Integer.MAX_VALUE,</div><div class="line">                                  60L, TimeUnit.SECONDS,</div><div class="line">                                  new SynchronousQueue&lt;Runnable&gt;());</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>CachedThreadPool的corePoolSize为0，maximumPoolSize为Integer.MAX_VALUE，keepAliveTime为60L，意味着多余的空闲线程等待新任务的执行时间为60秒。<br>CachedThreadPool使用没有容量的SynchronousQueue作为线程池的工作队列（SynchronousQueue是一个没有容量的阻塞队列，<br>每个插入操作必须等待另一个线程的对应移除操作），但是CachedThreadPool的maximumPool是无界的。<br>这就意味着如果线程的提交速度高于线程的处理速度，CachedThreadPool会不断创建线程，极端情况是因为创建线程过多耗尽CPU和内存资源。</p>
-<h2 id="ScheduledThreadPoolExecutor"><a href="#ScheduledThreadPoolExecutor" class="headerlink" title="ScheduledThreadPoolExecutor"></a>ScheduledThreadPoolExecutor</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">public ScheduledThreadPoolExecutor(int corePoolSize) &#123;</div><div class="line">    super(corePoolSize, Integer.MAX_VALUE, 0, NANOSECONDS,</div><div class="line">          new DelayedWorkQueue());</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>使用的DelayedWorkQueue是一个无界队列，所以maximumPoolSize参数无效。<br>创建一个支持定时及周期性的任务执行的线程池，多数情况下可用来替代Timer类。ScheduledThreadPoolExecutor适用于需要在多个后台线程执行周期任务，同时为了满足资源管理需求需要限制后台线程数量的应用场景。</p>
-<h3 id="ScheduledThreadPoolExecutor-1"><a href="#ScheduledThreadPoolExecutor-1" class="headerlink" title="ScheduledThreadPoolExecutor"></a>ScheduledThreadPoolExecutor</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">public static ScheduledExecutorService newScheduledThreadPool(int corePoolSize)</div><div class="line">public static ScheduledExecutorService newScheduledThreadPool(int corePoolSize,ThreadFactory factory)</div></pre></td></tr></table></figure>
-<h3 id="SingleThreadScheduledExecutor"><a href="#SingleThreadScheduledExecutor" class="headerlink" title="SingleThreadScheduledExecutor"></a>SingleThreadScheduledExecutor</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">public static ScheduledExecutorService newSingleThreadScheduledExecutor()</div><div class="line">public static ScheduledExecutorService newSingleThreadScheduledExecutor(ThreadFactory threadFactory)</div></pre></td></tr></table></figure>
-<h2 id="FutureTask"><a href="#FutureTask" class="headerlink" title="FutureTask"></a>FutureTask</h2>
-          
+          <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><h3 id="Executor两级调用模型"><a href="#Executor两级调用模型" class="headerlink" title="Executor两级调用模型"></a>Executor两级调用模型</h3><p><img src="/images/java/thread-pool-model.png" alt="image"></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/16/java/Executor框架/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -635,7 +623,49 @@
       
         
           
-            <h2 id="ConcurrentHashMap"><a href="#ConcurrentHashMap" class="headerlink" title="ConcurrentHashMap"></a>ConcurrentHashMap</h2><h2 id="ConcurrentLinkedQueue"><a href="#ConcurrentLinkedQueue" class="headerlink" title="ConcurrentLinkedQueue"></a>ConcurrentLinkedQueue</h2><h2 id="阻塞队列"><a href="#阻塞队列" class="headerlink" title="阻塞队列"></a>阻塞队列</h2><h2 id="Fork-Join框架"><a href="#Fork-Join框架" class="headerlink" title="Fork/Join框架"></a>Fork/Join框架</h2>
+            <h2 id="ConcurrentHashMap"><a href="#ConcurrentHashMap" class="headerlink" title="ConcurrentHashMap"></a>ConcurrentHashMap</h2><h2 id="ConcurrentLinkedQueue"><a href="#ConcurrentLinkedQueue" class="headerlink" title="ConcurrentLinkedQueue"></a>ConcurrentLinkedQueue</h2><h2 id="阻塞队列"><a href="#阻塞队列" class="headerlink" title="阻塞队列"></a>阻塞队列</h2><blockquote>
+<p>阻塞队列是一个支持两个附加操作的队列。这两个附加的操作支持阻塞地插入和移除方法。</p>
+<ol>
+<li>支持阻塞的插入方法：意思是当队列满时，队列会阻塞插入元素的线程，直到队列不满。</li>
+<li>支持阻塞地移除方法：意思是当队列空时，获取元素的线程会等待队列变空。</li>
+</ol>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">public interface BlockingQueue&lt;E&gt; extends Queue&lt;E&gt; &#123;</div><div class="line">    boolean add(E e);</div><div class="line"></div><div class="line">    boolean offer(E e);</div><div class="line"></div><div class="line">    void put(E e) throws InterruptedException;</div><div class="line"></div><div class="line">    boolean offer(E e, long timeout, TimeUnit unit)</div><div class="line">        throws InterruptedException;</div><div class="line"></div><div class="line">    E take() throws InterruptedException;</div><div class="line"></div><div class="line">    E poll(long timeout, TimeUnit unit)</div><div class="line">        throws InterruptedException;</div><div class="line"></div><div class="line">    int remainingCapacity();</div><div class="line"></div><div class="line">    boolean remove(Object o);</div><div class="line"></div><div class="line">    public boolean contains(Object o);</div><div class="line"></div><div class="line">    int drainTo(Collection&lt;? super E&gt; c);</div><div class="line"></div><div class="line">    int drainTo(Collection&lt;? super E&gt; c, int maxElements);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>方法/处理方式</th>
+<th>抛出异常</th>
+<th>返回特殊值</th>
+<th>一直阻塞</th>
+<th>超时退出</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>插入</td>
+<td>add(e)</td>
+<td>offer(e)</td>
+<td>put(e)</td>
+<td>offer(e, time, unit)</td>
+</tr>
+<tr>
+<td>移除</td>
+<td>remove()</td>
+<td>poll ()</td>
+<td>take()</td>
+<td>poll(time, unit)</td>
+</tr>
+<tr>
+<td>检查</td>
+<td>element()</td>
+<td>peek()</td>
+<td>不可用</td>
+<td>不可用</td>
+</tr>
+</tbody>
+</table>
+<h3 id="DelayedWorkQueue"><a href="#DelayedWorkQueue" class="headerlink" title="DelayedWorkQueue"></a>DelayedWorkQueue</h3><h2 id="Fork-Join框架"><a href="#Fork-Join框架" class="headerlink" title="Fork/Join框架"></a>Fork/Join框架</h2>
           
         
       
