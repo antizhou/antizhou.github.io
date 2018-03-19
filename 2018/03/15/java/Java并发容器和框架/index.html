@@ -69,18 +69,18 @@
 
 
 
-<meta name="description" content="ConcurrentHashMapConcurrentLinkedQueue阻塞队列 阻塞队列是一个支持两个附加操作的队列。这两个附加的操作支持阻塞地插入和移除方法。  支持阻塞的插入方法：意思是当队列满时，队列会阻塞插入元素的线程，直到队列不满。 支持阻塞地移除方法：意思是当队列空时，获取元素的线程会等待队列变空。   12345678910111213141516171819202122232">
+<meta name="description" content="主要介绍ConcurrentHashMap、ConcurrentLinkedQueue、阻塞队列、Fork/Join框架">
 <meta name="keywords" content="concurrent">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java并发容器和框架">
 <meta property="og:url" content="http://www.iforfee.com/2018/03/15/java/Java并发容器和框架/index.html">
 <meta property="og:site_name" content="joyo&#39;s world">
-<meta property="og:description" content="ConcurrentHashMapConcurrentLinkedQueue阻塞队列 阻塞队列是一个支持两个附加操作的队列。这两个附加的操作支持阻塞地插入和移除方法。  支持阻塞的插入方法：意思是当队列满时，队列会阻塞插入元素的线程，直到队列不满。 支持阻塞地移除方法：意思是当队列空时，获取元素的线程会等待队列变空。   12345678910111213141516171819202122232">
+<meta property="og:description" content="主要介绍ConcurrentHashMap、ConcurrentLinkedQueue、阻塞队列、Fork/Join框架">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-17T06:56:24.000Z">
+<meta property="og:updated_time" content="2018-03-18T08:54:05.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java并发容器和框架">
-<meta name="twitter:description" content="ConcurrentHashMapConcurrentLinkedQueue阻塞队列 阻塞队列是一个支持两个附加操作的队列。这两个附加的操作支持阻塞地插入和移除方法。  支持阻塞的插入方法：意思是当队列满时，队列会阻塞插入元素的线程，直到队列不满。 支持阻塞地移除方法：意思是当队列空时，获取元素的线程会等待队列变空。   12345678910111213141516171819202122232">
+<meta name="twitter:description" content="主要介绍ConcurrentHashMap、ConcurrentLinkedQueue、阻塞队列、Fork/Join框架">
 
 
 
@@ -322,7 +322,8 @@
       
 
       
-        <h2 id="ConcurrentHashMap"><a href="#ConcurrentHashMap" class="headerlink" title="ConcurrentHashMap"></a>ConcurrentHashMap</h2><h2 id="ConcurrentLinkedQueue"><a href="#ConcurrentLinkedQueue" class="headerlink" title="ConcurrentLinkedQueue"></a>ConcurrentLinkedQueue</h2><h2 id="阻塞队列"><a href="#阻塞队列" class="headerlink" title="阻塞队列"></a>阻塞队列</h2><blockquote>
+        <p>主要介绍ConcurrentHashMap、ConcurrentLinkedQueue、阻塞队列、Fork/Join框架<br><a id="more"></a></p>
+<h2 id="ConcurrentHashMap"><a href="#ConcurrentHashMap" class="headerlink" title="ConcurrentHashMap"></a>ConcurrentHashMap</h2><h2 id="ConcurrentLinkedQueue"><a href="#ConcurrentLinkedQueue" class="headerlink" title="ConcurrentLinkedQueue"></a>ConcurrentLinkedQueue</h2><h2 id="阻塞队列"><a href="#阻塞队列" class="headerlink" title="阻塞队列"></a>阻塞队列</h2><blockquote>
 <p>阻塞队列是一个支持两个附加操作的队列。这两个附加的操作支持阻塞地插入和移除方法。</p>
 <ol>
 <li>支持阻塞的插入方法：意思是当队列满时，队列会阻塞插入元素的线程，直到队列不满。</li>
