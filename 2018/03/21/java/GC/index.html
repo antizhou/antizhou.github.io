@@ -53,7 +53,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="gc," />
 
 
 
@@ -70,6 +70,7 @@
 
 
 <meta name="description" content="Minor GC触发条件：当Eden区满时，触发Minor GC。 Full GC触发条件： （1）调用System.gc时，系统建议执行Full GC，但是不必然执行 （2）老年代空间不足 （3）方法区空间不足 （4）通过Minor GC后进入老年代的平均大小大于老年代的可用内存 （5）由Eden区、From Space区向To Space区复制时，对象大小大于To Space可用内存，则把该对">
+<meta name="keywords" content="gc">
 <meta property="og:type" content="article">
 <meta property="og:title" content="GC">
 <meta property="og:url" content="http://www.iforfee.com/2018/03/21/java/GC/index.html">
@@ -90,7 +91,7 @@
 <meta property="og:image" content="http://www.iforfee.com/images/typora/image-201803211501274.png">
 <meta property="og:image" content="http://www.iforfee.com/images/typora/image-201803211501453.png">
 <meta property="og:image" content="http://www.iforfee.com/images/typora/image-201803211502009.png">
-<meta property="og:updated_time" content="2018-03-21T09:54:01.000Z">
+<meta property="og:updated_time" content="2018-03-21T09:56:21.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="GC">
 <meta name="twitter:description" content="Minor GC触发条件：当Eden区满时，触发Minor GC。 Full GC触发条件： （1）调用System.gc时，系统建议执行Full GC，但是不必然执行 （2）老年代空间不足 （3）方法区空间不足 （4）通过Minor GC后进入老年代的平均大小大于老年代的可用内存 （5）由Eden区、From Space区向To Space区复制时，对象大小大于To Space可用内存，则把该对">
@@ -287,6 +288,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -320,7 +343,7 @@
 <p>（2）老年代空间不足</p>
 <p>（3）方法区空间不足</p>
 <p>（4）通过Minor GC后进入老年代的平均大小大于老年代的可用内存</p>
-<p>（5）由Eden区、From Space区向To Space区复制时，对象大小大于To Space可用内存，则把该对象转存到老年代，且老年代的可用内存小于该对象大小</p>
+<p>（5）由Eden区、From Space区向To Space区复制时，对象大小大于To Space可用内存，则把该对象转存到老年代，且老年代的可用内存小于该对象大小<br><a id="more"></a></p>
 <h4 id="Jvm怎么判断对象可以回收了"><a href="#Jvm怎么判断对象可以回收了" class="headerlink" title="Jvm怎么判断对象可以回收了"></a>Jvm怎么判断对象可以回收了</h4><ol>
 <li>对象没有引用</li>
 <li>作用域发生未捕获异常</li>
@@ -494,6 +517,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/gc/" rel="tag"># gc</a>
+          
+        </div>
+      
 
       
       
@@ -609,7 +638,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
