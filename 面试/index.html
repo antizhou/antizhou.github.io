@@ -86,7 +86,7 @@
 <meta property="og:image" content="http://www.iforfee.com/images/typora/image-201803192318116.png">
 <meta property="og:image" content="http://www.iforfee.com/Users/joyo/Documents/面试/image-201803282306260.png">
 <meta property="og:image" content="http://www.iforfee.com/images/typora/image-201803202344054.png">
-<meta property="og:updated_time" content="2018-04-08T04:38:42.000Z">
+<meta property="og:updated_time" content="2018-04-08T05:25:27.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试">
 <meta name="twitter:description" content="跳槽时时刻刻都在发生，但是我建议大家跳槽之前，先想清楚为什么要跳槽。切不可跟风，看到同事一个个都走了，自己也盲目的面试起来（期间也没有准备充分），到底是因为技术原因（影响自己的发展，偏移自己规划的轨迹），还是钱给少了，不受重视。 准备不充分的面试，完全是浪费时间，更是对自己的不负责（如果title很高，当我没说）。 今天给大家分享下chenssy在这次跳槽中整理的Java面试大纲，其中大部分都是面">
@@ -656,11 +656,13 @@
 <h2 id="Netty"><a href="#Netty" class="headerlink" title="Netty"></a>Netty</h2><p>1、BIO、NIO和AIO<br>2、Netty 的各大组件<br>3、Netty的线程模型<br>4、TCP 粘包/拆包的原因及解决方法<br>5、了解哪几种序列化协议？包括使用场景和如何去选择<br>6、Netty的零拷贝实现<br>7、Netty的高性能表现在哪些方面</p>
 <h2 id="分布式相关"><a href="#分布式相关" class="headerlink" title="分布式相关"></a>分布式相关</h2><p>1、Dubbo的底层实现原理和机制<br>2、描述一个服务从发布到被消费的详细过程<br>3、分布式系统怎么做服务治理<br>4、接口的幂等性的概念<br>5、消息中间件如何解决消息丢失问题<br>6、Dubbo的服务请求失败怎么处理<br>7、重连机制会不会造成错误<br>8、对分布式事务的理解<br>9、如何实现负载均衡，有哪些算法可以实现？<br>10、Zookeeper的用途，选举的原理是什么？<br>11、数据的垂直拆分水平拆分。<br>12、zookeeper原理和适用场景<br>13、zookeeper watch机制<br>14、redis/zk节点宕机如何处理<br>15、分布式集群下如何做到唯一序列号<br>16、如何做一个分布式锁<br>17、用过哪些MQ，怎么用的，和其他mq比较有什么优缺点，MQ的连接是线程安全的吗<br>18、MQ系统的数据如何保证不丢失<br>19、列举出你能想到的数据库分库分表策略；分库分表后，如何解决全表查询的问题<br>20、zookeeper的选举策略<br>21、全局ID</p>
 <h2 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h2><h3 id="mysql分页有什么优化"><a href="#mysql分页有什么优化" class="headerlink" title="mysql分页有什么优化"></a>mysql分页有什么优化</h3><p><a href="https://blog.csdn.net/bingduanlbd/article/details/51767850" target="_blank" rel="noopener">https://blog.csdn.net/bingduanlbd/article/details/51767850</a></p>
+<p><a href="https://my.oschina.net/No5stranger/blog/158202" target="_blank" rel="noopener">https://my.oschina.net/No5stranger/blog/158202</a></p>
 <h3 id="悲观锁、乐观锁"><a href="#悲观锁、乐观锁" class="headerlink" title="悲观锁、乐观锁"></a>悲观锁、乐观锁</h3><p>悲观锁：假定会发生并发冲突，屏蔽一切可能违反数据完整性的操作。</p>
 <p>乐观锁：假设不会发生并发冲突，只在提交操作时检查是否违反数据完整性。 乐观锁不能解决脏读的问题。</p>
 <p><a href="https://www.jianshu.com/p/f5ff017db62a" target="_blank" rel="noopener">MySQL 乐观锁与悲观锁</a></p>
 <p><a href="http://www.hollischuang.com/archives/934" target="_blank" rel="noopener">深入理解乐观锁与悲观锁</a></p>
-<h3 id="组合索引，最左原则"><a href="#组合索引，最左原则" class="headerlink" title="组合索引，最左原则"></a>组合索引，最左原则</h3><h3 id="mysql-的表锁、行锁"><a href="#mysql-的表锁、行锁" class="headerlink" title="mysql 的表锁、行锁"></a>mysql 的表锁、行锁</h3><h3 id="mysql-性能优化"><a href="#mysql-性能优化" class="headerlink" title="mysql 性能优化"></a>mysql 性能优化</h3><p>1、建索引<br>2、查询优化<br>3、数据类型（比如用ENUM代替VARCHAR等）</p>
+<h3 id="组合索引，最左原则"><a href="#组合索引，最左原则" class="headerlink" title="组合索引，最左原则"></a>组合索引，最左原则</h3><p><a href="/mysql/mysql索引及查询优化">mysql索引及查询优化</a></p>
+<h3 id="mysql-的表锁、行锁"><a href="#mysql-的表锁、行锁" class="headerlink" title="mysql 的表锁、行锁"></a>mysql 的表锁、行锁</h3><h3 id="mysql-性能优化"><a href="#mysql-性能优化" class="headerlink" title="mysql 性能优化"></a>mysql 性能优化</h3><p>1、建索引<br>2、查询优化<br>3、数据类型（比如用ENUM代替VARCHAR等）</p>
 <p><a href="/mysql/mysql索引及查询优化">mysql索引及查询优化</a></p>
 <h3 id="mysql的索引分类：B-，hash；什么情况用什么索引"><a href="#mysql的索引分类：B-，hash；什么情况用什么索引" class="headerlink" title="mysql的索引分类：B+，hash；什么情况用什么索引"></a>mysql的索引分类：B+，hash；什么情况用什么索引</h3><h3 id="事务的特性和隔离级别"><a href="#事务的特性和隔离级别" class="headerlink" title="事务的特性和隔离级别"></a>事务的特性和隔离级别</h3><ol>
 <li>原子性</li>
@@ -812,7 +814,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
