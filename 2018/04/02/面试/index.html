@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="跳槽时时刻刻都在发生，但是我建议大家跳槽之前，先想清楚为什么要跳槽。切不可跟风，看到同事一个个都走了，自己也盲目的面试起来（期间也没有准备充分），到底是因为技术原因（影响自己的发展，偏移自己规划的轨迹），还是钱给少了，不受重视。 准备不充分的面试，完全是浪费时间，更是对自己的不负责（如果title很高，当我没说）。 今天给大家分享下chenssy在这次跳槽中整理的Java面试大纲，其中大部分都是面">
+<meta property="og:type" content="article">
+<meta property="og:title" content="面试">
+<meta property="og:url" content="http://www.iforfee.com/2018/04/02/面试/index.html">
+<meta property="og:site_name" content="joyo&#39;s world">
+<meta property="og:description" content="跳槽时时刻刻都在发生，但是我建议大家跳槽之前，先想清楚为什么要跳槽。切不可跟风，看到同事一个个都走了，自己也盲目的面试起来（期间也没有准备充分），到底是因为技术原因（影响自己的发展，偏移自己规划的轨迹），还是钱给少了，不受重视。 准备不充分的面试，完全是浪费时间，更是对自己的不负责（如果title很高，当我没说）。 今天给大家分享下chenssy在这次跳槽中整理的Java面试大纲，其中大部分都是面">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://www.iforfee.com/var/folders/wh/ldm5dy112zlbhpx5g7b8r2yh0000gn/T/abnerworks.Typora/image-201803192105336.png">
+<meta property="og:image" content="http://www.iforfee.com/var/folders/wh/ldm5dy112zlbhpx5g7b8r2yh0000gn/T/abnerworks.Typora/image-201803192116377.png">
+<meta property="og:image" content="http://www.iforfee.com/var/folders/wh/ldm5dy112zlbhpx5g7b8r2yh0000gn/T/abnerworks.Typora/image-201803192108265.png">
+<meta property="og:image" content="http://www.iforfee.com/var/folders/wh/ldm5dy112zlbhpx5g7b8r2yh0000gn/T/abnerworks.Typora/image-201803192108365.png">
+<meta property="og:image" content="http://www.iforfee.com/var/folders/wh/ldm5dy112zlbhpx5g7b8r2yh0000gn/T/abnerworks.Typora/image-201803192108442.png">
+<meta property="og:image" content="http://www.iforfee.com/var/folders/wh/ldm5dy112zlbhpx5g7b8r2yh0000gn/T/abnerworks.Typora/image-201803192109284.png">
+<meta property="og:image" content="http://www.iforfee.com/var/folders/wh/ldm5dy112zlbhpx5g7b8r2yh0000gn/T/abnerworks.Typora/image-201803192206453.png">
+<meta property="og:image" content="http://www.iforfee.com/var/folders/wh/ldm5dy112zlbhpx5g7b8r2yh0000gn/T/abnerworks.Typora/image-201803192318116.png">
+<meta property="og:image" content="http://www.iforfee.com/Users/joyo/Documents/面试/image-201803282306260.png">
+<meta property="og:image" content="http://www.iforfee.com/var/folders/wh/ldm5dy112zlbhpx5g7b8r2yh0000gn/T/abnerworks.Typora/image-201803202344054.png">
+<meta property="og:updated_time" content="2018-04-02T13:29:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="面试">
+<meta name="twitter:description" content="跳槽时时刻刻都在发生，但是我建议大家跳槽之前，先想清楚为什么要跳槽。切不可跟风，看到同事一个个都走了，自己也盲目的面试起来（期间也没有准备充分），到底是因为技术原因（影响自己的发展，偏移自己规划的轨迹），还是钱给少了，不受重视。 准备不充分的面试，完全是浪费时间，更是对自己的不负责（如果title很高，当我没说）。 今天给大家分享下chenssy在这次跳槽中整理的Java面试大纲，其中大部分都是面">
+<meta name="twitter:image" content="http://www.iforfee.com/var/folders/wh/ldm5dy112zlbhpx5g7b8r2yh0000gn/T/abnerworks.Typora/image-201803192105336.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.iforfee.com/2018/04/02/面试/"/>
+
+
+
+
+
+  <title>面试 | joyo's world</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">joyo's world</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.iforfee.com/2018/04/02/面试/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="joyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="joyo's world">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">面试</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-02T17:29:38+08:00">
+                2018-04-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>跳槽时时刻刻都在发生，但是我建议大家跳槽之前，先想清楚为什么要跳槽。切不可跟风，看到同事一个个都走了，自己也盲目的面试起来（期间也没有准备充分），到底是因为技术原因（影响自己的发展，偏移自己规划的轨迹），还是钱给少了，不受重视。</p>
+<p>准备不充分的面试，完全是浪费时间，更是对自己的不负责（如果title很高，当我没说）。</p>
+<p>今天给大家分享下chenssy在这次跳槽中整理的Java面试大纲，其中大部分都是面试过程中的面试题，可以对照这查漏补缺，当然了，这里所列的肯定不可能覆盖全部方式。</p>
+<p>项目介绍<br>大部分情况，这是一场面试的开门题，面试官问这个问题，主要是考察你的概述能力和全局视野。有的人经常抱怨自己每天在堆业务，但没有成长。事实上，很多情况下确实在堆业务，但并不是没有成长的。并非做中间件或者技术架构才是成长，例如我们的需求分析能力，沟通协作能力，产品思维能力，抽象建模能力等都是一个非常重要的硬实力。</p>
+<p>好的，现在进入正文。</p>
+<p>1、明确项目是做什么的</p>
+<p>2、明确项目的价值。（为什么做这个项目，它解决了用户什么痛点，它带来什么价值？）</p>
+<p>3、明确项目的功能。（这个项目涉及哪些功能？）</p>
+<p>4、明确项目的技术。（这个项目用到哪些技术？）</p>
+<p>5、明确个人在项目中的位置和作用。（你在这个项目的承担角色？）</p>
+<p>6、明确项目的整体架构。</p>
+<p>7、明确项目的优缺点,如果重新设计你会如何设计。</p>
+<p>8、明确项目的亮点。（这个项目有什么亮点？）</p>
+<p>9、明确技术成长。（你通过这个项目有哪些技术成长？）</p>
+<h2 id="Java基础"><a href="#Java基础" class="headerlink" title="Java基础"></a>Java基础</h2><h3 id="List-、-Set、Map-的区别"><a href="#List-、-Set、Map-的区别" class="headerlink" title="List 、 Set、Map 的区别"></a>List 、 Set、Map 的区别</h3><p><a href="http://localhost:4000/2018/04/02/java/datastructure/ListSetMap/" target="_blank" rel="noopener">http://localhost:4000/2018/04/02/java/datastructure/ListSetMap/</a></p>
+<h3 id="HashSet-是如何保证不重复的"><a href="#HashSet-是如何保证不重复的" class="headerlink" title="HashSet 是如何保证不重复的"></a>HashSet 是如何保证不重复的</h3><p><a href="http://localhost:4000/2018/04/02/java/datastructure/ListSetMap/" target="_blank" rel="noopener">http://localhost:4000/2018/04/02/java/datastructure/ListSetMap/</a></p>
+<h3 id="HashMap-是线程安全的吗，为什么不是线程安全的（最好画图说明多线程环境下不安全）"><a href="#HashMap-是线程安全的吗，为什么不是线程安全的（最好画图说明多线程环境下不安全）" class="headerlink" title="HashMap 是线程安全的吗，为什么不是线程安全的（最好画图说明多线程环境下不安全）?"></a>HashMap 是线程安全的吗，为什么不是线程安全的（最好画图说明多线程环境下不安全）?</h3><p><a href="http://localhost:4000/2018/04/02/java/datastructure/ListSetMap/" target="_blank" rel="noopener">http://localhost:4000/2018/04/02/java/datastructure/ListSetMap/</a></p>
+<h3 id="HashMap-的扩容过程"><a href="#HashMap-的扩容过程" class="headerlink" title="HashMap 的扩容过程"></a>HashMap 的扩容过程</h3><h3 id="HashMap-1-7-与-1-8-的-区别，说明-1-8-做了哪些优化，如何优化的？"><a href="#HashMap-1-7-与-1-8-的-区别，说明-1-8-做了哪些优化，如何优化的？" class="headerlink" title="HashMap 1.7 与 1.8 的 区别，说明 1.8 做了哪些优化，如何优化的？"></a>HashMap 1.7 与 1.8 的 区别，说明 1.8 做了哪些优化，如何优化的？</h3><ol>
+<li>引入了红黑树</li>
+<li>扩容hash的优化，利用扩容后的位置的特性。</li>
+</ol>
+<p><a href="https://tech.meituan.com/java-hashmap.html" target="_blank" rel="noopener">Java 8系列之重新认识HashMap</a></p>
+<p><a href="https://juejin.im/post/5aa5d8d26fb9a028d2079264" target="_blank" rel="noopener">https://juejin.im/post/5aa5d8d26fb9a028d2079264</a></p>
+<p><a href="http://www.cnblogs.com/dpains/p/7169030.html" target="_blank" rel="noopener">http://www.cnblogs.com/dpains/p/7169030.html</a></p>
+<h3 id="final-finally-finalize"><a href="#final-finally-finalize" class="headerlink" title="final finally finalize"></a>final finally finalize</h3><p>final：用于修饰类、成员变量和成员方法。final修饰的类，不能被继承（String、StringBuilder、StringBuffer、Math，不可变类）；<br>Final修饰的方法不能被重写，但是子类可以用父类中final修饰的方法；<br>Final修饰的成员变量是不可变的，如果成员变量是基本数据类型，初始化之后成员变量的值不能被改变，<br>如果成员变量是引用类型，那么它只能指向初始化时指向的那个对象，不能再指向别的对象，但是对象当中的内容是允许改变的。</p>
+<p>finally：用于异常代码块执行完成之后执行，通常用于关闭资源</p>
+<p>finalize：object类中的一个方法，Java虚拟机在垃圾回收之前会先调用垃圾对象的finalize方法用于使对象释放资源（如关闭连接、关闭文件），<br>之后才进行垃圾回收，这个方法一般不会显示的调用，在垃圾回收时垃圾回收器会主动调用。<br>并且，虚拟机并不承诺等待它允许结束，是为了避免其中一个执行缓慢，导致整个内存回收系统崩溃。</p>
+<h3 id="强引用-、软引用、-弱引用、虚引用"><a href="#强引用-、软引用、-弱引用、虚引用" class="headerlink" title="强引用 、软引用、 弱引用、虚引用"></a><a href="https://www.jianshu.com/p/7200da8b043f" target="_blank" rel="noopener">强引用 、软引用、 弱引用、虚引用</a></h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>生命周期</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>强引用</td>
+<td>不会被GC</td>
+<td>…</td>
+</tr>
+<tr>
+<td>SoftReference</td>
+<td>直到内存不足时</td>
+<td>缓存</td>
+</tr>
+<tr>
+<td>WeakReference</td>
+<td>下次GC</td>
+<td>缓存（WeakHashMap）</td>
+</tr>
+<tr>
+<td>PhantomReference</td>
+<td>下次GC</td>
+<td>堆外内存管理</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Java反射"><a href="#Java反射" class="headerlink" title="Java反射"></a>Java反射</h3><p><a href="http://blog.jobbole.com/105299/" target="_blank" rel="noopener">说说 Java 反射机制</a></p>
+<p><a href="https://www.jianshu.com/p/3ea4a6b57f87" target="_blank" rel="noopener">深入分析Java方法反射的实现原理</a></p>
+<h3 id="Arrays-sort-实现原理和-Collection-实现原理"><a href="#Arrays-sort-实现原理和-Collection-实现原理" class="headerlink" title="Arrays.sort 实现原理和 Collection 实现原理"></a>Arrays.sort 实现原理和 Collection 实现原理</h3><h3 id="LinkedHashMap的应用"><a href="#LinkedHashMap的应用" class="headerlink" title="LinkedHashMap的应用"></a>LinkedHashMap的应用</h3><p>LinkedHashMap 能够做到按照插入顺序或者访问顺序进行迭代，这样在我们以后的开发中遇到相似的问题，才能想到用 LinkedHashMap 来解决，否则就算对其内部结构非常了解，不去使用也是没有什么用的。</p>
+<h3 id="cloneable接口实现原理"><a href="#cloneable接口实现原理" class="headerlink" title="cloneable接口实现原理"></a>cloneable接口实现原理</h3><p>Object.java的clone()是一个native方法，当需要克隆时，子类实现Cloneable接口后，重写clone()，调用super.clone()。</p>
+<p>需要注意涉及到深、浅拷贝。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Administrator</span> <span class="keyword">implements</span> <span class="title">Cloneable</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> User user;</span><br><span class="line">	<span class="keyword">private</span> Boolean editable;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Administrator</span><span class="params">(User user, Boolean editable)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.user = user;</span><br><span class="line">		<span class="keyword">this</span>.editable = editable;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> Object <span class="title">clone</span><span class="params">()</span> <span class="keyword">throws</span> CloneNotSupportedException </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">super</span>.clone();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">// 老规矩</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object obj)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// 老规矩</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 老规矩</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Java创建对象的几种方式"><a href="#Java创建对象的几种方式" class="headerlink" title="Java创建对象的几种方式"></a>Java创建对象的几种方式</h3><p>(1) 用new语句创建对象，这是最常见的创建对象的方法。<br>(2) 运用反射手段,调用java.lang.Class或者java.lang.reflect.Constructor类的newInstance()实例方法。<br>(3) 调用对象的clone()方法。<br>(4) 运用反序列化手段，调用java.io.ObjectInputStream对象的 readObject()方法。</p>
+<p>(1)和(2)都会明确的显式的调用构造函数 ；(3)是在内存上对已有对象的影印，所以不会调用构造函数 ；(4)是从文件中还原类的对象，也不会调用构造函数。</p>
+<h3 id="异常分类以及处理机制"><a href="#异常分类以及处理机制" class="headerlink" title="异常分类以及处理机制"></a>异常分类以及处理机制</h3><p><img src="/var/folders/wh/ldm5dy112zlbhpx5g7b8r2yh0000gn/T/abnerworks.Typora/image-201803192105336.png" alt="mage-20180319210533"></p>
+<p><img src="/var/folders/wh/ldm5dy112zlbhpx5g7b8r2yh0000gn/T/abnerworks.Typora/image-201803192116377.png" alt="mage-20180319211637"></p>
+<ul>
+<li>Error是无法处理的异常，比如OutOfMemoryError，一般发生这种异常，JVM会选择终止程序。因此我们编写程序时不需要关心这类异常。</li>
+<li>Exception，也就是我们经常见到的一些异常情况，这些异常是我们可以处理的异常，是所有异常类的父类。</li>
+<li>unchecked exception（非受查异常），包括Error和RuntimeException，比如常见的NullPointerException、IndexOutOfBoundsException。对于RuntimeException，java编译器不要求必须进行异常捕获处理或者抛出声明，由程序员自行决定。</li>
+<li>checked exception（受查异常），也称非运行时异常（运行时异常以外的异常就是非运行时异常），由代码能力之外的因素导致的运行时错误。java编译器强制程序员必须进行捕获处理，比如常见的有IOExeption和SQLException。如果不进行捕获或者抛出声明处理，编译都不会通过。</li>
+<li>典型的RuntimeException包括NullPointerException、IndexOutOfBoundsException、IllegalArgumentException等。</li>
+<li>典型的非RuntimeException包括IOException、SQLException等。</li>
+</ul>
+<p><img src="/var/folders/wh/ldm5dy112zlbhpx5g7b8r2yh0000gn/T/abnerworks.Typora/image-201803192108265.png" alt="mage-20180319210826"></p>
+<p><img src="/var/folders/wh/ldm5dy112zlbhpx5g7b8r2yh0000gn/T/abnerworks.Typora/image-201803192108365.png" alt="mage-20180319210836"></p>
+<p><img src="/var/folders/wh/ldm5dy112zlbhpx5g7b8r2yh0000gn/T/abnerworks.Typora/image-201803192108442.png" alt="mage-20180319210844"></p>
+<p><img src="/var/folders/wh/ldm5dy112zlbhpx5g7b8r2yh0000gn/T/abnerworks.Typora/image-201803192109284.png" alt="mage-20180319210928"></p>
+<h3 id="wait和sleep的区别"><a href="#wait和sleep的区别" class="headerlink" title="wait和sleep的区别"></a>wait和sleep的区别</h3><p>wait：调用后，必须被通知才能重新运行，且释放锁资源。</p>
+<p>sleep：睡眠一定时间后继续执行，且不释放锁资源。</p>
+<h3 id="数组在内存中如何分配"><a href="#数组在内存中如何分配" class="headerlink" title="数组在内存中如何分配"></a>数组在内存中如何分配</h3><p>对象在堆上分配连续空间。</p>
+<h2 id="Java-并发"><a href="#Java-并发" class="headerlink" title="Java 并发"></a>Java 并发</h2><h3 id="synchronized-的实现原理以及锁优化？"><a href="#synchronized-的实现原理以及锁优化？" class="headerlink" title="synchronized 的实现原理以及锁优化？"></a>synchronized 的实现原理以及锁优化？</h3><p>JVM基于进入和退出Monitor对象来实现方法同步和代码同步。使用monitorenter和monitorexit指令实现。</p>
+<p>每个对象有一个监视器锁（monitor）；</p>
+<p>偏向锁：使用了一种等到竞争出现才释放锁的机制，所以当其他线程尝试竞争偏向锁时，持有偏向锁的线程才会释放锁。偏向锁的撤销，需要等待全局安全点（在这个时间点，没有字节码在执行）。</p>
+<p>轻量级锁：轻量级锁是由偏向所升级来的，偏向锁运行在一个线程进入同步块的情况下，当第二个线程加入锁争用的时候，偏向锁就会升级为轻量级锁； </p>
+<p>重量级锁。</p>
+<p><img src="/var/folders/wh/ldm5dy112zlbhpx5g7b8r2yh0000gn/T/abnerworks.Typora/image-201803192206453.png" alt="mage-20180319220645"></p>
+<h3 id="volatile-的实现原理？"><a href="#volatile-的实现原理？" class="headerlink" title="volatile 的实现原理？"></a>volatile 的实现原理？</h3><p>通过lock前缀实现，底层是通过总线锁定和缓存锁定来实现。</p>
+<p>Lock前缀指令会引起处理器缓存回写到内存。一个处理器的缓存回写到内存会导致其他处理器的缓存无效。</p>
+<h3 id="Java-的信号灯？"><a href="#Java-的信号灯？" class="headerlink" title="Java 的信号灯？"></a>Java 的信号灯？</h3><p>控制并发线程数量。</p>
+<p>通过AQS来实现的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SemaphoreTest</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		ExecutorService service = Executors.newCachedThreadPool();</span><br><span class="line">		<span class="keyword">final</span>  Semaphore sp = <span class="keyword">new</span> Semaphore(<span class="number">3</span>);</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">10</span>;i++)&#123;</span><br><span class="line">			Runnable runnable = <span class="keyword">new</span> Runnable()&#123;</span><br><span class="line">					<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;</span><br><span class="line">					<span class="keyword">try</span> &#123;</span><br><span class="line">						sp.acquire();</span><br><span class="line">					&#125; <span class="keyword">catch</span> (InterruptedException e1) &#123;</span><br><span class="line">						e1.printStackTrace();</span><br><span class="line">					&#125;</span><br><span class="line">					System.out.println(<span class="string">"线程"</span> + Thread.currentThread().getName() + </span><br><span class="line">							<span class="string">"进入，当前已有"</span> + (<span class="number">3</span>-sp.availablePermits()) + <span class="string">"个并发"</span>);</span><br><span class="line">					<span class="keyword">try</span> &#123;</span><br><span class="line">						Thread.sleep((<span class="keyword">long</span>)(Math.random()*<span class="number">10000</span>));</span><br><span class="line">					&#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">						e.printStackTrace();</span><br><span class="line">					&#125;</span><br><span class="line">					System.out.println(<span class="string">"线程"</span> + Thread.currentThread().getName() + </span><br><span class="line">							<span class="string">"即将离开"</span>);					</span><br><span class="line">					sp.release();</span><br><span class="line">					<span class="comment">//下面代码有时候执行不准确，因为其没有和上面的代码合成原子单元</span></span><br><span class="line">					System.out.println(<span class="string">"线程"</span> + Thread.currentThread().getName() + </span><br><span class="line">							<span class="string">"已离开，当前已有"</span> + (<span class="number">3</span>-sp.availablePermits()) + <span class="string">"个并发"</span>);					</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;;</span><br><span class="line">			service.execute(runnable);			</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="synchronized-在静态方法和普通方法的区别？"><a href="#synchronized-在静态方法和普通方法的区别？" class="headerlink" title="synchronized 在静态方法和普通方法的区别？"></a>synchronized 在静态方法和普通方法的区别？</h3><p>静态方法和实例方法不是同一把锁</p>
+<h3 id="怎么实现所有线程在等待某个事件的发生才会去执行？"><a href="#怎么实现所有线程在等待某个事件的发生才会去执行？" class="headerlink" title="怎么实现所有线程在等待某个事件的发生才会去执行？"></a>怎么实现所有线程在等待某个事件的发生才会去执行？</h3><p>CountDownLatch、CyclicBarrier</p>
+<h3 id="CAS？CAS-有什么缺陷，如何解决？"><a href="#CAS？CAS-有什么缺陷，如何解决？" class="headerlink" title="CAS？CAS 有什么缺陷，如何解决？"></a>CAS？CAS 有什么缺陷，如何解决？</h3><p>CompareAndSwap，不用加锁</p>
+<p>存在ABA问题，通过添加版本号来区分（AtomicStampedReference）；循环时间开销大；</p>
+<h3 id="synchronized-和-lock-有什么区别？"><a href="#synchronized-和-lock-有什么区别？" class="headerlink" title="synchronized 和 lock 有什么区别？"></a>synchronized 和 lock 有什么区别？</h3><p>lock能够非阻塞获取锁、中断地获取所、超时获取锁、更加灵活。</p>
+<h3 id="Hashtable-是怎么加锁的-？"><a href="#Hashtable-是怎么加锁的-？" class="headerlink" title="Hashtable 是怎么加锁的 ？"></a>Hashtable 是怎么加锁的 ？</h3><p>synchronized</p>
+<h3 id="HashMap-的并发问题？"><a href="#HashMap-的并发问题？" class="headerlink" title="HashMap 的并发问题？"></a>HashMap 的并发问题？</h3><p>死循环导致CPU100%使用</p>
+<p><a href="https://www.jianshu.com/p/1e9cf0ac07f4" target="_blank" rel="noopener">HashMap的死循环</a></p>
+<h3 id="ConcurrenHashMap-介绍？1-8-中为什么要用红黑树？"><a href="#ConcurrenHashMap-介绍？1-8-中为什么要用红黑树？" class="headerlink" title="ConcurrenHashMap 介绍？1.8 中为什么要用红黑树？"></a>ConcurrenHashMap 介绍？1.8 中为什么要用红黑树？</h3><p><a href="https://tech.meituan.com/redblack-tree.html" target="_blank" rel="noopener">红黑树深入剖析及Java实现</a></p>
+<h3 id="AQS"><a href="#AQS" class="headerlink" title="AQS"></a>AQS</h3><p>抽象队列同步器，AbstractQueueSynchronizer。</p>
+<h3 id="如何检测死锁？怎么预防死锁？"><a href="#如何检测死锁？怎么预防死锁？" class="headerlink" title="如何检测死锁？怎么预防死锁？"></a>如何检测死锁？怎么预防死锁？</h3><p>检测：</p>
+<ol>
+<li>cpu使用率低</li>
+<li>io使用率低</li>
+<li>jstack</li>
+</ol>
+<p>预防：</p>
+<ol>
+<li>资源使用顺序</li>
+<li>增加资源</li>
+<li>超时退出资源</li>
+</ol>
+<h3 id="Java-内存模型？"><a href="#Java-内存模型？" class="headerlink" title="Java 内存模型？"></a>Java 内存模型？</h3><p>Java内存模型定义了多线程之间共享变量的可见性以及如何在需要的时候对共享变量进行同步。</p>
+<p>Java内存模型定义了volatile和synchronized的行为，更重要的是保证了同步的java程序在所有的处理器架构下面都能正确的运行。</p>
+<p><img src="/var/folders/wh/ldm5dy112zlbhpx5g7b8r2yh0000gn/T/abnerworks.Typora/image-201803192318116.png" alt="mage-20180319231811"></p>
+<ol>
+<li>happens-before规则</li>
+<li>重排序、内存屏障</li>
+</ol>
+<h3 id="如何保证多线程下-i-结果正确？"><a href="#如何保证多线程下-i-结果正确？" class="headerlink" title="如何保证多线程下 i++ 结果正确？"></a>如何保证多线程下 i++ 结果正确？</h3><p>synchronized、lock</p>
+<h3 id="线程池的种类，区别和使用场景？"><a href="#线程池的种类，区别和使用场景？" class="headerlink" title="线程池的种类，区别和使用场景？"></a>线程池的种类，区别和使用场景？</h3><ol>
+<li>newCachedThreadPool：适用于执行很多的短期异步任务的小程序，或者负载比较轻的服务器;是一个根据需要创建线程的线程池</li>
+<li>newFixedThreadPool：FixedThreadPool适用于为了满足管理资源的需求，而需要限制当前线程数量的应用场景，它适用于负载比较重的服务器。</li>
+<li>newSingleThreadExecutor：适用于需要保证顺序地执行各个任务，并且在任意时间点不会有多个线程在活动的场景。</li>
+<li>newScheduledThreadPool：适用于需要在多个后台线程执行周期任务，同时为了满足资源管理需求需要限制后台线程数量的应用场景。</li>
+</ol>
+<h3 id="分析线程池的实现原理和线程的调度过程？"><a href="#分析线程池的实现原理和线程的调度过程？" class="headerlink" title="分析线程池的实现原理和线程的调度过程？"></a>分析线程池的实现原理和线程的调度过程？</h3><p>worker从队列中不断取任务执行，当任务队列为空时，worker线程阻塞；</p>
+<h3 id="线程池如何调优，最大数目如何确认？"><a href="#线程池如何调优，最大数目如何确认？" class="headerlink" title="线程池如何调优，最大数目如何确认？"></a>线程池如何调优，最大数目如何确认？</h3><p>取决于任务的类型，CPU密集型可以coreNum + 1；IO密集型可以2coreNum；</p>
+<h3 id="ThreadLocal原理，用的时候需要注意什么？"><a href="#ThreadLocal原理，用的时候需要注意什么？" class="headerlink" title="ThreadLocal原理，用的时候需要注意什么？"></a>ThreadLocal原理，用的时候需要注意什么？</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadLocalExample</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">MyRunnable</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span> ThreadLocal threadLocal = <span class="keyword">new</span> ThreadLocal();</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            threadLocal.set((<span class="keyword">int</span>) (Math.random() * <span class="number">100</span>D));</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">            Thread.sleep(<span class="number">2000</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println(threadLocal.get());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">         MyRunnable sharedRunnableInstance = <span class="keyword">new</span> MyRunnable();</span><br><span class="line">         Thread thread1 = <span class="keyword">new</span> Thread(sharedRunnableInstance);</span><br><span class="line">         Thread thread2 = <span class="keyword">new</span> Thread(sharedRunnableInstance);</span><br><span class="line">         thread1.start();</span><br><span class="line">         thread2.start();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>get and Set:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">	* Sets the current thread's copy of this thread-local variable</span></span><br><span class="line"><span class="comment">    * to the specified value.  Most subclasses will have no need to</span></span><br><span class="line"><span class="comment">    * override this method, relying solely on the &#123;<span class="doctag">@link</span> #initialValue&#125;</span></span><br><span class="line"><span class="comment">    * method to set the values of thread-locals.</span></span><br><span class="line"><span class="comment">    *</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@param</span> value the value to be stored in the current thread's copy of</span></span><br><span class="line"><span class="comment"> 	*        this thread-local.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">set</span><span class="params">(T value)</span> </span>&#123;</span><br><span class="line">    Thread t = Thread.currentThread();</span><br><span class="line">    ThreadLocalMap map = getMap(t);</span><br><span class="line">    <span class="keyword">if</span> (map != <span class="keyword">null</span>)</span><br><span class="line">        map.set(<span class="keyword">this</span>, value);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        createMap(t, value);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">	* Returns the value in the current thread's copy of this</span></span><br><span class="line"><span class="comment">    * thread-local variable.  If the variable has no value for the</span></span><br><span class="line"><span class="comment">    * current thread, it is first initialized to the value returned</span></span><br><span class="line"><span class="comment">    * by an invocation of the &#123;<span class="doctag">@link</span> #initialValue&#125; method.</span></span><br><span class="line"><span class="comment">    *</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@return</span> the current thread's value of this thread-local</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> T <span class="title">get</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Thread t = Thread.currentThread();</span><br><span class="line">    ThreadLocalMap map = getMap(t);</span><br><span class="line">    <span class="keyword">if</span> (map != <span class="keyword">null</span>) &#123;</span><br><span class="line">        ThreadLocalMap.Entry e = map.getEntry(<span class="keyword">this</span>);</span><br><span class="line">        <span class="keyword">if</span> (e != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</span><br><span class="line">            T result = (T)e.value;</span><br><span class="line">            <span class="keyword">return</span> result;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> setInitialValue();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="CountDownLatch-和-CyclicBarrier-的用法，以及相互之间的差别"><a href="#CountDownLatch-和-CyclicBarrier-的用法，以及相互之间的差别" class="headerlink" title="CountDownLatch 和 CyclicBarrier 的用法，以及相互之间的差别?"></a>CountDownLatch 和 CyclicBarrier 的用法，以及相互之间的差别?</h3><p>区别：CyclicBarrier可以重复使用，CountDownLatch只能使用一次。</p>
+<h3 id="LockSupport工具"><a href="#LockSupport工具" class="headerlink" title="LockSupport工具"></a>LockSupport工具</h3><p>park、unpark</p>
+<h3 id="Condition接口及其实现原理"><a href="#Condition接口及其实现原理" class="headerlink" title="Condition接口及其实现原理"></a>Condition接口及其实现原理</h3><p>底层依赖LockSupport方法</p>
+<h3 id="Fork-Join框架的理解"><a href="#Fork-Join框架的理解" class="headerlink" title="Fork/Join框架的理解"></a>Fork/Join框架的理解</h3><p>需要通过ForkJoinPool来提交任务。任务一般通过使用ForkJoinTask的子类来实现：</p>
+<ol>
+<li>RecursiveAction：用于没有返回结果的任务</li>
+<li>RecursiveTask：用于有返回结果的任务</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ForkJoinPool forkJoinPool = newForkJoinPool();</span><br><span class="line">Future result = forkJoinPool.submit(task);</span><br></pre></td></tr></table></figure>
+<p>任务的切割:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 分割任务</span></span><br><span class="line">task.fork();</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> ForkJoinTask&lt;V&gt; <span class="title">fork</span><span class="params">()</span> </span>&#123; </span><br><span class="line">    Thread t;</span><br><span class="line">    <span class="keyword">if</span> ((t = Thread.currentThread()) <span class="keyword">instanceof</span> ForkJoinWorkerThread)</span><br><span class="line">        <span class="comment">// ForkJoinPool.WorkQueue workQueue，workQueue是ForkJoinPool的全局变量</span></span><br><span class="line">        <span class="comment">// 所有分割出来的任务都在一个queue中</span></span><br><span class="line">        ((ForkJoinWorkerThread)t).workQueue.push(<span class="keyword">this</span>);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        ForkJoinPool.common.externalPush(<span class="keyword">this</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="分段锁的原理-锁力度减小的思考"><a href="#分段锁的原理-锁力度减小的思考" class="headerlink" title="分段锁的原理,锁力度减小的思考"></a>分段锁的原理,锁力度减小的思考</h3><h3 id="八种阻塞队列以及各个阻塞队列的特性"><a href="#八种阻塞队列以及各个阻塞队列的特性" class="headerlink" title="八种阻塞队列以及各个阻塞队列的特性"></a>八种阻塞队列以及各个阻塞队列的特性</h3><p>ArrayBlockingQueue ：由数组结构组成的有界阻塞队列。<br>LinkedBlockingQueue ：由链表结构组成的有界阻塞队列。<br>PriorityBlockingQueue ：支持优先级排序的无界阻塞队列。<br>DelayQueue：使用优先级队列实现的无界阻塞队列。<br>SynchronousQueue：不存储元素的阻塞队列。<br>LinkedTransferQueue：链表结构组成的无界阻塞队列。<br>LinkedBlockingDeque：链表结构组成的双向阻塞队列。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">方法/处理方式</th>
+<th>抛出异常</th>
+<th>返回特殊值</th>
+<th>一直阻塞</th>
+<th>超时退出</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">插入</td>
+<td>add(e)</td>
+<td>offer(e)</td>
+<td>put(e)</td>
+<td>offer(e, time, unit)</td>
+</tr>
+<tr>
+<td style="text-align:left">移除</td>
+<td>remove()</td>
+<td>poll ()</td>
+<td>take()</td>
+<td>poll(time, unit)</td>
+</tr>
+<tr>
+<td style="text-align:left">检查</td>
+<td>element()</td>
+<td>peek()</td>
+<td>不可用</td>
+<td>不可用</td>
+</tr>
+</tbody>
+</table>
+<p>如果是无界阻塞队列，队列不可能会出现满的情况，所以使用put或offer方法永远不会被阻塞，而且使用offer方法时，该方法永远返回rue。</p>
+<p>实现：</p>
+<p>通过Lock和Condition实现，插入市判断容量调用LockSupport的await或signal方法</p>
+<h2 id="JVM"><a href="#JVM" class="headerlink" title="JVM"></a>JVM</h2><h3 id="详细jvm内存模型"><a href="#详细jvm内存模型" class="headerlink" title="详细jvm内存模型"></a>详细jvm内存模型</h3><p><a href="http://www.iforfee.com/2018/03/22/java/jvm%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/">jvm内存模型</a></p>
+<h3 id="讲讲什么情况下回出现内存溢出，内存泄漏？"><a href="#讲讲什么情况下回出现内存溢出，内存泄漏？" class="headerlink" title="讲讲什么情况下回出现内存溢出，内存泄漏？"></a>讲讲什么情况下回出现内存溢出，内存泄漏？</h3><p>内存溢出：指程序申请内存时,没有足够的内存空间使用</p>
+<p>内存泄漏：指程序申请了内存后(new),用完的内存没有释放(delete),一直被某个或某些实例所持有却不再被使用导致 GC 不能回收</p>
+<p><a href="https://www.jianshu.com/p/e97ed5d8a403" target="_blank" rel="noopener">https://www.jianshu.com/p/e97ed5d8a403</a></p>
+<h3 id="说说Java线程栈"><a href="#说说Java线程栈" class="headerlink" title="说说Java线程栈"></a>说说Java线程栈</h3><p><a href="https://blog.csdn.net/hust_superman/article/details/39402087" target="_blank" rel="noopener">https://blog.csdn.net/hust_superman/article/details/39402087</a></p>
+<h3 id="JVM-年轻代到年老代的晋升过程的判断条件是什么呢？"><a href="#JVM-年轻代到年老代的晋升过程的判断条件是什么呢？" class="headerlink" title="JVM 年轻代到年老代的晋升过程的判断条件是什么呢？"></a>JVM 年轻代到年老代的晋升过程的判断条件是什么呢？</h3><ol>
+<li>大对象直接进入老年代</li>
+<li>存活一定时间的年轻代晋升老年代</li>
+<li>同一年代的对象在monitor gc后，占用内存大于Survivor的二分之一，晋升老年代</li>
+</ol>
+<h3 id="JVM-出现-fullGC-很频繁，怎么去线上排查问题？"><a href="#JVM-出现-fullGC-很频繁，怎么去线上排查问题？" class="headerlink" title="JVM 出现 fullGC 很频繁，怎么去线上排查问题？"></a>JVM 出现 fullGC 很频繁，怎么去线上排查问题？</h3><ol>
+<li>​</li>
+</ol>
+<h3 id="类加载为什么要使用双亲委派模式，有没有什么场景是打破了这个模式？"><a href="#类加载为什么要使用双亲委派模式，有没有什么场景是打破了这个模式？" class="headerlink" title="类加载为什么要使用双亲委派模式，有没有什么场景是打破了这个模式？"></a>类加载为什么要使用双亲委派模式，有没有什么场景是打破了这个模式？</h3><p><a href="http://www.cnblogs.com/lanxuezaipiao/p/4138511.html" target="_blank" rel="noopener">http://www.cnblogs.com/lanxuezaipiao/p/4138511.html</a></p>
+<p>解决基础类的统一问题</p>
+<p>打破场景：</p>
+<ol>
+<li><a href="https://blog.csdn.net/yangcheng33/article/details/52631940" target="_blank" rel="noopener">线程上下文类加载器（Thread Context Classloader）</a></li>
+<li>OSGI</li>
+</ol>
+<h3 id="类的实例化顺序"><a href="#类的实例化顺序" class="headerlink" title="类的实例化顺序"></a>类的实例化顺序</h3><p><a href="https://blog.csdn.net/zd836614437/article/details/64126826" target="_blank" rel="noopener">https://blog.csdn.net/zd836614437/article/details/64126826</a></p>
+<p><a href="https://segmentfault.com/a/1190000004527951" target="_blank" rel="noopener">https://segmentfault.com/a/1190000004527951</a></p>
+<h3 id="JVM垃圾回收机制，何时触发MinorGC等操作"><a href="#JVM垃圾回收机制，何时触发MinorGC等操作" class="headerlink" title="JVM垃圾回收机制，何时触发MinorGC等操作"></a>JVM垃圾回收机制，何时触发MinorGC等操作</h3><p>Minor GC触发条件：当Eden区满时，触发Minor GC。</p>
+<p>Full GC触发条件：</p>
+<p>（1）调用System.gc时，系统建议执行Full GC，但是不必然执行</p>
+<p>（2）老年代空间不足</p>
+<p>（3）方法区空间不足</p>
+<p>（4）通过Minor GC后进入老年代的平均大小大于老年代的可用内存</p>
+<p>（5）由Eden区、From Space区向To Space区复制时，对象大小大于To Space可用内存，则把该对象转存到老年代，且老年代的可用内存小于该对象大小</p>
+<h3 id="JVM-中一次完整的-GC-流程（从-ygc-到-fgc）是怎样的"><a href="#JVM-中一次完整的-GC-流程（从-ygc-到-fgc）是怎样的" class="headerlink" title="JVM 中一次完整的 GC 流程（从 ygc 到 fgc）是怎样的"></a>JVM 中一次完整的 GC 流程（从 ygc 到 fgc）是怎样的</h3><p>答：对象优先在Eden区中分配，若没有足够空间，Minor GC；<br>大对象（需要大量连续内存空间）直接进入老年态；长期存活的对象进入老年态。如果对象在新生代出生并经过第一次MGC后仍然存活，年龄+1，若年龄超过一定限制（15），则被晋升到老年态。</p>
+<p><a href="https://blog.csdn.net/zd836614437/article/details/64126826" target="_blank" rel="noopener">https://blog.csdn.net/zd836614437/article/details/64126826</a></p>
+<h3 id="各种回收器，各自优缺点，重点CMS、G1"><a href="#各种回收器，各自优缺点，重点CMS、G1" class="headerlink" title="各种回收器，各自优缺点，重点CMS、G1"></a>各种回收器，各自优缺点，重点CMS、G1</h3><p><img src="/Users/joyo/Documents/面试/image-201803282306260.png" alt="mage-20180328230626"></p>
+<p><a href="https://blog.csdn.net/qq_25396633/article/details/72972008" target="_blank" rel="noopener">CMS收集器和G1收集器优缺点</a></p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Serial</td>
+<td>client机器上</td>
+<td>单线程；STW</td>
+</tr>
+<tr>
+<td>ParNew</td>
+<td>多线程</td>
+<td>STW</td>
+</tr>
+<tr>
+<td>Parallel Scavenge</td>
+<td>时间可控</td>
+<td></td>
+</tr>
+<tr>
+<td>Serial Old</td>
+<td></td>
+<td>单线程；STW</td>
+</tr>
+<tr>
+<td>Parallel Old</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>CMS</td>
+<td>占用用户时间少</td>
+<td>CPU资源会更多</td>
+</tr>
+<tr>
+<td>G1</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="各种回收算法"><a href="#各种回收算法" class="headerlink" title="各种回收算法"></a>各种回收算法</h3><ol>
+<li>标记 - 清除</li>
+<li>标记 - 整理</li>
+<li>复制</li>
+<li>分代收集算法</li>
+</ol>
+<h3 id="OOM错误，stackoverflow错误，permgen-space错误"><a href="#OOM错误，stackoverflow错误，permgen-space错误" class="headerlink" title="OOM错误，stackoverflow错误，permgen space错误"></a>OOM错误，stackoverflow错误，permgen space错误</h3><p><a href="https://my.oschina.net/liting/blog/476918" target="_blank" rel="noopener">https://my.oschina.net/liting/blog/476918</a></p>
+<h3 id="JVM-之-OopMap-和-RememberedSet"><a href="#JVM-之-OopMap-和-RememberedSet" class="headerlink" title="JVM 之 OopMap 和 RememberedSet"></a><a href="http://dsxwjhf.iteye.com/blog/2201685" target="_blank" rel="noopener">JVM 之 OopMap 和 RememberedSet</a></h3><p>OopMap：记录了从栈到堆的引用关系，以避免全栈扫描，加快枚举根节点的速度。它的另外一个更根本的作用是，可以帮助 HotSpot 实现准确式 GC。</p>
+<p>RememberSet：记录老年代对象引用新生代对象。</p>
+<h2 id="Spring"><a href="#Spring" class="headerlink" title="Spring"></a>Spring</h2><h3 id="BeanFactory-和-FactoryBean？"><a href="#BeanFactory-和-FactoryBean？" class="headerlink" title="BeanFactory 和 FactoryBean？"></a>BeanFactory 和 FactoryBean？</h3><p><strong>BeanFactory</strong>:</p>
+<p>BeanFactory，以Factory结尾，表示它是一个工厂类(接口)，用于管理Bean的一个工厂。在Spring中，BeanFactory是IOC容器的核心接口，它的职责包括：实例化、定位、配置应用程序中的对象及建立这些对象间的依赖。</p>
+<p>Spring为我们提供了许多易用的BeanFactory实现，XmlBeanFactory就是常用的一个，该实现将以XML方式描述组成应用的对象及对象间的依赖关系。XmlBeanFactory类将持有此XML配置元数据，并用它来构建一个完全可配置的系统或应用。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// No.1</span></span><br><span class="line">Resource resource = <span class="keyword">new</span> FileSystemResource(<span class="string">"beans.xml"</span>);</span><br><span class="line">BeanFactory factory = <span class="keyword">new</span> XmlBeanFactory(resource);</span><br><span class="line"><span class="comment">// No.2</span></span><br><span class="line">ClassPathResource resource = <span class="keyword">new</span> ClassPathResource(<span class="string">"beans.xml"</span>);</span><br><span class="line">BeanFactory factory = <span class="keyword">new</span> XmlBeanFactory(resource);</span><br><span class="line"><span class="comment">// No.3</span></span><br><span class="line">ApplicationContext context = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="keyword">new</span> String[] &#123;<span class="string">"applicationContext.xml"</span>, <span class="string">"applicationContext-part2.xml"</span>&#125;);</span><br><span class="line">BeanFactory factory = (BeanFactory) context;</span><br></pre></td></tr></table></figure>
+<p><strong>FactoryBean</strong>:</p>
+<p>实现 <code>FactoryBean</code> 的类表明此类也是一个Bean，类型为工厂Bean（Spring中共有两种bean，一种为普通bean，另一种则为工厂bean）。顾名思义，它也是用来管理Bean的，而它本身由spring管理。</p>
+<p>FactoryBean管理的bean实际上也是由spring进行配置、实例化、管理，因此由FactoryBean管理的bean不能再次配置到spring配置文件中（xml、java类配置、注解均不可以），否则会报异常。</p>
+<h3 id="Spring-IOC-的理解，其初始化过程？"><a href="#Spring-IOC-的理解，其初始化过程？" class="headerlink" title="Spring IOC 的理解，其初始化过程？"></a>Spring IOC 的理解，其初始化过程？</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ApplicationContext appContext = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">"cjj/models/beans.xml"</span>);</span><br><span class="line">Person p = (Person)appContext.getBean(<span class="string">"person"</span>);</span><br></pre></td></tr></table></figure>
+<p>上面代码中，在创建ApplicationContext实例对象过程中会创建一个spring容器，该容器会读取配置文件”cjj/models/beans.xml”,并统一管理由该文件中定义好的所有bean实例对象，如果要获取某个bean实例，使用getBean方法就行了。例如我们只需要将Person提前配置在beans.xml文件中（可以理解为注入），之后我们可以不需使用new Person()的方式创建实例，而是通过容器来获取Person实例，这就相当于将Person的控制权交由spring容器了，差不多这就是控制反转的概念。</p>
+<p>Spring中有两个主要的容器系列：</p>
+<ol>
+<li>实现BeanFactory接口的简单容器；</li>
+<li>实现ApplicationContext接口的高级容器。ApplicationContext比较复杂，它不但继承了BeanFactory的大部分属性，还继承其它可扩展接口，扩展的了许多高级的属性。</li>
+</ol>
+<p><strong>初始化过程</strong>：</p>
+<ol>
+<li>Resource定位（Bean的定义文件定位）</li>
+<li>将Resource定位好的资源载入到BeanDefinition</li>
+<li>将BeanDefiniton注册到容器中</li>
+</ol>
+<p><img src="/var/folders/wh/ldm5dy112zlbhpx5g7b8r2yh0000gn/T/abnerworks.Typora/image-201803202344054.png" alt="mage-20180320234405"></p>
+<p>容器初始化的时候会预先对单例和非延迟加载的对象进行预先初始化。其他的都是延迟加载是在第一次调用getBean 的时候被创建。</p>
+<h4 id="第一步-Resource定位"><a href="#第一步-Resource定位" class="headerlink" title="第一步 Resource定位"></a>第一步 Resource定位</h4><p>可以通过先获取resource，再获取beanFactory</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Resource resource = <span class="keyword">new</span> FileSystemResource(<span class="string">"beans.xml"</span>);</span><br><span class="line">BeanFactory factory = <span class="keyword">new</span> XmlBeanFactory(resource);</span><br></pre></td></tr></table></figure>
+<p>　　<strong>FileSystemResource：</strong>以文件的绝对路径方式进行访问资源，效果类似于Java中的File;<br>　　<strong>ClassPathResourcee：</strong>以类路径的方式访问资源，效果类似于this.getClass().getResource(“/“).getPath();<br>　　<strong>ServletContextResource：</strong>web应用根目录的方式访问资源，效果类似于request.getServletContext().getRealPath(“”);<br>　　<strong>UrlResource：</strong>访问网络资源的实现类。例如file: http: ftp:等前缀的资源对象;<br>　　<strong>ByteArrayResource:</strong> 访问字节数组资源的实现类。</p>
+<p>也可以直接创建applicationContext对象：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ClassPathXmlApplicationContext</span><span class="params">(String[] configLocations, <span class="keyword">boolean</span> refresh, ApplicationContext parent)</span></span></span><br><span class="line"><span class="function">		<span class="keyword">throws</span> BeansException </span>&#123;</span><br><span class="line">	<span class="comment">//super方法为容器设置好Bean资源加载器</span></span><br><span class="line">	<span class="comment">//该方法最终会调用到AbstractApplicationContext的无参构造方法</span></span><br><span class="line">	<span class="comment">//这里会默认设置解析路径的模式为Ant-style</span></span><br><span class="line">	<span class="keyword">super</span>(parent);</span><br><span class="line">	<span class="comment">//设置Bean定义资源文件的路径</span></span><br><span class="line">	setConfigLocations(configLocations);</span><br><span class="line">	<span class="keyword">if</span> (refresh) &#123;</span><br><span class="line">		<span class="comment">//调用容器的refresh，载入BeanDefinition的入口</span></span><br><span class="line">		refresh();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注：ApplicationContext的所有实现类都实现RecourceLoader接口，因此可以直接调用getResource（参数）获取Resoure对象<strong>。</strong>不同的ApplicatonContext实现类使用getResource方法取得的资源类型不同，例如：FileSystemXmlApplicationContext.getResource获取的就是FileSystemResource实例；ClassPathXmlApplicationContext.gerResource获取的就是ClassPathResource实例；XmlWebApplicationContext.getResource获取的就是ServletContextResource实例，另外像不需要通过xml直接使用注解@Configuation方式加载资源的AnnotationConfigApplicationContext等等。</p>
+<h4 id="第二步-通过返回的resource对象，进行BeanDefinition的载入"><a href="#第二步-通过返回的resource对象，进行BeanDefinition的载入" class="headerlink" title="第二步 通过返回的resource对象，进行BeanDefinition的载入"></a>第二步 通过返回的resource对象，进行BeanDefinition的载入</h4><p>总之，BeanDefinition相当于一个数据结构，这个数据结构的生成过程是根据定位的resource资源对象中的bean而来的，这些bean在Spirng IoC容器内部表示成了的BeanDefintion这样的数据结构，IoC容器对bean的管理和依赖注入的实现都是通过操作BeanDefinition来进行的。</p>
+<p>1.构造BeanFactory时，首先调用的是BeanDefinitionReader类型的reader属性的loadBeanDefinitions()方法，是整个资源加载的切入点。</p>
+<ul>
+<li>封装资源文件：当进入BeanDefinitionReader后首先对参数Resource进行EncodedResource类进行封装</li>
+<li>获取输入流：从Resource中获取InputStream并构造InputSource</li>
+<li>通过构造器的InputSource实例和Resource实例继续调用loadBeanDefinitions.</li>
+</ul>
+<p>2.loadBeanDefinition调用doLoadBeanDefinitons方法，完成以下三个方法</p>
+<ul>
+<li>对XML文档的验证模式</li>
+<li>用DocumentLoader处理资源文件，生成Document</li>
+<li>根据返回的Document信息注册bean信息</li>
+</ul>
+<h4 id="第三步，将BeanDefiniton注册到容器中"><a href="#第三步，将BeanDefiniton注册到容器中" class="headerlink" title="第三步，将BeanDefiniton注册到容器中"></a>第三步，将BeanDefiniton注册到容器中</h4><p>最终Bean配置会被解析成BeanDefinition并与beanName,Alias一同封装到BeanDefinitionHolder中,之后beanFactory.registerBeanDefinition(beanName, bdHolder.getBeanDefinition())，注册到DefaultListableBeanFactory.beanDefinitionMap中。之后客户端如果要获取Bean对象，Spring容器会根据注册的BeanDefinition信息进行实例化。</p>
+<p><a href="https://www.cnblogs.com/chenjunjie12321/p/6124649.html" target="_blank" rel="noopener">参考1</a>   <a href="http://blog.csdn.net/u010796790/article/details/52623328" target="_blank" rel="noopener">参考2</a></p>
+<h3 id="BeanFactory-和-ApplicationContext？"><a href="#BeanFactory-和-ApplicationContext？" class="headerlink" title="BeanFactory 和 ApplicationContext？"></a>BeanFactory 和 ApplicationContext？</h3><p>ApplicationContext继承BeanFactory，添加了一些属性和方法。</p>
+<h3 id="Spring-Bean-的生命周期，如何被管理的？"><a href="#Spring-Bean-的生命周期，如何被管理的？" class="headerlink" title="Spring Bean 的生命周期，如何被管理的？"></a>Spring Bean 的生命周期，如何被管理的？</h3><p><a href="https://www.jianshu.com/p/3944792a5fff" target="_blank" rel="noopener">https://www.jianshu.com/p/3944792a5fff</a></p>
+<h3 id="Spring-Bean-的加载过程是怎样的？"><a href="#Spring-Bean-的加载过程是怎样的？" class="headerlink" title="Spring Bean 的加载过程是怎样的？"></a>Spring Bean 的加载过程是怎样的？</h3><p><a href="https://segmentfault.com/a/1190000012887776" target="_blank" rel="noopener">https://segmentfault.com/a/1190000012887776</a></p>
+<p><a href="http://www.cnblogs.com/xrq730/p/6285358.html" target="_blank" rel="noopener">http://www.cnblogs.com/xrq730/p/6285358.html</a></p>
+<h3 id="如果要你实现Spring-AOP，请问怎么实现？"><a href="#如果要你实现Spring-AOP，请问怎么实现？" class="headerlink" title="如果要你实现Spring AOP，请问怎么实现？"></a>如果要你实现Spring AOP，请问怎么实现？</h3><h3 id="如果要你实现Spring-IOC，你会注意哪些问题？"><a href="#如果要你实现Spring-IOC，你会注意哪些问题？" class="headerlink" title="如果要你实现Spring IOC，你会注意哪些问题？"></a>如果要你实现Spring IOC，你会注意哪些问题？</h3><h3 id="Spring-是如何管理事务的，事务管理机制？"><a href="#Spring-是如何管理事务的，事务管理机制？" class="headerlink" title="Spring 是如何管理事务的，事务管理机制？"></a>Spring 是如何管理事务的，事务管理机制？</h3><ol>
+<li>编程式事务管理<ol>
+<li>TransactionDefinition</li>
+<li>PlatformTransactionManager</li>
+<li>TransactionStatus</li>
+</ol>
+</li>
+<li>声明式事务管理(AOP和IOC)<ol>
+<li>DataSource</li>
+<li>TransactionManager</li>
+</ol>
+</li>
+</ol>
+<p><a href="https://blog.csdn.net/justloveyou_/article/details/73733278" target="_blank" rel="noopener">https://blog.csdn.net/justloveyou_/article/details/73733278</a></p>
+<h3 id="Spring-的不同事务传播行为有哪些，干什么用的？"><a href="#Spring-的不同事务传播行为有哪些，干什么用的？" class="headerlink" title="Spring 的不同事务传播行为有哪些，干什么用的？"></a>Spring 的不同事务传播行为有哪些，干什么用的？</h3><p><a href="https://blog.csdn.net/it_wangxiangpan/article/details/24180085" target="_blank" rel="noopener">浅析Spring事务传播行为</a></p>
+<h3 id="Spring中事务的隔离级别"><a href="#Spring中事务的隔离级别" class="headerlink" title="Spring中事务的隔离级别"></a>Spring中事务的隔离级别</h3><p>[<a href="https://blog.csdn.net/a837199685/article/details/54563740" target="_blank" rel="noopener">MySQL事务隔离级别和Spring事务关系介绍</a></p>
+<h3 id="Spring-中用到了那些设计模式？"><a href="#Spring-中用到了那些设计模式？" class="headerlink" title="Spring 中用到了那些设计模式？"></a>Spring 中用到了那些设计模式？</h3><p><a href="https://www.cnblogs.com/yuefan/p/3763898.html" target="_blank" rel="noopener">https://www.cnblogs.com/yuefan/p/3763898.html</a></p>
+<p><a href="http://www.uml.org.cn/j2ee/201301074.asp" target="_blank" rel="noopener">http://www.uml.org.cn/j2ee/201301074.asp</a></p>
+<p><a href="http://wiki.jikexueyuan.com/project/design-pattern-creation/" target="_blank" rel="noopener">设计模式之创建型模式</a></p>
+<h3 id="Spring-MVC-的工作原理？"><a href="#Spring-MVC-的工作原理？" class="headerlink" title="Spring MVC 的工作原理？"></a>Spring MVC 的工作原理？</h3><p><a href="https://blog.csdn.net/liang5630/article/details/43733733" target="_blank" rel="noopener">SpringMVC工作原理</a></p>
+<h3 id="Spring-循环注入的原理？"><a href="#Spring-循环注入的原理？" class="headerlink" title="Spring 循环注入的原理？"></a>Spring 循环注入的原理？</h3><h3 id="Spring-AOP的理解，各个术语，他们是怎么相互工作的？"><a href="#Spring-AOP的理解，各个术语，他们是怎么相互工作的？" class="headerlink" title="Spring AOP的理解，各个术语，他们是怎么相互工作的？"></a>Spring AOP的理解，各个术语，他们是怎么相互工作的？</h3><h3 id="Spring-如何保证-Controller-并发的安全？"><a href="#Spring-如何保证-Controller-并发的安全？" class="headerlink" title="Spring 如何保证 Controller 并发的安全？"></a>Spring 如何保证 Controller 并发的安全？</h3><p><a href="https://blog.csdn.net/hejingyuan6/article/details/50363647" target="_blank" rel="noopener">https://blog.csdn.net/hejingyuan6/article/details/50363647</a></p>
+<p><a href="http://www.cnblogs.com/duanxz/p/5051916.html" target="_blank" rel="noopener">http://www.cnblogs.com/duanxz/p/5051916.html</a></p>
+<h2 id="Netty"><a href="#Netty" class="headerlink" title="Netty"></a>Netty</h2><p>1、BIO、NIO和AIO<br>2、Netty 的各大组件<br>3、Netty的线程模型<br>4、TCP 粘包/拆包的原因及解决方法<br>5、了解哪几种序列化协议？包括使用场景和如何去选择<br>6、Netty的零拷贝实现<br>7、Netty的高性能表现在哪些方面</p>
+<h2 id="分布式相关"><a href="#分布式相关" class="headerlink" title="分布式相关"></a>分布式相关</h2><p>1、Dubbo的底层实现原理和机制<br>2、描述一个服务从发布到被消费的详细过程<br>3、分布式系统怎么做服务治理<br>4、接口的幂等性的概念<br>5、消息中间件如何解决消息丢失问题<br>6、Dubbo的服务请求失败怎么处理<br>7、重连机制会不会造成错误<br>8、对分布式事务的理解<br>9、如何实现负载均衡，有哪些算法可以实现？<br>10、Zookeeper的用途，选举的原理是什么？<br>11、数据的垂直拆分水平拆分。<br>12、zookeeper原理和适用场景<br>13、zookeeper watch机制<br>14、redis/zk节点宕机如何处理<br>15、分布式集群下如何做到唯一序列号<br>16、如何做一个分布式锁<br>17、用过哪些MQ，怎么用的，和其他mq比较有什么优缺点，MQ的连接是线程安全的吗<br>18、MQ系统的数据如何保证不丢失<br>19、列举出你能想到的数据库分库分表策略；分库分表后，如何解决全表查询的问题<br>20、zookeeper的选举策略<br>21、全局ID</p>
+<h2 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h2><h3 id="mysql分页有什么优化"><a href="#mysql分页有什么优化" class="headerlink" title="mysql分页有什么优化"></a>mysql分页有什么优化</h3><p><a href="https://blog.csdn.net/bingduanlbd/article/details/51767850" target="_blank" rel="noopener">https://blog.csdn.net/bingduanlbd/article/details/51767850</a></p>
+<h3 id="悲观锁、乐观锁"><a href="#悲观锁、乐观锁" class="headerlink" title="悲观锁、乐观锁"></a>悲观锁、乐观锁</h3><p>悲观锁：假定会发生并发冲突，屏蔽一切可能违反数据完整性的操作。</p>
+<p>乐观锁：假设不会发生并发冲突，只在提交操作时检查是否违反数据完整性。 乐观锁不能解决脏读的问题。</p>
+<p><a href="https://www.jianshu.com/p/f5ff017db62a" target="_blank" rel="noopener">MySQL 乐观锁与悲观锁</a></p>
+<p><a href="http://www.hollischuang.com/archives/934" target="_blank" rel="noopener">深入理解乐观锁与悲观锁</a></p>
+<h3 id="组合索引，最左原则"><a href="#组合索引，最左原则" class="headerlink" title="组合索引，最左原则"></a>组合索引，最左原则</h3><h3 id="mysql-的表锁、行锁"><a href="#mysql-的表锁、行锁" class="headerlink" title="mysql 的表锁、行锁"></a>mysql 的表锁、行锁</h3><h3 id="mysql-性能优化"><a href="#mysql-性能优化" class="headerlink" title="mysql 性能优化"></a>mysql 性能优化</h3><h3 id="mysql的索引分类：B-，hash；什么情况用什么索引"><a href="#mysql的索引分类：B-，hash；什么情况用什么索引" class="headerlink" title="mysql的索引分类：B+，hash；什么情况用什么索引"></a>mysql的索引分类：B+，hash；什么情况用什么索引</h3><h3 id="事务的特性和隔离级别"><a href="#事务的特性和隔离级别" class="headerlink" title="事务的特性和隔离级别"></a>事务的特性和隔离级别</h3><ol>
+<li>原子性</li>
+<li>一致性</li>
+<li>持久性</li>
+<li>隔离性</li>
+</ol>
+<ol>
+<li>Serializable（串行化）：可避免脏读、不可重复读、幻读的发生。（级别最高）</li>
+<li>Repeatable-read（可重复读）：可避免脏读、不可重复读的发生。</li>
+<li>Read-committed（读已提交）：可避免脏读的发生。</li>
+<li>Read-uncommitted（读未提交）：最低级别，任何情况都无法保证。（级别最低）</li>
+</ol>
+<p><a href="https://blog.csdn.net/lamp_yang_3533/article/details/79344736" target="_blank" rel="noopener">https://blog.csdn.net/lamp_yang_3533/article/details/79344736</a></p>
+<p><a href="http://blog.sina.com.cn/s/blog_8020e4110101bfc6.html" target="_blank" rel="noopener">http://blog.sina.com.cn/s/blog_8020e4110101bfc6.html</a></p>
+<h2 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h2><p>1、Redis用过哪些数据数据，以及Redis底层怎么实现<br>2、Redis缓存穿透，缓存雪崩<br>3、如何使用Redis来实现分布式锁<br>4、Redis的并发竞争问题如何解决<br>5、Redis持久化的几种方式，优缺点是什么，怎么实现的<br>6、Redis的缓存失效策略<br>7、Redis集群，高可用，原理<br>8、Redis缓存分片<br>9、Redis的数据淘汰策略</p>
+<p><a href="https://mp.weixin.qq.com/s/tDmBPPk0LAbNZ8d809-2ZA" target="_blank" rel="noopener">原文</a>   <a href="https://mp.weixin.qq.com/s?__biz=MzIwMzY1OTU1NQ==&amp;mid=2247484038&amp;idx=1&amp;sn=a31c83f3a132ee8fa816f7b1db3839eb&amp;chksm=96cd42caa1bacbdc807724ab48e5ce085f368fd17c1da7f7845c8faf2f1a39138c242d0161a8&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">原文</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/02/java/datastructure/ListSetMap/" rel="next" title="List、Set、Map">
+                <i class="fa fa-chevron-left"></i> List、Set、Map
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <p class="site-author-name" itemprop="name">joyo</p>
+            <p class="site-description motion-element" itemprop="description">一入java深似海，从此娱乐是路人。</p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">31</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://yakirchen.com/" title="yakir's notes" target="_blank">yakir's notes</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java基础"><span class="nav-number">1.</span> <span class="nav-text">Java基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#List-、-Set、Map-的区别"><span class="nav-number">1.1.</span> <span class="nav-text">List 、 Set、Map 的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HashSet-是如何保证不重复的"><span class="nav-number">1.2.</span> <span class="nav-text">HashSet 是如何保证不重复的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HashMap-是线程安全的吗，为什么不是线程安全的（最好画图说明多线程环境下不安全）"><span class="nav-number">1.3.</span> <span class="nav-text">HashMap 是线程安全的吗，为什么不是线程安全的（最好画图说明多线程环境下不安全）?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HashMap-的扩容过程"><span class="nav-number">1.4.</span> <span class="nav-text">HashMap 的扩容过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HashMap-1-7-与-1-8-的-区别，说明-1-8-做了哪些优化，如何优化的？"><span class="nav-number">1.5.</span> <span class="nav-text">HashMap 1.7 与 1.8 的 区别，说明 1.8 做了哪些优化，如何优化的？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#final-finally-finalize"><span class="nav-number">1.6.</span> <span class="nav-text">final finally finalize</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#强引用-、软引用、-弱引用、虚引用"><span class="nav-number">1.7.</span> <span class="nav-text">强引用 、软引用、 弱引用、虚引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java反射"><span class="nav-number">1.8.</span> <span class="nav-text">Java反射</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Arrays-sort-实现原理和-Collection-实现原理"><span class="nav-number">1.9.</span> <span class="nav-text">Arrays.sort 实现原理和 Collection 实现原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LinkedHashMap的应用"><span class="nav-number">1.10.</span> <span class="nav-text">LinkedHashMap的应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cloneable接口实现原理"><span class="nav-number">1.11.</span> <span class="nav-text">cloneable接口实现原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java创建对象的几种方式"><span class="nav-number">1.12.</span> <span class="nav-text">Java创建对象的几种方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#异常分类以及处理机制"><span class="nav-number">1.13.</span> <span class="nav-text">异常分类以及处理机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#wait和sleep的区别"><span class="nav-number">1.14.</span> <span class="nav-text">wait和sleep的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数组在内存中如何分配"><span class="nav-number">1.15.</span> <span class="nav-text">数组在内存中如何分配</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-并发"><span class="nav-number">2.</span> <span class="nav-text">Java 并发</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#synchronized-的实现原理以及锁优化？"><span class="nav-number">2.1.</span> <span class="nav-text">synchronized 的实现原理以及锁优化？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#volatile-的实现原理？"><span class="nav-number">2.2.</span> <span class="nav-text">volatile 的实现原理？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java-的信号灯？"><span class="nav-number">2.3.</span> <span class="nav-text">Java 的信号灯？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#synchronized-在静态方法和普通方法的区别？"><span class="nav-number">2.4.</span> <span class="nav-text">synchronized 在静态方法和普通方法的区别？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#怎么实现所有线程在等待某个事件的发生才会去执行？"><span class="nav-number">2.5.</span> <span class="nav-text">怎么实现所有线程在等待某个事件的发生才会去执行？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CAS？CAS-有什么缺陷，如何解决？"><span class="nav-number">2.6.</span> <span class="nav-text">CAS？CAS 有什么缺陷，如何解决？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#synchronized-和-lock-有什么区别？"><span class="nav-number">2.7.</span> <span class="nav-text">synchronized 和 lock 有什么区别？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hashtable-是怎么加锁的-？"><span class="nav-number">2.8.</span> <span class="nav-text">Hashtable 是怎么加锁的 ？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HashMap-的并发问题？"><span class="nav-number">2.9.</span> <span class="nav-text">HashMap 的并发问题？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ConcurrenHashMap-介绍？1-8-中为什么要用红黑树？"><span class="nav-number">2.10.</span> <span class="nav-text">ConcurrenHashMap 介绍？1.8 中为什么要用红黑树？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AQS"><span class="nav-number">2.11.</span> <span class="nav-text">AQS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何检测死锁？怎么预防死锁？"><span class="nav-number">2.12.</span> <span class="nav-text">如何检测死锁？怎么预防死锁？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java-内存模型？"><span class="nav-number">2.13.</span> <span class="nav-text">Java 内存模型？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何保证多线程下-i-结果正确？"><span class="nav-number">2.14.</span> <span class="nav-text">如何保证多线程下 i++ 结果正确？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程池的种类，区别和使用场景？"><span class="nav-number">2.15.</span> <span class="nav-text">线程池的种类，区别和使用场景？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分析线程池的实现原理和线程的调度过程？"><span class="nav-number">2.16.</span> <span class="nav-text">分析线程池的实现原理和线程的调度过程？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程池如何调优，最大数目如何确认？"><span class="nav-number">2.17.</span> <span class="nav-text">线程池如何调优，最大数目如何确认？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ThreadLocal原理，用的时候需要注意什么？"><span class="nav-number">2.18.</span> <span class="nav-text">ThreadLocal原理，用的时候需要注意什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CountDownLatch-和-CyclicBarrier-的用法，以及相互之间的差别"><span class="nav-number">2.19.</span> <span class="nav-text">CountDownLatch 和 CyclicBarrier 的用法，以及相互之间的差别?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LockSupport工具"><span class="nav-number">2.20.</span> <span class="nav-text">LockSupport工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Condition接口及其实现原理"><span class="nav-number">2.21.</span> <span class="nav-text">Condition接口及其实现原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fork-Join框架的理解"><span class="nav-number">2.22.</span> <span class="nav-text">Fork/Join框架的理解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分段锁的原理-锁力度减小的思考"><span class="nav-number">2.23.</span> <span class="nav-text">分段锁的原理,锁力度减小的思考</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#八种阻塞队列以及各个阻塞队列的特性"><span class="nav-number">2.24.</span> <span class="nav-text">八种阻塞队列以及各个阻塞队列的特性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JVM"><span class="nav-number">3.</span> <span class="nav-text">JVM</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#详细jvm内存模型"><span class="nav-number">3.1.</span> <span class="nav-text">详细jvm内存模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#讲讲什么情况下回出现内存溢出，内存泄漏？"><span class="nav-number">3.2.</span> <span class="nav-text">讲讲什么情况下回出现内存溢出，内存泄漏？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#说说Java线程栈"><span class="nav-number">3.3.</span> <span class="nav-text">说说Java线程栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JVM-年轻代到年老代的晋升过程的判断条件是什么呢？"><span class="nav-number">3.4.</span> <span class="nav-text">JVM 年轻代到年老代的晋升过程的判断条件是什么呢？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JVM-出现-fullGC-很频繁，怎么去线上排查问题？"><span class="nav-number">3.5.</span> <span class="nav-text">JVM 出现 fullGC 很频繁，怎么去线上排查问题？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类加载为什么要使用双亲委派模式，有没有什么场景是打破了这个模式？"><span class="nav-number">3.6.</span> <span class="nav-text">类加载为什么要使用双亲委派模式，有没有什么场景是打破了这个模式？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类的实例化顺序"><span class="nav-number">3.7.</span> <span class="nav-text">类的实例化顺序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JVM垃圾回收机制，何时触发MinorGC等操作"><span class="nav-number">3.8.</span> <span class="nav-text">JVM垃圾回收机制，何时触发MinorGC等操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JVM-中一次完整的-GC-流程（从-ygc-到-fgc）是怎样的"><span class="nav-number">3.9.</span> <span class="nav-text">JVM 中一次完整的 GC 流程（从 ygc 到 fgc）是怎样的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#各种回收器，各自优缺点，重点CMS、G1"><span class="nav-number">3.10.</span> <span class="nav-text">各种回收器，各自优缺点，重点CMS、G1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#各种回收算法"><span class="nav-number">3.11.</span> <span class="nav-text">各种回收算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OOM错误，stackoverflow错误，permgen-space错误"><span class="nav-number">3.12.</span> <span class="nav-text">OOM错误，stackoverflow错误，permgen space错误</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JVM-之-OopMap-和-RememberedSet"><span class="nav-number">3.13.</span> <span class="nav-text">JVM 之 OopMap 和 RememberedSet</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring"><span class="nav-number">4.</span> <span class="nav-text">Spring</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#BeanFactory-和-FactoryBean？"><span class="nav-number">4.1.</span> <span class="nav-text">BeanFactory 和 FactoryBean？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-IOC-的理解，其初始化过程？"><span class="nav-number">4.2.</span> <span class="nav-text">Spring IOC 的理解，其初始化过程？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#第一步-Resource定位"><span class="nav-number">4.2.1.</span> <span class="nav-text">第一步 Resource定位</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第二步-通过返回的resource对象，进行BeanDefinition的载入"><span class="nav-number">4.2.2.</span> <span class="nav-text">第二步 通过返回的resource对象，进行BeanDefinition的载入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第三步，将BeanDefiniton注册到容器中"><span class="nav-number">4.2.3.</span> <span class="nav-text">第三步，将BeanDefiniton注册到容器中</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BeanFactory-和-ApplicationContext？"><span class="nav-number">4.3.</span> <span class="nav-text">BeanFactory 和 ApplicationContext？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-Bean-的生命周期，如何被管理的？"><span class="nav-number">4.4.</span> <span class="nav-text">Spring Bean 的生命周期，如何被管理的？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-Bean-的加载过程是怎样的？"><span class="nav-number">4.5.</span> <span class="nav-text">Spring Bean 的加载过程是怎样的？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如果要你实现Spring-AOP，请问怎么实现？"><span class="nav-number">4.6.</span> <span class="nav-text">如果要你实现Spring AOP，请问怎么实现？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如果要你实现Spring-IOC，你会注意哪些问题？"><span class="nav-number">4.7.</span> <span class="nav-text">如果要你实现Spring IOC，你会注意哪些问题？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-是如何管理事务的，事务管理机制？"><span class="nav-number">4.8.</span> <span class="nav-text">Spring 是如何管理事务的，事务管理机制？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-的不同事务传播行为有哪些，干什么用的？"><span class="nav-number">4.9.</span> <span class="nav-text">Spring 的不同事务传播行为有哪些，干什么用的？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring中事务的隔离级别"><span class="nav-number">4.10.</span> <span class="nav-text">Spring中事务的隔离级别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-中用到了那些设计模式？"><span class="nav-number">4.11.</span> <span class="nav-text">Spring 中用到了那些设计模式？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-MVC-的工作原理？"><span class="nav-number">4.12.</span> <span class="nav-text">Spring MVC 的工作原理？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-循环注入的原理？"><span class="nav-number">4.13.</span> <span class="nav-text">Spring 循环注入的原理？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-AOP的理解，各个术语，他们是怎么相互工作的？"><span class="nav-number">4.14.</span> <span class="nav-text">Spring AOP的理解，各个术语，他们是怎么相互工作的？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-如何保证-Controller-并发的安全？"><span class="nav-number">4.15.</span> <span class="nav-text">Spring 如何保证 Controller 并发的安全？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Netty"><span class="nav-number">5.</span> <span class="nav-text">Netty</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分布式相关"><span class="nav-number">6.</span> <span class="nav-text">分布式相关</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据库"><span class="nav-number">7.</span> <span class="nav-text">数据库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#mysql分页有什么优化"><span class="nav-number">7.1.</span> <span class="nav-text">mysql分页有什么优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#悲观锁、乐观锁"><span class="nav-number">7.2.</span> <span class="nav-text">悲观锁、乐观锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#组合索引，最左原则"><span class="nav-number">7.3.</span> <span class="nav-text">组合索引，最左原则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mysql-的表锁、行锁"><span class="nav-number">7.4.</span> <span class="nav-text">mysql 的表锁、行锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mysql-性能优化"><span class="nav-number">7.5.</span> <span class="nav-text">mysql 性能优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mysql的索引分类：B-，hash；什么情况用什么索引"><span class="nav-number">7.6.</span> <span class="nav-text">mysql的索引分类：B+，hash；什么情况用什么索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#事务的特性和隔离级别"><span class="nav-number">7.7.</span> <span class="nav-text">事务的特性和隔离级别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缓存"><span class="nav-number">8.</span> <span class="nav-text">缓存</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 &mdash; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-joyo"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">joyo</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

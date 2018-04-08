@@ -330,7 +330,7 @@
 <li>支持阻塞地移除方法：意思是当队列空时，获取元素的线程会等待队列变空。</li>
 </ol>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">public interface BlockingQueue&lt;E&gt; extends Queue&lt;E&gt; &#123;</div><div class="line">    boolean add(E e);</div><div class="line"></div><div class="line">    boolean offer(E e);</div><div class="line"></div><div class="line">    void put(E e) throws InterruptedException;</div><div class="line"></div><div class="line">    boolean offer(E e, long timeout, TimeUnit unit)</div><div class="line">        throws InterruptedException;</div><div class="line"></div><div class="line">    E take() throws InterruptedException;</div><div class="line"></div><div class="line">    E poll(long timeout, TimeUnit unit)</div><div class="line">        throws InterruptedException;</div><div class="line"></div><div class="line">    int remainingCapacity();</div><div class="line"></div><div class="line">    boolean remove(Object o);</div><div class="line"></div><div class="line">    public boolean contains(Object o);</div><div class="line"></div><div class="line">    int drainTo(Collection&lt;? super E&gt; c);</div><div class="line"></div><div class="line">    int drainTo(Collection&lt;? super E&gt; c, int maxElements);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">public interface BlockingQueue&lt;E&gt; extends Queue&lt;E&gt; &#123;</span><br><span class="line">    boolean add(E e);</span><br><span class="line"></span><br><span class="line">    boolean offer(E e);</span><br><span class="line"></span><br><span class="line">    void put(E e) throws InterruptedException;</span><br><span class="line"></span><br><span class="line">    boolean offer(E e, long timeout, TimeUnit unit)</span><br><span class="line">        throws InterruptedException;</span><br><span class="line"></span><br><span class="line">    E take() throws InterruptedException;</span><br><span class="line"></span><br><span class="line">    E poll(long timeout, TimeUnit unit)</span><br><span class="line">        throws InterruptedException;</span><br><span class="line"></span><br><span class="line">    int remainingCapacity();</span><br><span class="line"></span><br><span class="line">    boolean remove(Object o);</span><br><span class="line"></span><br><span class="line">    public boolean contains(Object o);</span><br><span class="line"></span><br><span class="line">    int drainTo(Collection&lt;? super E&gt; c);</span><br><span class="line"></span><br><span class="line">    int drainTo(Collection&lt;? super E&gt; c, int maxElements);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <table>
 <thead>
 <tr>
@@ -483,7 +483,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-count">31</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -494,7 +494,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-count">11</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -505,7 +505,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-count">15</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
