@@ -5,12 +5,15 @@
   
 
 
-<html class="theme-next mist use-motion" lang="zh-Hans">
+<html class="theme-next mist use-motion" lang="zh-CN">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
 <meta name="theme-color" content="#222">
+
+
+
 
 
 
@@ -38,10 +41,6 @@
 
 
 
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
-
 
 
 
@@ -50,45 +49,25 @@
 
 <link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+<link href="/css/main.css?v=6.1.0" rel="stylesheet" type="text/css" />
 
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.1.0">
 
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.1.0">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.1.0">
 
 
-  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
-
-
-
-
-
-  <meta name="keywords" content="Hexo, NexT" />
+  <link rel="mask-icon" href="/images/logo.svg?v=6.1.0" color="#222">
 
 
 
 
 
 
-
-
-
-
-<meta name="description" content="一入java深似海，从此娱乐是路人。">
-<meta property="og:type" content="website">
-<meta property="og:title" content="joyo&#39;s world">
-<meta property="og:url" content="http://www.iforfee.com/index.html">
-<meta property="og:site_name" content="joyo&#39;s world">
-<meta property="og:description" content="一入java深似海，从此娱乐是路人。">
-<meta property="og:locale" content="zh-Hans">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="joyo&#39;s world">
-<meta name="twitter:description" content="一入java深似海，从此娱乐是路人。">
 
 
 
@@ -97,15 +76,13 @@
   var CONFIG = {
     root: '/',
     scheme: 'Mist',
-    version: '5.1.4',
+    version: '6.1.0',
     sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
-    fancybox: true,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
     tabs: true,
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    duoshuo: {
-      userId: '0',
-      author: '博主'
-    },
     algolia: {
       applicationID: '',
       apiKey: '',
@@ -117,12 +94,36 @@
 </script>
 
 
+  
+
+
+
+
+  <meta name="description" content="一入java深似海，从此娱乐是路人。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="joyo&#39;s world">
+<meta property="og:url" content="http://www.iforfee.com/index.html">
+<meta property="og:site_name" content="joyo&#39;s world">
+<meta property="og:description" content="一入java深似海，从此娱乐是路人。">
+<meta property="og:locale" content="zh-CN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="joyo&#39;s world">
+<meta name="twitter:description" content="一入java深似海，从此娱乐是路人。">
+
+
+
+
+
 
   <link rel="canonical" href="http://www.iforfee.com/"/>
 
 
 
-
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
 
   <title>joyo's world</title>
   
@@ -134,9 +135,37 @@
 
 
 
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
 
   
   
@@ -153,7 +182,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
+      <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">joyo's world</span>
         <span class="logo-line-after"><i></i></span>
@@ -165,7 +194,7 @@
   </div>
 
   <div class="site-nav-toggle">
-    <button>
+    <button aria-label="切换导航栏">
       <span class="btn-bar"></span>
       <span class="btn-bar"></span>
       <span class="btn-bar"></span>
@@ -173,45 +202,46 @@
   </div>
 </div>
 
-<nav class="site-nav">
-  
 
+
+
+<nav class="site-nav">
   
     <ul id="menu" class="menu">
       
         
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
-            
-            首页
-          </a>
-        </li>
-      
         
-        <li class="menu-item menu-item-categories">
-          <a href="/categories/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
-            
-            分类
-          </a>
-        </li>
-      
         
-        <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
-            
-            归档
-          </a>
-        </li>
-      
+          
+          <li class="menu-item menu-item-home menu-item-active">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+  </li>
 
       
+      
     </ul>
+  
+
+  
+    
+
   
 
   
@@ -219,12 +249,20 @@
 
 
 
- </div>
+  
+
+
+
+</div>
     </header>
+
+    
+
 
     <main id="main" class="main">
       <div class="main-inner">
         <div class="content-wrap">
+          
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
@@ -235,6 +273,8 @@
 
   
   
+  
+
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
@@ -261,11 +301,20 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/redis/redis事务/" itemprop="url">redis事务</a></h1>
+                <a class="post-title-link" href="/redis/redis事务/" itemprop="url">
+                  redis事务
+                </a>
+              
+            
+          </h1>
         
 
         <div class="post-meta">
           <span class="post-time">
+            
+                
+            
+
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -273,11 +322,10 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-13T11:00:31+08:00">
-                2018-04-13
-              </time>
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-13T11:00:31+08:00">2018-04-13</time>
             
 
+            
             
 
             
@@ -295,11 +343,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/redis/" itemprop="url" rel="index">
-                    <span itemprop="name">redis</span>
-                  </a>
-                </span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/redis/" itemprop="url" rel="index"><span itemprop="name">redis</span></a></span>
 
                 
                 
@@ -359,6 +403,9 @@
         
       
     </div>
+
+    
+
     
     
     
@@ -397,6 +444,8 @@
   
   
 
+  
+
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
@@ -421,11 +470,20 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/redis/分布式锁的几种实现方式/" itemprop="url">分布式锁的几种实现方式</a></h1>
+                <a class="post-title-link" href="/redis/分布式锁的几种实现方式/" itemprop="url">
+                  分布式锁的几种实现方式
+                </a>
+              
+            
+          </h1>
         
 
         <div class="post-meta">
           <span class="post-time">
+            
+                
+            
+
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -433,11 +491,10 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-12T22:48:46+08:00">
-                2018-04-12
-              </time>
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-12T22:48:46+08:00">2018-04-12</time>
             
 
+            
             
 
             
@@ -455,11 +512,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/redis/" itemprop="url" rel="index">
-                    <span itemprop="name">redis</span>
-                  </a>
-                </span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/redis/" itemprop="url" rel="index"><span itemprop="name">redis</span></a></span>
 
                 
                 
@@ -518,6 +571,9 @@
         
       
     </div>
+
+    
+
     
     
     
@@ -556,6 +612,8 @@
   
   
 
+  
+
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
@@ -580,11 +638,20 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/redis/redis合集/" itemprop="url">Redis合集</a></h1>
+                <a class="post-title-link" href="/redis/redis合集/" itemprop="url">
+                  Redis合集
+                </a>
+              
+            
+          </h1>
         
 
         <div class="post-meta">
           <span class="post-time">
+            
+                
+            
+
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -592,11 +659,10 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-12T15:16:22+08:00">
-                2018-04-12
-              </time>
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-12T15:16:22+08:00">2018-04-12</time>
             
 
+            
             
 
             
@@ -614,11 +680,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/redis/" itemprop="url" rel="index">
-                    <span itemprop="name">redis</span>
-                  </a>
-                </span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/redis/" itemprop="url" rel="index"><span itemprop="name">redis</span></a></span>
 
                 
                 
@@ -686,6 +748,9 @@ redis下并发问题解决方案
         
       
     </div>
+
+    
+
     
     
     
@@ -724,6 +789,8 @@ redis下并发问题解决方案
   
   
 
+  
+
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
@@ -748,11 +815,20 @@ redis下并发问题解决方案
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/java/Java IO/" itemprop="url">Java IO</a></h1>
+                <a class="post-title-link" href="/java/Java IO/" itemprop="url">
+                  Java IO
+                </a>
+              
+            
+          </h1>
         
 
         <div class="post-meta">
           <span class="post-time">
+            
+                
+            
+
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -760,11 +836,10 @@ redis下并发问题解决方案
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-08T18:56:12+08:00">
-                2018-04-08
-              </time>
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-08T18:56:12+08:00">2018-04-08</time>
             
 
+            
             
 
             
@@ -782,11 +857,7 @@ redis下并发问题解决方案
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
-                  </a>
-                </span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a></span>
 
                 
                 
@@ -847,6 +918,9 @@ Java NIO浅析
         
       
     </div>
+
+    
+
     
     
     
@@ -885,6 +959,8 @@ Java NIO浅析
   
   
 
+  
+
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
@@ -909,11 +985,20 @@ Java NIO浅析
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/netty/netty相关概念/" itemprop="url">netty相关概念</a></h1>
+                <a class="post-title-link" href="/netty/netty相关概念/" itemprop="url">
+                  netty相关概念
+                </a>
+              
+            
+          </h1>
         
 
         <div class="post-meta">
           <span class="post-time">
+            
+                
+            
+
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -921,11 +1006,10 @@ Java NIO浅析
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-08T16:26:06+08:00">
-                2018-04-08
-              </time>
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-08T16:26:06+08:00">2018-04-08</time>
             
 
+            
             
 
             
@@ -988,6 +1072,9 @@ Netty入门教程——认识NettyNetty入门教程2——动手搭建HttpServer
         
       
     </div>
+
+    
+
     
     
     
@@ -1026,6 +1113,8 @@ Netty入门教程——认识NettyNetty入门教程2——动手搭建HttpServer
   
   
 
+  
+
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
@@ -1050,11 +1139,20 @@ Netty入门教程——认识NettyNetty入门教程2——动手搭建HttpServer
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/mysql/mysql索引及查询优化/" itemprop="url">mysql索引及查询优化</a></h1>
+                <a class="post-title-link" href="/mysql/mysql索引及查询优化/" itemprop="url">
+                  mysql索引及查询优化
+                </a>
+              
+            
+          </h1>
         
 
         <div class="post-meta">
           <span class="post-time">
+            
+                
+            
+
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -1062,11 +1160,10 @@ Netty入门教程——认识NettyNetty入门教程2——动手搭建HttpServer
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-08T11:52:53+08:00">
-                2018-04-08
-              </time>
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-08T11:52:53+08:00">2018-04-08</time>
             
 
+            
             
 
             
@@ -1084,11 +1181,7 @@ Netty入门教程——认识NettyNetty入门教程2——动手搭建HttpServer
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/mysql/" itemprop="url" rel="index">
-                    <span itemprop="name">mysql</span>
-                  </a>
-                </span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/mysql/" itemprop="url" rel="index"><span itemprop="name">mysql</span></a></span>
 
                 
                 
@@ -1148,6 +1241,9 @@ Netty入门教程——认识NettyNetty入门教程2——动手搭建HttpServer
         
       
     </div>
+
+    
+
     
     
     
@@ -1186,6 +1282,8 @@ Netty入门教程——认识NettyNetty入门教程2——动手搭建HttpServer
   
   
 
+  
+
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
@@ -1210,11 +1308,20 @@ Netty入门教程——认识NettyNetty入门教程2——动手搭建HttpServer
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/感悟/" itemprop="url">感悟</a></h1>
+                <a class="post-title-link" href="/感悟/" itemprop="url">
+                  感悟
+                </a>
+              
+            
+          </h1>
         
 
         <div class="post-meta">
           <span class="post-time">
+            
+                
+            
+
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -1222,11 +1329,10 @@ Netty入门教程——认识NettyNetty入门教程2——动手搭建HttpServer
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-04T22:32:08+08:00">
-                2018-04-04
-              </time>
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-04T22:32:08+08:00">2018-04-04</time>
             
 
+            
             
 
             
@@ -1289,6 +1395,9 @@ Netty入门教程——认识NettyNetty入门教程2——动手搭建HttpServer
         
       
     </div>
+
+    
+
     
     
     
@@ -1327,6 +1436,8 @@ Netty入门教程——认识NettyNetty入门教程2——动手搭建HttpServer
   
   
 
+  
+
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
@@ -1351,11 +1462,20 @@ Netty入门教程——认识NettyNetty入门教程2——动手搭建HttpServer
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/java/datastructure/treemap/" itemprop="url">彻底看懂 so called 红黑树</a></h1>
+                <a class="post-title-link" href="/java/datastructure/treemap/" itemprop="url">
+                  彻底看懂 so called 红黑树
+                </a>
+              
+            
+          </h1>
         
 
         <div class="post-meta">
           <span class="post-time">
+            
+                
+            
+
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -1363,11 +1483,10 @@ Netty入门教程——认识NettyNetty入门教程2——动手搭建HttpServer
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-03T10:42:25+08:00">
-                2018-04-03
-              </time>
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-03T10:42:25+08:00">2018-04-03</time>
             
 
+            
             
 
             
@@ -1430,6 +1549,9 @@ Netty入门教程——认识NettyNetty入门教程2——动手搭建HttpServer
         
       
     </div>
+
+    
+
     
     
     
@@ -1468,6 +1590,8 @@ Netty入门教程——认识NettyNetty入门教程2——动手搭建HttpServer
   
   
 
+  
+
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
@@ -1492,11 +1616,20 @@ Netty入门教程——认识NettyNetty入门教程2——动手搭建HttpServer
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/面试/" itemprop="url">面试</a></h1>
+                <a class="post-title-link" href="/面试/" itemprop="url">
+                  面试
+                </a>
+              
+            
+          </h1>
         
 
         <div class="post-meta">
           <span class="post-time">
+            
+                
+            
+
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -1504,11 +1637,10 @@ Netty入门教程——认识NettyNetty入门教程2——动手搭建HttpServer
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-02T17:29:38+08:00">
-                2018-04-02
-              </time>
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-02T17:29:38+08:00">2018-04-02</time>
             
 
+            
             
 
             
@@ -1568,6 +1700,9 @@ Netty入门教程——认识NettyNetty入门教程2——动手搭建HttpServer
         
       
     </div>
+
+    
+
     
     
     
@@ -1606,6 +1741,8 @@ Netty入门教程——认识NettyNetty入门教程2——动手搭建HttpServer
   
   
 
+  
+
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
@@ -1630,11 +1767,20 @@ Netty入门教程——认识NettyNetty入门教程2——动手搭建HttpServer
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/java/datastructure/ListSetMap/" itemprop="url">List、Set、Map</a></h1>
+                <a class="post-title-link" href="/java/datastructure/ListSetMap/" itemprop="url">
+                  List、Set、Map
+                </a>
+              
+            
+          </h1>
         
 
         <div class="post-meta">
           <span class="post-time">
+            
+                
+            
+
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -1642,11 +1788,10 @@ Netty入门教程——认识NettyNetty入门教程2——动手搭建HttpServer
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-02T16:56:17+08:00">
-                2018-04-02
-              </time>
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-02T16:56:17+08:00">2018-04-02</time>
             
 
+            
             
 
             
@@ -1710,6 +1855,9 @@ List
         
       
     </div>
+
+    
+
     
     
     
@@ -1744,15 +1892,12 @@ List
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
 
           </div>
-          
-
-
           
 
         </div>
@@ -1783,42 +1928,106 @@ List
               <p class="site-description motion-element" itemprop="description">一入java深似海，从此娱乐是路人。</p>
           </div>
 
-          <nav class="site-state motion-element">
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">38</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
 
-            
-              <div class="site-state-item site-state-posts">
               
-                <a href="/archives/">
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">12</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
               
-                  <span class="site-state-item-count">38</span>
-                  <span class="site-state-item-name">日志</span>
-                </a>
-              </div>
-            
 
-            
               
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">18</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
               
-              <div class="site-state-item site-state-categories">
-                <a href="/categories/index.html">
-                  <span class="site-state-item-count">12</span>
-                  <span class="site-state-item-name">分类</span>
-                </a>
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-tags">
-                <a href="/tags/index.html">
-                  <span class="site-state-item-count">18</span>
-                  <span class="site-state-item-name">标签</span>
-                </a>
-              </div>
-            
-
-          </nav>
+            </nav>
+          
 
           
 
@@ -1831,7 +2040,7 @@ List
           
             <div class="links-of-blogroll motion-element links-of-blogroll-block">
               <div class="links-of-blogroll-title">
-                <i class="fa  fa-fw fa-globe"></i>
+                <i class="fa  fa-fw fa-link"></i>
                 友情链接
               </div>
               <ul class="links-of-blogroll-list">
@@ -1844,6 +2053,9 @@ List
             </div>
           
 
+          
+            
+          
           
 
         </div>
@@ -1864,10 +2076,12 @@ List
     <footer id="footer" class="footer">
       <div class="footer-inner">
         <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
-  <span class="with-love">
+  <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">joyo</span>
+
+  
 
   
 </div>
@@ -1875,12 +2089,21 @@ List
 
 
 
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.0</div>
 
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Mist</a> v6.1.0</div>
 
 
 
 
         
+
 
 
 
@@ -1919,7 +2142,11 @@ List
 
 
 
-  
+
+
+
+
+
 
 
 
@@ -1939,16 +2166,6 @@ List
 
   
   
-    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-  
-
-  
-  
     <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
   
 
@@ -1957,18 +2174,13 @@ List
     <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
   
 
-  
-  
-    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
 
   
 
 
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/utils.js?v=6.1.0"></script>
 
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/motion.js?v=6.1.0"></script>
 
 
 
@@ -1980,22 +2192,18 @@ List
   
 
 
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.1.0"></script>
 
 
 
   
 
+  
+    <script id="dsq-count-scr" src="https://http-www-iforfee-com.disqus.com/count.js" async></script>
+  
 
   
 
-    
-      <script id="dsq-count-scr" src="https://http-www-iforfee-com.disqus.com/count.js" async></script>
-    
-
-    
-
-  
 
 
 
@@ -2019,8 +2227,6 @@ List
 
 
 
-
-
   
 
 
@@ -2034,6 +2240,10 @@ List
   
 
   
+
+  
+  
+
   
 
   

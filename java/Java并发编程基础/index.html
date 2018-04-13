@@ -5,12 +5,15 @@
   
 
 
-<html class="theme-next mist use-motion" lang="zh-Hans">
+<html class="theme-next mist use-motion" lang="zh-CN">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
 <meta name="theme-color" content="#222">
+
+
+
 
 
 
@@ -38,10 +41,6 @@
 
 
 
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
-
 
 
 
@@ -50,49 +49,25 @@
 
 <link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+<link href="/css/main.css?v=6.1.0" rel="stylesheet" type="text/css" />
 
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.1.0">
 
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.1.0">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.1.0">
 
 
-  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
-
-
-
-
-
-  <meta name="keywords" content="concurrent," />
+  <link rel="mask-icon" href="/images/logo.svg?v=6.1.0" color="#222">
 
 
 
 
 
 
-
-
-
-
-<meta name="description" content="线程的状态   名称 说明     NEW 初始状态，线程被构建，但还没有调用start()方法   RUNNABLE 运行状态，java线程将操作系统中的就绪和运行统称为运行中   BLOCKED 阻塞状态，表示线程阻塞于锁   WAITING 等待状态，当前线程需要等待其他线程做出一些特定动作（通知或中断）   TIME_WAITING 超时等待状态，不同于WAITING，它可以在指定的时间自">
-<meta name="keywords" content="concurrent">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Java并发编程基础">
-<meta property="og:url" content="http://www.iforfee.com/java/Java并发编程基础/index.html">
-<meta property="og:site_name" content="joyo&#39;s world">
-<meta property="og:description" content="线程的状态   名称 说明     NEW 初始状态，线程被构建，但还没有调用start()方法   RUNNABLE 运行状态，java线程将操作系统中的就绪和运行统称为运行中   BLOCKED 阻塞状态，表示线程阻塞于锁   WAITING 等待状态，当前线程需要等待其他线程做出一些特定动作（通知或中断）   TIME_WAITING 超时等待状态，不同于WAITING，它可以在指定的时间自">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://www.iforfee.com/images/thread-status-change.jpeg">
-<meta property="og:updated_time" content="2018-03-15T17:27:45.000Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java并发编程基础">
-<meta name="twitter:description" content="线程的状态   名称 说明     NEW 初始状态，线程被构建，但还没有调用start()方法   RUNNABLE 运行状态，java线程将操作系统中的就绪和运行统称为运行中   BLOCKED 阻塞状态，表示线程阻塞于锁   WAITING 等待状态，当前线程需要等待其他线程做出一些特定动作（通知或中断）   TIME_WAITING 超时等待状态，不同于WAITING，它可以在指定的时间自">
-<meta name="twitter:image" content="http://www.iforfee.com/images/thread-status-change.jpeg">
 
 
 
@@ -101,15 +76,13 @@
   var CONFIG = {
     root: '/',
     scheme: 'Mist',
-    version: '5.1.4',
+    version: '6.1.0',
     sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
-    fancybox: true,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
     tabs: true,
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    duoshuo: {
-      userId: '0',
-      author: '博主'
-    },
     algolia: {
       applicationID: '',
       apiKey: '',
@@ -121,12 +94,40 @@
 </script>
 
 
+  
+
+
+
+
+  <meta name="description" content="线程的状态   名称 说明     NEW 初始状态，线程被构建，但还没有调用start()方法   RUNNABLE 运行状态，java线程将操作系统中的就绪和运行统称为运行中   BLOCKED 阻塞状态，表示线程阻塞于锁   WAITING 等待状态，当前线程需要等待其他线程做出一些特定动作（通知或中断）   TIME_WAITING 超时等待状态，不同于WAITING，它可以在指定的时间自">
+<meta name="keywords" content="concurrent">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java并发编程基础">
+<meta property="og:url" content="http://www.iforfee.com/java/Java并发编程基础/index.html">
+<meta property="og:site_name" content="joyo&#39;s world">
+<meta property="og:description" content="线程的状态   名称 说明     NEW 初始状态，线程被构建，但还没有调用start()方法   RUNNABLE 运行状态，java线程将操作系统中的就绪和运行统称为运行中   BLOCKED 阻塞状态，表示线程阻塞于锁   WAITING 等待状态，当前线程需要等待其他线程做出一些特定动作（通知或中断）   TIME_WAITING 超时等待状态，不同于WAITING，它可以在指定的时间自">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://www.iforfee.com/images/thread-status-change.jpeg">
+<meta property="og:updated_time" content="2018-03-15T17:27:45.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java并发编程基础">
+<meta name="twitter:description" content="线程的状态   名称 说明     NEW 初始状态，线程被构建，但还没有调用start()方法   RUNNABLE 运行状态，java线程将操作系统中的就绪和运行统称为运行中   BLOCKED 阻塞状态，表示线程阻塞于锁   WAITING 等待状态，当前线程需要等待其他线程做出一些特定动作（通知或中断）   TIME_WAITING 超时等待状态，不同于WAITING，它可以在指定的时间自">
+<meta name="twitter:image" content="http://www.iforfee.com/images/thread-status-change.jpeg">
+
+
+
+
+
 
   <link rel="canonical" href="http://www.iforfee.com/java/Java并发编程基础/"/>
 
 
 
-
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
 
   <title>Java并发编程基础 | joyo's world</title>
   
@@ -138,9 +139,37 @@
 
 
 
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
 
   
   
@@ -156,7 +185,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
+      <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">joyo's world</span>
         <span class="logo-line-after"><i></i></span>
@@ -168,7 +197,7 @@
   </div>
 
   <div class="site-nav-toggle">
-    <button>
+    <button aria-label="切换导航栏">
       <span class="btn-bar"></span>
       <span class="btn-bar"></span>
       <span class="btn-bar"></span>
@@ -176,45 +205,46 @@
   </div>
 </div>
 
-<nav class="site-nav">
-  
 
+
+
+<nav class="site-nav">
   
     <ul id="menu" class="menu">
       
         
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
-            
-            首页
-          </a>
-        </li>
-      
         
-        <li class="menu-item menu-item-categories">
-          <a href="/categories/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
-            
-            分类
-          </a>
-        </li>
-      
         
-        <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
-            
-            归档
-          </a>
-        </li>
-      
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+  </li>
 
       
+      
     </ul>
+  
+
+  
+    
+
   
 
   
@@ -222,12 +252,20 @@
 
 
 
- </div>
+  
+
+
+
+</div>
     </header>
+
+    
+
 
     <main id="main" class="main">
       <div class="main-inner">
         <div class="content-wrap">
+          
           <div id="content" class="content">
             
 
@@ -238,6 +276,8 @@
 
   
   
+  
+
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
@@ -262,11 +302,18 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Java并发编程基础</h1>
+          <h1 class="post-title" itemprop="name headline">Java并发编程基础
+              
+            
+          </h1>
         
 
         <div class="post-meta">
           <span class="post-time">
+            
+                
+            
+
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -274,11 +321,10 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-13T22:18:55+08:00">
-                2018-03-13
-              </time>
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-13T22:18:55+08:00">2018-03-13</time>
             
 
+            
             
 
             
@@ -296,11 +342,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
-                  </a>
-                </span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a></span>
 
                 
                 
@@ -411,6 +453,9 @@
 <h3 id="数据库连接池"><a href="#数据库连接池" class="headerlink" title="数据库连接池"></a>数据库连接池</h3><h3 id="web服务器"><a href="#web服务器" class="headerlink" title="web服务器"></a>web服务器</h3>
       
     </div>
+
+    
+
     
     
     
@@ -476,9 +521,6 @@
           </div>
           
 
-
-          
-
   
     <div class="comments" id="comments">
       <div id="disqus_thread">
@@ -530,42 +572,106 @@
               <p class="site-description motion-element" itemprop="description">一入java深似海，从此娱乐是路人。</p>
           </div>
 
-          <nav class="site-state motion-element">
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">38</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
 
-            
-              <div class="site-state-item site-state-posts">
               
-                <a href="/archives/">
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">12</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
               
-                  <span class="site-state-item-count">38</span>
-                  <span class="site-state-item-name">日志</span>
-                </a>
-              </div>
-            
 
-            
               
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">18</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
               
-              <div class="site-state-item site-state-categories">
-                <a href="/categories/index.html">
-                  <span class="site-state-item-count">12</span>
-                  <span class="site-state-item-name">分类</span>
-                </a>
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-tags">
-                <a href="/tags/index.html">
-                  <span class="site-state-item-count">18</span>
-                  <span class="site-state-item-name">标签</span>
-                </a>
-              </div>
-            
-
-          </nav>
+            </nav>
+          
 
           
 
@@ -578,7 +684,7 @@
           
             <div class="links-of-blogroll motion-element links-of-blogroll-block">
               <div class="links-of-blogroll-title">
-                <i class="fa  fa-fw fa-globe"></i>
+                <i class="fa  fa-fw fa-link"></i>
                 友情链接
               </div>
               <ul class="links-of-blogroll-list">
@@ -591,6 +697,9 @@
             </div>
           
 
+          
+            
+          
           
 
         </div>
@@ -627,10 +736,12 @@
     <footer id="footer" class="footer">
       <div class="footer-inner">
         <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
-  <span class="with-love">
+  <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">joyo</span>
+
+  
 
   
 </div>
@@ -638,12 +749,21 @@
 
 
 
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.0</div>
 
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Mist</a> v6.1.0</div>
 
 
 
 
         
+
 
 
 
@@ -682,7 +802,11 @@
 
 
 
-  
+
+
+
+
+
 
 
 
@@ -702,16 +826,6 @@
 
   
   
-    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-  
-
-  
-  
     <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
   
 
@@ -720,18 +834,13 @@
     <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
   
 
-  
-  
-    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
 
   
 
 
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/utils.js?v=6.1.0"></script>
 
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/motion.js?v=6.1.0"></script>
 
 
 
@@ -739,42 +848,43 @@
   
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.1.0"></script>
 
 
 
   
 
 
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.1.0"></script>
 
 
 
   
 
-
+  
+    <script id="dsq-count-scr" src="https://http-www-iforfee-com.disqus.com/count.js" async></script>
   
 
-    
-      <script id="dsq-count-scr" src="https://http-www-iforfee-com.disqus.com/count.js" async></script>
-    
-
-    
-      <script type="text/javascript">
-        var disqus_config = function () {
-          this.page.url = 'http://www.iforfee.com/java/Java并发编程基础/';
-          this.page.identifier = 'java/Java并发编程基础/';
-          this.page.title = 'Java并发编程基础';
-        };
+  
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'http://www.iforfee.com/java/Java并发编程基础/';
+        this.page.identifier = 'java/Java并发编程基础/';
+        this.page.title = 'Java并发编程基础';
+      };
+      function loadComments () {
         var d = document, s = d.createElement('script');
         s.src = 'https://http-www-iforfee-com.disqus.com/embed.js';
         s.setAttribute('data-timestamp', '' + +new Date());
         (d.head || d.body).appendChild(s);
-      </script>
-    
-
+      }
+      
+        loadComments();
+      
+    </script>
   
+
 
 
 
@@ -798,8 +908,6 @@
 
 
 
-
-
   
 
 
@@ -813,6 +921,10 @@
   
 
   
+
+  
+  
+
   
 
   
