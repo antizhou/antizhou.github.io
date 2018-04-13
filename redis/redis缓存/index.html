@@ -99,25 +99,25 @@
 
 
 
-  <meta name="description" content="建索引的几大原则 最左前缀匹配原则，非常重要的原则，mysql会一直向右匹配直到遇到范围查询(&amp;gt;、&amp;lt;、between、like)就停止匹配，比如a = 1 and b = 2 and c &amp;gt; 3 and d = 4 如果建立(a,b,c,d)顺序的索引，d是用不到索引的，如果建立(a,b,d,c)的索引则都可以用到，a,b,d的顺序可以任意调整。 =和in可以乱序，比如a = 1">
-<meta name="keywords" content="索引">
+  <meta name="description" content="缓存穿透什么是缓存穿透？一般的缓存系统，都是按照key去缓存查询，如果不存在对应的value，就应该去后端系统查找（比如DB）。如果key对应的value是一定不存在的，并且对该key并发请求量很大，就会对后端系统造成很大的压力。这就叫做缓存穿透。 如何避免？1：对查询结果为空的情况也进行缓存，缓存时间设置短一点，或者该key对应的数据insert了之后清理缓存。2：对一定不存在的key进行过滤。">
+<meta name="keywords" content="cache">
 <meta property="og:type" content="article">
-<meta property="og:title" content="mysql索引及查询优化">
-<meta property="og:url" content="http://www.iforfee.com/mysql/mysql索引及查询优化/index.html">
+<meta property="og:title" content="redis缓存">
+<meta property="og:url" content="http://www.iforfee.com/redis/redis缓存/index.html">
 <meta property="og:site_name" content="joyo&#39;s world">
-<meta property="og:description" content="建索引的几大原则 最左前缀匹配原则，非常重要的原则，mysql会一直向右匹配直到遇到范围查询(&amp;gt;、&amp;lt;、between、like)就停止匹配，比如a = 1 and b = 2 and c &amp;gt; 3 and d = 4 如果建立(a,b,c,d)顺序的索引，d是用不到索引的，如果建立(a,b,d,c)的索引则都可以用到，a,b,d的顺序可以任意调整。 =和in可以乱序，比如a = 1">
+<meta property="og:description" content="缓存穿透什么是缓存穿透？一般的缓存系统，都是按照key去缓存查询，如果不存在对应的value，就应该去后端系统查找（比如DB）。如果key对应的value是一定不存在的，并且对该key并发请求量很大，就会对后端系统造成很大的压力。这就叫做缓存穿透。 如何避免？1：对查询结果为空的情况也进行缓存，缓存时间设置短一点，或者该key对应的数据insert了之后清理缓存。2：对一定不存在的key进行过滤。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-04-08T05:54:15.000Z">
+<meta property="og:updated_time" content="2018-04-13T09:57:05.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="mysql索引及查询优化">
-<meta name="twitter:description" content="建索引的几大原则 最左前缀匹配原则，非常重要的原则，mysql会一直向右匹配直到遇到范围查询(&amp;gt;、&amp;lt;、between、like)就停止匹配，比如a = 1 and b = 2 and c &amp;gt; 3 and d = 4 如果建立(a,b,c,d)顺序的索引，d是用不到索引的，如果建立(a,b,d,c)的索引则都可以用到，a,b,d的顺序可以任意调整。 =和in可以乱序，比如a = 1">
+<meta name="twitter:title" content="redis缓存">
+<meta name="twitter:description" content="缓存穿透什么是缓存穿透？一般的缓存系统，都是按照key去缓存查询，如果不存在对应的value，就应该去后端系统查找（比如DB）。如果key对应的value是一定不存在的，并且对该key并发请求量很大，就会对后端系统造成很大的压力。这就叫做缓存穿透。 如何避免？1：对查询结果为空的情况也进行缓存，缓存时间设置短一点，或者该key对应的数据insert了之后清理缓存。2：对一定不存在的key进行过滤。">
 
 
 
 
 
 
-  <link rel="canonical" href="http://www.iforfee.com/mysql/mysql索引及查询优化/"/>
+  <link rel="canonical" href="http://www.iforfee.com/redis/redis缓存/"/>
 
 
 
@@ -127,7 +127,7 @@
   };
 </script>
 
-  <title>mysql索引及查询优化 | joyo's world</title>
+  <title>redis缓存 | joyo's world</title>
   
 
 
@@ -283,7 +283,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.iforfee.com/mysql/mysql索引及查询优化/">
+    <link itemprop="mainEntityOfPage" href="http://www.iforfee.com/redis/redis缓存/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="joyo">
@@ -300,7 +300,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">mysql索引及查询优化
+          <h1 class="post-title" itemprop="name headline">redis缓存
               
             
           </h1>
@@ -319,7 +319,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-08T11:52:53+08:00">2018-04-08</time>
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-13T17:24:55+08:00">2018-04-13</time>
             
 
             
@@ -340,7 +340,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/mysql/" itemprop="url" rel="index"><span itemprop="name">mysql</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/redis/" itemprop="url" rel="index"><span itemprop="name">redis</span></a></span>
 
                 
                 
@@ -355,9 +355,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/mysql/mysql索引及查询优化/#comments" itemprop="discussionUrl">
+                <a href="/redis/redis缓存/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="mysql/mysql索引及查询优化/" itemprop="commentCount"></span>
+                        data-disqus-identifier="redis/redis缓存/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -385,45 +385,34 @@
       
 
       
-        <h2 id="建索引的几大原则"><a href="#建索引的几大原则" class="headerlink" title="建索引的几大原则"></a>建索引的几大原则</h2><ol>
-<li>最左前缀匹配原则，非常重要的原则，mysql会一直向右匹配直到遇到范围查询(&gt;、&lt;、between、like)就停止匹配，比如a = 1 and b = 2 and c &gt; 3 and d = 4 如果建立(a,b,c,d)顺序的索引，d是用不到索引的，如果建立(a,b,d,c)的索引则都可以用到，a,b,d的顺序可以任意调整。</li>
-<li>=和in可以乱序，比如a = 1 and b = 2 and c = 3 建立(a,b,c)索引可以任意顺序，mysql的查询优化器会帮你优化成索引可以识别的形式</li>
-<li>尽量选择区分度高的列作为索引,区分度的公式是count(distinct col)/count(*)，表示字段不重复的比例，比例越大我们扫描的记录数越少，唯一键的区分度是1，而一些状态、性别字段可能在大数据面前区分度就是0，那可能有人会问，这个比例有什么经验值吗？使用场景不同，这个值也很难确定，一般需要join的字段我们都要求是0.1以上，即平均1条扫描10条记录</li>
-<li>索引列不能参与计算，保持列“干净”，比如from_unixtime(create_time) = ’2014-05-29’就不能使用到索引，原因很简单，b+树中存的都是数据表中的字段值，但进行检索时，需要把所有元素都应用函数才能比较，显然成本太大。所以语句应该写成create_time = unix_timestamp(’2014-05-29’);</li>
-<li>尽量的扩展索引，不要新建索引。比如表中已经有a的索引，现在要加(a,b)的索引，那么只需要修改原来的索引即可</li>
-</ol>
-<h2 id="慢查询优化基本步骤"><a href="#慢查询优化基本步骤" class="headerlink" title="慢查询优化基本步骤"></a>慢查询优化基本步骤</h2><ol>
-<li>先运行看看是否真的很慢，注意设置SQL_NO_CACHE</li>
-<li>where条件单表查，锁定最小返回记录表。这句话的意思是把查询语句的where都应用到表中返回的记录数最小的表开始查起，单表每个字段分别查询，看哪个字段的区分度最高</li>
-<li>explain查看执行计划，是否与1预期一致（从锁定记录较少的表开始查询）</li>
-<li>order by limit 形式的sql语句让排序的表优先查</li>
-<li>了解业务方使用场景</li>
-<li>加索引时参照建索引的几大原则</li>
-<li>观察结果，不符合预期继续从0分析</li>
-</ol>
-<h2 id="常用索引优化"><a href="#常用索引优化" class="headerlink" title="常用索引优化"></a>常用索引优化</h2><ol>
-<li>有索引但未被用到的情况（不建议）</li>
-</ol>
+        <h2 id="缓存穿透"><a href="#缓存穿透" class="headerlink" title="缓存穿透"></a>缓存穿透</h2><p>什么是缓存穿透？<br>一般的缓存系统，都是按照key去缓存查询，如果不存在对应的value，就应该去后端系统查找（比如DB）。如果key对应的value是一定不存在的，并且对该key并发请求量很大，就会对后端系统造成很大的压力。这就叫做缓存穿透。</p>
+<p>如何避免？<br>1：对查询结果为空的情况也进行缓存，缓存时间设置短一点，或者该key对应的数据insert了之后清理缓存。<br>2：对一定不存在的key进行过滤。可以把所有的可能存在的key放到一个大的Bitmap中，查询时通过该bitmap过滤。【感觉应该用的不多吧】</p>
+<p>开发提示：<br>有关布隆过滤器的相关知识，可以参考：<a href="https://en.wikipedia.org/wiki/Bloom_filter" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Bloom_filter</a><br>可以利用 Redis 的 Bitmaps 实现布隆过滤器，GitHub 上已经开源了类似的方案，读者可以进行参考：<br><a href="https://github.com/erikdubbelboer/Redis-Lua-scaling-bloom-filter" target="_blank" rel="noopener">https://github.com/erikdubbelboer/Redis-Lua-scaling-bloom-filter</a></p>
+<h2 id="缓存雪崩"><a href="#缓存雪崩" class="headerlink" title="缓存雪崩"></a>缓存雪崩</h2><p>什么是缓存雪崩？<br>当缓存服务器重启或者大量缓存集中在某一个时间段失效，这样在失效的时候，也会给后端系统(比如DB)带来很大压力。</p>
+<p>如何避免？</p>
+<p>预防</p>
 <ul>
-<li>Like的参数以通配符开头时，将导致全表扫描</li>
-<li>where条件不符合最左前缀原则时</li>
-<li>应尽量避免在 where 子句中使用!=或&lt;&gt;操作符，否则将引擎放弃使用索引而进行全表扫描。优化器将无法通过索引来确定将要命中的行数,因此需要搜索该表的所有行</li>
-<li>索引列参与计算</li>
-<li>应尽量避免在 where 子句中对字段进行 null 值判断，否则将导致引擎放弃使用索引而进行全表扫描。可以在num上设置默认值0，确保表中num列没有null值</li>
-<li>应尽量避免在 where 子句中使用 or 来连接条件，否则将导致引擎放弃使用索引而进行全表扫描</li>
+<li>保证缓存层服务高可用性（多个节点）</li>
+<li>不同的key，设置不同的过期时间，让缓存失效的时间点尽量均匀。</li>
+<li>从缓存层面来看，不设置过期时间，每个 value 设置一个逻辑过期时间</li>
+<li>可以通过缓存reload机制，预先去更新缓存，再即将发生大并发访问前手动触发加载缓存</li>
+<li>做二级缓存，A1为原始缓存，A2为拷贝缓存，A1失效时，可以访问A2，A1缓存失效时间设置为短期，A2设置为长期</li>
+<li>提前演练</li>
 </ul>
-<ol start="2">
-<li>避免select *</li>
-<li>order by 语句优化</li>
-<li>GROUP BY语句优化</li>
-<li>用 exists 代替 in</li>
-<li>使用 varchar/nvarchar 代替 char/nchar</li>
-<li>能用DISTINCT的就不用GROUP BY</li>
-<li>能用UNION ALL就不要用UNION</li>
-<li>在Join表的时候使用相当类型的例，并将其索引</li>
+<p>事后处理</p>
+<ul>
+<li>在缓存失效后，通过加锁或者队列来控制读数据库写缓存的线程数量。比如对某个key只允许一个线程查询数据和写缓存，其他线程等待。</li>
+<li>依赖隔离组件为后端限流并降级</li>
+</ul>
+<h2 id="缓存预热"><a href="#缓存预热" class="headerlink" title="缓存预热"></a>缓存预热</h2><p>缓存预热就是系统上线后，将相关的缓存数据直接加载到缓存系统。这样避免，用户请求的时候，再去加载相关的数据。</p>
+<p>解决思路：</p>
+<ol>
+<li>直接写个缓存刷新页面，上线时手工操作下。</li>
+<li>数据量不大，可以在WEB系统启动的时候加载。</li>
+<li>定时刷新缓存</li>
 </ol>
-<p><a href="https://coolshell.cn/articles/1846.html" target="_blank" rel="noopener">MYSQL性能优化的最佳20+条经验</a><br><a href="https://cloud.tencent.com/developer/article/1004912" target="_blank" rel="noopener">MySQL 索引及查询优化总结</a></p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://cloud.tencent.com/developer/article/1004912" target="_blank" rel="noopener">MySQL 索引及查询优化总结</a><br><a href="https://tech.meituan.com/mysql-index.html" target="_blank" rel="noopener">MySQL索引原理及慢查询优化</a></p>
+<h2 id="缓存数据的淘汰"><a href="#缓存数据的淘汰" class="headerlink" title="缓存数据的淘汰"></a>缓存数据的淘汰</h2><p>缓存淘汰的策略有两种： (1) 定时去清理过期的缓存。 （2）当有用户请求过来时，再判断这个请求所用到的缓存是否过期，过期的话就去底层系统得到新数据并更新缓存。<br>两者各有优劣，第一种的缺点是维护大量缓存的key是比较麻烦的，第二种的缺点就是每次用户请求过来都要判断缓存失效，逻辑相对比较复杂，具体用哪种方案，大家可以根据自己的应用场景来权衡。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://www.cnblogs.com/fidelQuan/p/4543387.html" target="_blank" rel="noopener">缓存穿透与缓存雪崩</a><br><a href="https://www.jianshu.com/p/5c6f3ec161f1" target="_blank" rel="noopener">Redis架构之防雪崩设计：网站不宕机背后的兵法</a></p>
 
       
     </div>
@@ -444,7 +433,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/索引/" rel="tag"># 索引</a>
+            <a href="/tags/cache/" rel="tag"># cache</a>
           
         </div>
       
@@ -457,8 +446,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/感悟/" rel="next" title="感悟">
-                <i class="fa fa-chevron-left"></i> 感悟
+              <a href="/redis/redis事务/" rel="next" title="redis事务">
+                <i class="fa fa-chevron-left"></i> redis事务
               </a>
             
           </div>
@@ -466,10 +455,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/netty/netty相关概念/" rel="prev" title="netty相关概念">
-                netty相关概念 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -691,7 +676,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#建索引的几大原则"><span class="nav-number">1.</span> <span class="nav-text">建索引的几大原则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#慢查询优化基本步骤"><span class="nav-number">2.</span> <span class="nav-text">慢查询优化基本步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用索引优化"><span class="nav-number">3.</span> <span class="nav-text">常用索引优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#缓存穿透"><span class="nav-number">1.</span> <span class="nav-text">缓存穿透</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缓存雪崩"><span class="nav-number">2.</span> <span class="nav-text">缓存雪崩</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缓存预热"><span class="nav-number">3.</span> <span class="nav-text">缓存预热</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缓存数据的淘汰"><span class="nav-number">4.</span> <span class="nav-text">缓存数据的淘汰</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>
@@ -845,9 +830,9 @@
   
     <script type="text/javascript">
       var disqus_config = function () {
-        this.page.url = 'http://www.iforfee.com/mysql/mysql索引及查询优化/';
-        this.page.identifier = 'mysql/mysql索引及查询优化/';
-        this.page.title = 'mysql索引及查询优化';
+        this.page.url = 'http://www.iforfee.com/redis/redis缓存/';
+        this.page.identifier = 'redis/redis缓存/';
+        this.page.title = 'redis缓存';
       };
       function loadComments () {
         var d = document, s = d.createElement('script');
