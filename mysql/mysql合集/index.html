@@ -77,7 +77,7 @@
 <meta property="og:site_name" content="joyo&#39;s world">
 <meta property="og:description" content="limit优化Mysql优化实践（分页优化） 事务MySQL事务隔离级别和Spring事务关系介绍 锁和索引MySQL 加锁处理分析Innodb 中 RR 隔离级别能否防止幻读？MySQL的InnoDB的幻读问题Clustered and Secondary IndexesSQL中的where条件，在数据库中提取与应用浅析 MySQL学习之——锁(行锁、表锁、页锁、乐观锁、悲观锁等) MySQL">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-08T07:35:48.000Z">
+<meta property="og:updated_time" content="2018-04-12T14:41:24.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mysql合集">
 <meta name="twitter:description" content="limit优化Mysql优化实践（分页优化） 事务MySQL事务隔离级别和Spring事务关系介绍 锁和索引MySQL 加锁处理分析Innodb 中 RR 隔离级别能否防止幻读？MySQL的InnoDB的幻读问题Clustered and Secondary IndexesSQL中的where条件，在数据库中提取与应用浅析 MySQL学习之——锁(行锁、表锁、页锁、乐观锁、悲观锁等) MySQL">
@@ -298,6 +298,17 @@
 
           
             
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/mysql/mysql合集/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="mysql/mysql合集/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
           
 
           
@@ -329,6 +340,9 @@
 <p><a href="https://cloud.tencent.com/developer/article/1004912" target="_blank" rel="noopener">MySQL 索引及查询优化总结</a></p>
 <p><a href="http://blog.codinglabs.org/articles/theory-of-mysql-index.html" target="_blank" rel="noopener">MySQL索引背后的数据结构及算法原理</a></p>
 <p><a href="https://www.jianshu.com/p/1775b4ff123a" target="_blank" rel="noopener">干货：mysql索引的数据结构</a></p>
+<p>InnoDB引擎在加锁的时候，只有通过索引进行检索的时候才会使用行级锁，否则会使用表级锁。</p>
+<p>这里还可能存在另外一个问题，虽然我们对method_name 使用了唯一索引，并且显示使用for update来使用行级锁。但是，MySql会对查询进行优化，即便在条件中使用了索引字段，但是否使用索引来检索数据是由 MySQL 通过判断不同执行计划的代价来决定的，如果 MySQL 认为全表扫效率更高，比如对一些很小的表，它就不会使用索引，这种情况下 InnoDB 将使用表锁，而不是行锁。</p>
+<p><a href="http://www.hollischuang.com/archives/1716" target="_blank" rel="noopener">mysql分布式锁</a></p>
 
       
     </div>
@@ -401,6 +415,13 @@
           
   <div class="comments" id="comments">
     
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
   </div>
 
 
@@ -447,7 +468,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">36</span>
+                <span class="site-state-item-count">38</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -458,7 +479,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-count">12</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -469,7 +490,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-count">18</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -664,6 +685,26 @@
 
   
 
+    
+      <script id="dsq-count-scr" src="https://joyo.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://www.iforfee.com/mysql/mysql合集/';
+          this.page.identifier = 'mysql/mysql合集/';
+          this.page.title = 'mysql合集';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://joyo.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
 
 
 
@@ -676,10 +717,6 @@
   
 
 
-
-
-
-  
 
 
 

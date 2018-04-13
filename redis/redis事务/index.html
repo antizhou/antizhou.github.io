@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="transaction," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="Redis 通过 MULTI 、 DISCARD 、 EXEC 和 WATCH 四个命令来实现事务功能， 本章首先讨论使用 MULTI 、 DISCARD 和 EXEC 三个命令实现的一般事务， 然后再来讨论带有 WATCH 的事务的实现。 因为事务的安全性也非常重要， 所以本章最后通过常见的 ACID 性质对 Redis 事务的安全性进行了说明。 事务事务提供了一种“将多个命令打包， 然后一次性">
+<meta name="keywords" content="transaction">
+<meta property="og:type" content="article">
+<meta property="og:title" content="redis事务">
+<meta property="og:url" content="http://www.iforfee.com/redis/redis事务/index.html">
+<meta property="og:site_name" content="joyo&#39;s world">
+<meta property="og:description" content="Redis 通过 MULTI 、 DISCARD 、 EXEC 和 WATCH 四个命令来实现事务功能， 本章首先讨论使用 MULTI 、 DISCARD 和 EXEC 三个命令实现的一般事务， 然后再来讨论带有 WATCH 的事务的实现。 因为事务的安全性也非常重要， 所以本章最后通过常见的 ACID 性质对 Redis 事务的安全性进行了说明。 事务事务提供了一种“将多个命令打包， 然后一次性">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://www.iforfee.com/images/redis/graphviz-0ff9f2e58803dbb8c1c400e1f8191f77d4c2917e.svg">
+<meta property="og:image" content="http://www.iforfee.com/images/redis/graphviz-8a0f8eae0bb8180e877b799921dd690267c2d3b4.svg">
+<meta property="og:image" content="http://www.iforfee.com/images/redis/graphviz-836c8a3dc33526a649d9ecf5b7b959d72b38cc7d.svg">
+<meta property="og:image" content="http://www.iforfee.com/images/redis/graphviz-9aea81f33da1373550c590eb0b7ca0c2b3d38366.svg">
+<meta property="og:image" content="http://www.iforfee.com/images/redis/graphviz-fe5e31054c282a3cdd86656994fe1678a3d4f201.svg">
+<meta property="og:image" content="http://www.iforfee.com/images/redis/graphviz-e5c66122242aa10939b696dfeeb905343c5202bd.svg">
+<meta property="og:image" content="http://www.iforfee.com/images/redis/graphviz-9aea81f33da1373550c590eb0b7ca0c2b3d38366.svg">
+<meta property="og:updated_time" content="2018-04-13T03:06:55.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="redis事务">
+<meta name="twitter:description" content="Redis 通过 MULTI 、 DISCARD 、 EXEC 和 WATCH 四个命令来实现事务功能， 本章首先讨论使用 MULTI 、 DISCARD 和 EXEC 三个命令实现的一般事务， 然后再来讨论带有 WATCH 的事务的实现。 因为事务的安全性也非常重要， 所以本章最后通过常见的 ACID 性质对 Redis 事务的安全性进行了说明。 事务事务提供了一种“将多个命令打包， 然后一次性">
+<meta name="twitter:image" content="http://www.iforfee.com/images/redis/graphviz-0ff9f2e58803dbb8c1c400e1f8191f77d4c2917e.svg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.iforfee.com/redis/redis事务/"/>
+
+
+
+
+
+  <title>redis事务 | joyo's world</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">joyo's world</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.iforfee.com/redis/redis事务/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="joyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="joyo's world">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">redis事务</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-13T11:00:31+08:00">
+                2018-04-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/redis/" itemprop="url" rel="index">
+                    <span itemprop="name">redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/redis/redis事务/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="redis/redis事务/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Redis 通过 <a href="http://redis.readthedocs.org/en/latest/transaction/multi.html#multi" target="_blank" rel="noopener">MULTI</a> 、 <a href="http://redis.readthedocs.org/en/latest/transaction/discard.html#discard" target="_blank" rel="noopener">DISCARD</a> 、 <a href="http://redis.readthedocs.org/en/latest/transaction/exec.html#exec" target="_blank" rel="noopener">EXEC</a> 和 <a href="http://redis.readthedocs.org/en/latest/transaction/watch.html#watch" target="_blank" rel="noopener">WATCH</a> 四个命令来实现事务功能， 本章首先讨论使用 <a href="http://redis.readthedocs.org/en/latest/transaction/multi.html#multi" target="_blank" rel="noopener">MULTI</a> 、 <a href="http://redis.readthedocs.org/en/latest/transaction/discard.html#discard" target="_blank" rel="noopener">DISCARD</a> 和 <a href="http://redis.readthedocs.org/en/latest/transaction/exec.html#exec" target="_blank" rel="noopener">EXEC</a> 三个命令实现的一般事务， 然后再来讨论带有 <a href="http://redis.readthedocs.org/en/latest/transaction/watch.html#watch" target="_blank" rel="noopener">WATCH</a> 的事务的实现。</p>
+<p>因为事务的安全性也非常重要， 所以本章最后通过常见的 ACID 性质对 Redis 事务的安全性进行了说明。</p>
+<h2 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h2><p>事务提供了一种“将多个命令打包， 然后一次性、按顺序地执行”的机制， 并且事务在执行的期间不会主动中断 —— 服务器在执行完事务中的所有命令之后， 才会继续处理其他客户端的其他命令。</p>
+<p>以下是一个事务的例子， 它先以 <a href="http://redis.readthedocs.org/en/latest/transaction/multi.html#multi" target="_blank" rel="noopener">MULTI</a> 开始一个事务， 然后将多个命令入队到事务中， 最后由 <a href="http://redis.readthedocs.org/en/latest/transaction/exec.html#exec" target="_blank" rel="noopener">EXEC</a> 命令触发事务， 一并执行事务中的所有命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">redis&gt; MULTI</span><br><span class="line">OK</span><br><span class="line"></span><br><span class="line">redis&gt; SET book-name &quot;Mastering C++ in 21 days&quot;</span><br><span class="line">QUEUED</span><br><span class="line"></span><br><span class="line">redis&gt; GET book-name</span><br><span class="line">QUEUED</span><br><span class="line"></span><br><span class="line">redis&gt; SADD tag &quot;C++&quot; &quot;Programming&quot; &quot;Mastering Series&quot;</span><br><span class="line">QUEUED</span><br><span class="line"></span><br><span class="line">redis&gt; SMEMBERS tag</span><br><span class="line">QUEUED</span><br><span class="line"></span><br><span class="line">redis&gt; EXEC</span><br><span class="line">1) OK</span><br><span class="line">2) &quot;Mastering C++ in 21 days&quot;</span><br><span class="line">3) (integer) 3</span><br><span class="line">4) 1) &quot;Mastering Series&quot;</span><br><span class="line">   2) &quot;C++&quot;</span><br><span class="line">   3) &quot;Programming&quot;</span><br></pre></td></tr></table></figure>
+<p>一个事务从开始到执行会经历以下三个阶段：</p>
+<ol>
+<li>开始事务。</li>
+<li>命令入队。</li>
+<li>执行事务。</li>
+</ol>
+<p>下文将分别介绍事务的这三个阶段。</p>
+<h2 id="开始事务"><a href="#开始事务" class="headerlink" title="开始事务"></a>开始事务</h2><p><a href="http://redis.readthedocs.org/en/latest/transaction/multi.html#multi" target="_blank" rel="noopener">MULTI</a> 命令的执行标记着事务的开始：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">redis&gt; MULTI</span><br><span class="line">OK</span><br></pre></td></tr></table></figure>
+<p>这个命令唯一做的就是， 将客户端的 <code>REDIS_MULTI</code> 选项打开， 让客户端从非事务状态切换到事务状态。</p>
+<p><img src="/images/redis/graphviz-0ff9f2e58803dbb8c1c400e1f8191f77d4c2917e.svg" alt="digraph normal_to_transaction {    rankdir = LR;    node [shape = circle, style = filled];    edge [style = bold];    label = &quot;客户端状态的切换&quot;;    normal [label = &quot;非事务状态&quot;, fillcolor = &quot;#FADCAD&quot;];    transaction [label = &quot;事务状态&quot;, fillcolor = &quot;#A8E270&quot;];    normal -&gt; transaction [label = &quot;打开选项\nREDIS_MULTI&quot;];}"></p>
+<h2 id="命令入队"><a href="#命令入队" class="headerlink" title="命令入队"></a>命令入队</h2><p>当客户端处于非事务状态下时， 所有发送给服务器端的命令都会立即被服务器执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">redis&gt; SET msg &quot;hello moto&quot;</span><br><span class="line">OK</span><br><span class="line"></span><br><span class="line">redis&gt; GET msg</span><br><span class="line">&quot;hello moto&quot;</span><br></pre></td></tr></table></figure>
+<p>但是， 当客户端进入事务状态之后， 服务器在收到来自客户端的命令时， 不会立即执行命令， 而是将这些命令全部放进一个事务队列里， 然后返回 <code>QUEUED</code> ， 表示命令已入队：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">redis&gt; MULTI</span><br><span class="line">OK</span><br><span class="line"></span><br><span class="line">redis&gt; SET msg &quot;hello moto&quot;</span><br><span class="line">QUEUED</span><br><span class="line"></span><br><span class="line">redis&gt; GET msg</span><br><span class="line">QUEUED</span><br></pre></td></tr></table></figure>
+<p>以下流程图展示了这一行为：</p>
+<p><img src="/images/redis/graphviz-8a0f8eae0bb8180e877b799921dd690267c2d3b4.svg" alt="digraph enqueue {    node [shape = plaintext, style = filled];    edge [style = bold];    command_in [label = &quot;服务器接到来自客户端的命令&quot;];    in_transaction_or_not [label = &quot;客户端是否正处于事务状态？&quot;, shape = diamond, fillcolor = &quot;#95BBE3&quot;];    enqueu_command [label = &quot;将命令放进事务队列里&quot;, fillcolor = &quot;#A8E270&quot;];    return_enqueued [label = &quot;向客户端返回 QUEUED 字符串\n表示命令已入队&quot;, fillcolor = &quot;#A8E270&quot;];    exec_command [label = &quot;执行命令&quot;, fillcolor = &quot;#FADCAD&quot;];    return_command_result [label = &quot;向客户端返回命令的执行结果&quot;, fillcolor = &quot;#FADCAD&quot;];    //     command_in -&gt; in_transaction_or_not;    in_transaction_or_not -&gt; enqueu_command [label = &quot;是&quot;];    in_transaction_or_not -&gt; exec_command [label = &quot;否&quot;];    exec_command -&gt; return_command_result;    enqueu_command -&gt; return_enqueued;}"></p>
+<p>事务队列是一个数组， 每个数组项是都包含三个属性：</p>
+<ol>
+<li>要执行的命令（cmd）。</li>
+<li>命令的参数（argv）。</li>
+<li>参数的个数（argc）。</li>
+</ol>
+<p>举个例子， 如果客户端执行以下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">redis&gt; MULTI</span><br><span class="line">OK</span><br><span class="line"></span><br><span class="line">redis&gt; SET book-name &quot;Mastering C++ in 21 days&quot;</span><br><span class="line">QUEUED</span><br><span class="line"></span><br><span class="line">redis&gt; GET book-name</span><br><span class="line">QUEUED</span><br><span class="line"></span><br><span class="line">redis&gt; SADD tag &quot;C++&quot; &quot;Programming&quot; &quot;Mastering Series&quot;</span><br><span class="line">QUEUED</span><br><span class="line"></span><br><span class="line">redis&gt; SMEMBERS tag</span><br><span class="line">QUEUED</span><br></pre></td></tr></table></figure>
+<p>那么程序将为客户端创建以下事务队列：</p>
+<table>
+<thead>
+<tr>
+<th>数组索引</th>
+<th>cmd</th>
+<th>argv</th>
+<th>argc</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>0</code></td>
+<td><code>SET</code></td>
+<td><code>[&quot;book-name&quot;, &quot;Mastering C++ in 21 days&quot;]</code></td>
+<td><code>2</code></td>
+</tr>
+<tr>
+<td><code>1</code></td>
+<td><code>GET</code></td>
+<td><code>[&quot;book-name&quot;]</code></td>
+<td><code>1</code></td>
+</tr>
+<tr>
+<td><code>2</code></td>
+<td><code>SADD</code></td>
+<td><code>[&quot;tag&quot;, &quot;C++&quot;, &quot;Programming&quot;, &quot;Mastering Series&quot;]</code></td>
+<td><code>4</code></td>
+</tr>
+<tr>
+<td><code>3</code></td>
+<td><code>SMEMBERS</code></td>
+<td><code>[&quot;tag&quot;]</code></td>
+<td><code>1</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="执行事务"><a href="#执行事务" class="headerlink" title="执行事务"></a>执行事务</h2><p>前面说到， 当客户端进入事务状态之后， 客户端发送的命令就会被放进事务队列里。</p>
+<p>但其实并不是所有的命令都会被放进事务队列， 其中的例外就是 <a href="http://redis.readthedocs.org/en/latest/transaction/exec.html#exec" target="_blank" rel="noopener">EXEC</a> 、 <a href="http://redis.readthedocs.org/en/latest/transaction/discard.html#discard" target="_blank" rel="noopener">DISCARD</a> 、 <a href="http://redis.readthedocs.org/en/latest/transaction/multi.html#multi" target="_blank" rel="noopener">MULTI</a> 和 <a href="http://redis.readthedocs.org/en/latest/transaction/watch.html#watch" target="_blank" rel="noopener">WATCH</a> 这四个命令 —— 当这四个命令从客户端发送到服务器时， 它们会像客户端处于非事务状态一样， 直接被服务器执行：</p>
+<p><img src="/images/redis/graphviz-836c8a3dc33526a649d9ecf5b7b959d72b38cc7d.svg" alt="digraph not_enque_command {    node [shape = plaintext, style = filled];    edge [style = bold];    command_in [label = &quot;服务器接到来自客户端的命令&quot;];    in_transaction_or_not [label = &quot;客户端是否正处于事务状态？&quot;, shape = diamond, fillcolor = &quot;#95BBE3&quot;];    not_exec_and_discard [label = &quot;命令是否\nEXEC 、 DISCARD 、\nMULTI 或 WATCH ？&quot;, shape = diamond, fillcolor = &quot;#FFC1C1&quot;];    enqueu_command [label = &quot;将命令放进事务队列里&quot;, fillcolor = &quot;#A8E270&quot;];    return_enqueued [label = &quot;向客户端返回 QUEUED 字符串\n表示命令已入队&quot;, fillcolor = &quot;#A8E270&quot;];    exec_command [label = &quot;执行命令&quot;, fillcolor = &quot;#FADCAD&quot;];    return_command_result [label = &quot;向客户端返回命令的执行结果&quot;, fillcolor = &quot;#FADCAD&quot;];    //     command_in -&gt; in_transaction_or_not;    in_transaction_or_not -&gt; not_exec_and_discard [label = &quot;是&quot;];    not_exec_and_discard -&gt; enqueu_command [label = &quot;否&quot;];    not_exec_and_discard -&gt; exec_command [label = &quot;是&quot;];    in_transaction_or_not -&gt; exec_command [label = &quot;否&quot;];    exec_command -&gt; return_command_result;    enqueu_command -&gt; return_enqueued;}"></p>
+<p>如果客户端正处于事务状态， 那么当 <a href="http://redis.readthedocs.org/en/latest/transaction/exec.html#exec" target="_blank" rel="noopener">EXEC</a> 命令执行时， 服务器根据客户端所保存的事务队列， 以先进先出（FIFO）的方式执行事务队列中的命令： 最先入队的命令最先执行， 而最后入队的命令最后执行。</p>
+<p>比如说，对于以下事务队列：</p>
+<table>
+<thead>
+<tr>
+<th>数组索引</th>
+<th>cmd</th>
+<th>argv</th>
+<th>argc</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>0</code></td>
+<td><code>SET</code></td>
+<td><code>[&quot;book-name&quot;, &quot;Mastering C++ in 21 days&quot;]</code></td>
+<td><code>2</code></td>
+</tr>
+<tr>
+<td><code>1</code></td>
+<td><code>GET</code></td>
+<td><code>[&quot;book-name&quot;]</code></td>
+<td><code>1</code></td>
+</tr>
+<tr>
+<td><code>2</code></td>
+<td><code>SADD</code></td>
+<td><code>[&quot;tag&quot;, &quot;C++&quot;, &quot;Programming&quot;, &quot;Mastering Series&quot;]</code></td>
+<td><code>4</code></td>
+</tr>
+<tr>
+<td><code>3</code></td>
+<td><code>SMEMBERS</code></td>
+<td><code>[&quot;tag&quot;]</code></td>
+<td><code>1</code></td>
+</tr>
+</tbody>
+</table>
+<p>程序会首先执行 <a href="http://redis.readthedocs.org/en/latest/string/set.html#set" target="_blank" rel="noopener">SET</a> 命令， 然后执行 <a href="http://redis.readthedocs.org/en/latest/string/get.html#get" target="_blank" rel="noopener">GET</a> 命令， 再然后执行 <a href="http://redis.readthedocs.org/en/latest/set/sadd.html#sadd" target="_blank" rel="noopener">SADD</a> 命令， 最后执行 <a href="http://redis.readthedocs.org/en/latest/set/smembers.html#smembers" target="_blank" rel="noopener">SMEMBERS</a> 命令。</p>
+<p>执行事务中的命令所得的结果会以 FIFO 的顺序保存到一个回复队列中。</p>
+<p>比如说，对于上面给出的事务队列，程序将为队列中的命令创建如下回复队列：</p>
+<table>
+<thead>
+<tr>
+<th>数组索引</th>
+<th>回复类型</th>
+<th>回复内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>0</code></td>
+<td>status code reply</td>
+<td><code>OK</code></td>
+</tr>
+<tr>
+<td><code>1</code></td>
+<td>bulk reply</td>
+<td><code>&quot;Mastering C++ in 21 days&quot;</code></td>
+</tr>
+<tr>
+<td><code>2</code></td>
+<td>integer reply</td>
+<td><code>3</code></td>
+</tr>
+<tr>
+<td><code>3</code></td>
+<td>multi-bulk reply</td>
+<td><code>[&quot;Mastering Series&quot;, &quot;C++&quot;, &quot;Programming&quot;]</code></td>
+</tr>
+</tbody>
+</table>
+<p>当事务队列里的所有命令被执行完之后， <a href="http://redis.readthedocs.org/en/latest/transaction/exec.html#exec" target="_blank" rel="noopener">EXEC</a> 命令会将回复队列作为自己的执行结果返回给客户端， 客户端从事务状态返回到非事务状态， 至此， 事务执行完毕。</p>
+<p>事务的整个执行过程可以用以下伪代码表示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">def execute_transaction():</span><br><span class="line"></span><br><span class="line">    # 创建空白的回复队列</span><br><span class="line">    reply_queue = []</span><br><span class="line"></span><br><span class="line">    # 取出事务队列里的所有命令、参数和参数数量</span><br><span class="line">    for cmd, argv, argc in client.transaction_queue:</span><br><span class="line"></span><br><span class="line">        # 执行命令，并取得命令的返回值</span><br><span class="line">        reply = execute_redis_command(cmd, argv, argc)</span><br><span class="line"></span><br><span class="line">        # 将返回值追加到回复队列末尾</span><br><span class="line">        reply_queue.append(reply)</span><br><span class="line"></span><br><span class="line">    # 清除客户端的事务状态</span><br><span class="line">    clear_transaction_state(client)</span><br><span class="line"></span><br><span class="line">    # 清空事务队列</span><br><span class="line">    clear_transaction_queue(client)</span><br><span class="line"></span><br><span class="line">    # 将事务的执行结果返回给客户端</span><br><span class="line">    send_reply_to_client(client, reply_queue)</span><br></pre></td></tr></table></figure>
+<h2 id="在事务和非事务状态下执行命令"><a href="#在事务和非事务状态下执行命令" class="headerlink" title="在事务和非事务状态下执行命令"></a>在事务和非事务状态下执行命令</h2><p>无论在事务状态下， 还是在非事务状态下， Redis 命令都由同一个函数执行， 所以它们共享很多服务器的一般设置， 比如 AOF 的配置、RDB 的配置，以及内存限制，等等。</p>
+<p>不过事务中的命令和普通命令在执行上还是有一点区别的，其中最重要的两点是：</p>
+<ol>
+<li><p>非事务状态下的命令以单个命令为单位执行，前一个命令和后一个命令的客户端不一定是同一个；</p>
+<p>而事务状态则是以一个事务为单位，执行事务队列中的所有命令：除非当前事务执行完毕，否则服务器不会中断事务，也不会执行其他客户端的其他命令。</p>
+</li>
+<li><p>在非事务状态下，执行命令所得的结果会立即被返回给客户端；</p>
+<p>而事务则是将所有命令的结果集合到回复队列，再作为 <a href="http://redis.readthedocs.org/en/latest/transaction/exec.html#exec" target="_blank" rel="noopener">EXEC</a> 命令的结果返回给客户端。</p>
+</li>
+</ol>
+<h2 id="事务状态下的-DISCARD-、-MULTI-和-WATCH-命令"><a href="#事务状态下的-DISCARD-、-MULTI-和-WATCH-命令" class="headerlink" title="事务状态下的 DISCARD 、 MULTI 和 WATCH 命令"></a>事务状态下的 DISCARD 、 MULTI 和 WATCH 命令</h2><p>除了 <a href="http://redis.readthedocs.org/en/latest/transaction/exec.html#exec" target="_blank" rel="noopener">EXEC</a> 之外， 服务器在客户端处于事务状态时， 不加入到事务队列而直接执行的另外三个命令是 <a href="http://redis.readthedocs.org/en/latest/transaction/discard.html#discard" target="_blank" rel="noopener">DISCARD</a> 、 <a href="http://redis.readthedocs.org/en/latest/transaction/multi.html#multi" target="_blank" rel="noopener">MULTI</a> 和 <a href="http://redis.readthedocs.org/en/latest/transaction/watch.html#watch" target="_blank" rel="noopener">WATCH</a>。</p>
+<p><a href="http://redis.readthedocs.org/en/latest/transaction/discard.html#discard" target="_blank" rel="noopener">DISCARD</a> 命令用于取消一个事务， 它清空客户端的整个事务队列， 然后将客户端从事务状态调整回非事务状态， 最后返回字符串 <code>OK</code> 给客户端， 说明事务已被取消。</p>
+<p>Redis 的事务是不可嵌套的， 当客户端已经处于事务状态， 而客户端又再向服务器发送 <a href="http://redis.readthedocs.org/en/latest/transaction/multi.html#multi" target="_blank" rel="noopener">MULTI</a> 时， 服务器只是简单地向客户端发送一个错误， 然后继续等待其他命令的入队。 <a href="http://redis.readthedocs.org/en/latest/transaction/multi.html#multi" target="_blank" rel="noopener">MULTI</a> 命令的发送不会造成整个事务失败， 也不会修改事务队列中已有的数据。</p>
+<p><a href="http://redis.readthedocs.org/en/latest/transaction/watch.html#watch" target="_blank" rel="noopener">WATCH</a> 只能在客户端进入事务状态之前执行， 在事务状态下发送 <a href="http://redis.readthedocs.org/en/latest/transaction/watch.html#watch" target="_blank" rel="noopener">WATCH</a> 命令会引发一个错误， 但它不会造成整个事务失败， 也不会修改事务队列中已有的数据（和前面处理 <a href="http://redis.readthedocs.org/en/latest/transaction/multi.html#multi" target="_blank" rel="noopener">MULTI</a> 的情况一样）。</p>
+<h2 id="带-WATCH-的事务"><a href="#带-WATCH-的事务" class="headerlink" title="带 WATCH 的事务"></a>带 WATCH 的事务</h2><p><a href="http://redis.readthedocs.org/en/latest/transaction/watch.html#watch" target="_blank" rel="noopener">WATCH</a> 命令用于在事务开始之前监视任意数量的键： 当调用 <a href="http://redis.readthedocs.org/en/latest/transaction/exec.html#exec" target="_blank" rel="noopener">EXEC</a> 命令执行事务时， 如果任意一个被监视的键已经被其他客户端修改了， 那么整个事务不再执行， 直接返回失败。</p>
+<p>以下示例展示了一个执行失败的事务例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">redis&gt; WATCH name</span><br><span class="line">OK</span><br><span class="line"></span><br><span class="line">redis&gt; MULTI</span><br><span class="line">OK</span><br><span class="line"></span><br><span class="line">redis&gt; SET name peter</span><br><span class="line">QUEUED</span><br><span class="line"></span><br><span class="line">redis&gt; EXEC</span><br><span class="line">(nil)</span><br></pre></td></tr></table></figure>
+<p>以下执行序列展示了上面的例子是如何失败的：</p>
+<table>
+<thead>
+<tr>
+<th>时间</th>
+<th>客户端 A</th>
+<th>客户端 B</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T1</td>
+<td><code>WATCH name</code></td>
+<td></td>
+</tr>
+<tr>
+<td>T2</td>
+<td><code>MULTI</code></td>
+<td></td>
+</tr>
+<tr>
+<td>T3</td>
+<td><code>SET name peter</code></td>
+<td></td>
+</tr>
+<tr>
+<td>T4</td>
+<td></td>
+<td><code>SET name john</code></td>
+</tr>
+<tr>
+<td>T5</td>
+<td><code>EXEC</code></td>
+</tr>
+</tbody>
+</table>
+<p>在时间 T4 ，客户端 B 修改了 <code>name</code> 键的值， 当客户端 A 在 T5 执行 <a href="http://redis.readthedocs.org/en/latest/transaction/exec.html#exec" target="_blank" rel="noopener">EXEC</a> 时，Redis 会发现 <code>name</code> 这个被监视的键已经被修改， 因此客户端 A 的事务不会被执行，而是直接返回失败。</p>
+<p>下文就来介绍 <a href="http://redis.readthedocs.org/en/latest/transaction/watch.html#watch" target="_blank" rel="noopener">WATCH</a> 的实现机制，并且看看事务系统是如何检查某个被监视的键是否被修改，从而保证事务的安全性的。</p>
+<h2 id="WATCH-命令的实现"><a href="#WATCH-命令的实现" class="headerlink" title="WATCH 命令的实现"></a>WATCH 命令的实现</h2><p>在每个代表数据库的 <code>redis.h/redisDb</code> 结构类型中， 都保存了一个 <code>watched_keys</code> 字典， 字典的键是这个数据库被监视的键， 而字典的值则是一个链表， 链表中保存了所有监视这个键的客户端。</p>
+<p>比如说，以下字典就展示了一个 <code>watched_keys</code> 字典的例子：</p>
+<p><img src="/images/redis/graphviz-9aea81f33da1373550c590eb0b7ca0c2b3d38366.svg" alt="digraph watched_keys {    rankdir = LR;    node [shape = record, style = filled];    edge [style = bold];    // keys    watched_keys [label = &quot;watched_keys |&lt;key1&gt; key1 |&lt;key2&gt; key2 |&lt;key3&gt; key3 | ... |&lt;keyN&gt; keyN&quot;, fillcolor = &quot;#A8E270&quot;];    // clients blocking for key1    client1 [label = &quot;client1&quot;, fillcolor = &quot;#95BBE3&quot;];    client5 [label = &quot;client5&quot;, fillcolor = &quot;#95BBE3&quot;];    client2 [label = &quot;client2&quot;, fillcolor = &quot;#95BBE3&quot;];    null_1 [label = &quot;NULL&quot;, shape = plaintext];        watched_keys:key1 -&gt; client2;    client2 -&gt; client5;    client5 -&gt; client1;    client1 -&gt; null_1;    // clients blocking for key2    client7 [label = &quot;client7&quot;, fillcolor = &quot;#95BBE3&quot;];    null_2 [label = &quot;NULL&quot;, shape = plaintext];    watched_keys:key2 -&gt; client7;    client7 -&gt; null_2;    // key3    client3 [label = &quot;client3&quot;, fillcolor = &quot;#95BBE3&quot;];    client4 [label = &quot;client4&quot;, fillcolor = &quot;#95BBE3&quot;];    client6 [label = &quot;client6&quot;, fillcolor = &quot;#95BBE3&quot;];    null_3 [label = &quot;NULL&quot;, shape = plaintext];    watched_keys:key3 -&gt; client3;    client3 -&gt; client4;    client4 -&gt; client6;    client6 -&gt; null_3;}"></p>
+<p>其中， 键 <code>key1</code> 正在被 <code>client2</code> 、 <code>client5</code> 和 <code>client1</code> 三个客户端监视， 其他一些键也分别被其他别的客户端监视着。</p>
+<p><a href="http://redis.readthedocs.org/en/latest/transaction/watch.html#watch" target="_blank" rel="noopener">WATCH</a> 命令的作用， 就是将当前客户端和要监视的键在 <code>watched_keys</code> 中进行关联。</p>
+<p>举个例子， 如果当前客户端为 <code>client10086</code> ， 那么当客户端执行 <code>WATCH key1 key2</code> 时， 前面展示的 <code>watched_keys</code> 将被修改成这个样子：</p>
+<p><img src="/images/redis/graphviz-fe5e31054c282a3cdd86656994fe1678a3d4f201.svg" alt="digraph new_watched_keys {    rankdir = LR;    node [shape = record, style = filled];    edge [style = bold];    // keys    watched_keys [label = &quot;watched_keys |&lt;key1&gt; key1 |&lt;key2&gt; key2 |&lt;key3&gt; key3 | ... |&lt;keyN&gt; keyN&quot;, fillcolor = &quot;#A8E270&quot;];    // clients blocking for key1    client1 [label = &quot;client1&quot;, fillcolor = &quot;#95BBE3&quot;];    client5 [label = &quot;client5&quot;, fillcolor = &quot;#95BBE3&quot;];    client2 [label = &quot;client2&quot;, fillcolor = &quot;#95BBE3&quot;];    client10086 [label = &quot;client10086&quot;, fillcolor = &quot;#FFC1C1&quot;];    null_1 [label = &quot;NULL&quot;, shape = plaintext];        watched_keys:key1 -&gt; client2;    client2 -&gt; client5;    client5 -&gt; client1;    client1 -&gt; client10086;    client10086 -&gt; null_1;    // clients blocking for key2    client7 [label = &quot;client7&quot;, fillcolor = &quot;#95BBE3&quot;];    client10086_2 [label = &quot;client10086&quot;, fillcolor = &quot;#FFC1C1&quot;];    null_2 [label = &quot;NULL&quot;, shape = plaintext];    watched_keys:key2 -&gt; client7;    client7 -&gt; client10086_2;    client10086_2 -&gt; null_2;    // key3    client3 [label = &quot;client3&quot;, fillcolor = &quot;#95BBE3&quot;];    client4 [label = &quot;client4&quot;, fillcolor = &quot;#95BBE3&quot;];    client6 [label = &quot;client6&quot;, fillcolor = &quot;#95BBE3&quot;];    null_3 [label = &quot;NULL&quot;, shape = plaintext];    watched_keys:key3 -&gt; client3;    client3 -&gt; client4;    client4 -&gt; client6;    client6 -&gt; null_3;}"></p>
+<p>通过 <code>watched_keys</code> 字典， 如果程序想检查某个键是否被监视， 那么它只要检查字典中是否存在这个键即可； 如果程序要获取监视某个键的所有客户端， 那么只要取出键的值（一个链表）， 然后对链表进行遍历即可。</p>
+<h2 id="WATCH-的触发"><a href="#WATCH-的触发" class="headerlink" title="WATCH 的触发"></a>WATCH 的触发</h2><p>在任何对数据库键空间（key space）进行修改的命令成功执行之后 （比如 <a href="http://redis.readthedocs.org/en/latest/server/flushdb.html#flushdb" target="_blank" rel="noopener">FLUSHDB</a> 、 <a href="http://redis.readthedocs.org/en/latest/string/set.html#set" target="_blank" rel="noopener">SET</a> 、 <a href="http://redis.readthedocs.org/en/latest/key/del.html#del" target="_blank" rel="noopener">DEL</a> 、 <a href="http://redis.readthedocs.org/en/latest/list/lpush.html#lpush" target="_blank" rel="noopener">LPUSH</a> 、 <a href="http://redis.readthedocs.org/en/latest/set/sadd.html#sadd" target="_blank" rel="noopener">SADD</a> 、 <a href="http://redis.readthedocs.org/en/latest/sorted_set/zrem.html#zrem" target="_blank" rel="noopener">ZREM</a> ，诸如此类）， <code>multi.c/touchWatchedKey</code> 函数都会被调用 —— 它检查数据库的 <code>watched_keys</code> 字典， 看是否有客户端在监视已经被命令修改的键， 如果有的话， 程序将所有监视这个/这些被修改键的客户端的 <code>REDIS_DIRTY_CAS</code> 选项打开：</p>
+<p><img src="/images/redis/graphviz-e5c66122242aa10939b696dfeeb905343c5202bd.svg" alt="digraph dirty_cas {    rankdir = LR;    node [shape = circle, style = filled];    edge [style = bold];    label = &quot;客户端状态的切换&quot;;    normal [label = &quot;非事务状态&quot;, fillcolor = &quot;#FADCAD&quot;];    transaction [label = &quot;事务状态&quot;, fillcolor = &quot;#A8E270&quot;];    dirty_cas [label = &quot;事务安全性\n已被破坏&quot;, fillcolor = &quot;#B22222&quot;];    normal -&gt; transaction [label = &quot;打开选项\nREDIS_MULTI&quot;];    transaction -&gt; dirty_cas [label = &quot;打开选项\nREDIS_DIRTY_CAS&quot;];}"></p>
+<p>当客户端发送 <a href="http://redis.readthedocs.org/en/latest/transaction/exec.html#exec" target="_blank" rel="noopener">EXEC</a> 命令、触发事务执行时， 服务器会对客户端的状态进行检查：</p>
+<ul>
+<li>如果客户端的 <code>REDIS_DIRTY_CAS</code> 选项已经被打开，那么说明被客户端监视的键至少有一个已经被修改了，事务的安全性已经被破坏。服务器会放弃执行这个事务，直接向客户端返回空回复，表示事务执行失败。</li>
+<li>如果 <code>REDIS_DIRTY_CAS</code> 选项没有被打开，那么说明所有监视键都安全，服务器正式执行事务。</li>
+</ul>
+<p>可以用一段伪代码来表示这个检查：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">def check_safety_before_execute_trasaction():</span><br><span class="line"></span><br><span class="line">    if client.state &amp; REDIS_DIRTY_CAS:</span><br><span class="line">        # 安全性已破坏，清除事务状态</span><br><span class="line">        clear_transaction_state(client)</span><br><span class="line">        # 清空事务队列</span><br><span class="line">        clear_transaction_queue(client)</span><br><span class="line">        # 返回空回复给客户端</span><br><span class="line">        send_empty_reply(client)</span><br><span class="line">    else:</span><br><span class="line">        # 安全性完好，执行事务</span><br><span class="line">        execute_transaction()</span><br></pre></td></tr></table></figure>
+<p>举个例子，假设数据库的 <code>watched_keys</code> 字典如下图所示：</p>
+<p><img src="/images/redis/graphviz-9aea81f33da1373550c590eb0b7ca0c2b3d38366.svg" alt="digraph watched_keys {    rankdir = LR;    node [shape = record, style = filled];    edge [style = bold];    // keys    watched_keys [label = &quot;watched_keys |&lt;key1&gt; key1 |&lt;key2&gt; key2 |&lt;key3&gt; key3 | ... |&lt;keyN&gt; keyN&quot;, fillcolor = &quot;#A8E270&quot;];    // clients blocking for key1    client1 [label = &quot;client1&quot;, fillcolor = &quot;#95BBE3&quot;];    client5 [label = &quot;client5&quot;, fillcolor = &quot;#95BBE3&quot;];    client2 [label = &quot;client2&quot;, fillcolor = &quot;#95BBE3&quot;];    null_1 [label = &quot;NULL&quot;, shape = plaintext];        watched_keys:key1 -&gt; client2;    client2 -&gt; client5;    client5 -&gt; client1;    client1 -&gt; null_1;    // clients blocking for key2    client7 [label = &quot;client7&quot;, fillcolor = &quot;#95BBE3&quot;];    null_2 [label = &quot;NULL&quot;, shape = plaintext];    watched_keys:key2 -&gt; client7;    client7 -&gt; null_2;    // key3    client3 [label = &quot;client3&quot;, fillcolor = &quot;#95BBE3&quot;];    client4 [label = &quot;client4&quot;, fillcolor = &quot;#95BBE3&quot;];    client6 [label = &quot;client6&quot;, fillcolor = &quot;#95BBE3&quot;];    null_3 [label = &quot;NULL&quot;, shape = plaintext];    watched_keys:key3 -&gt; client3;    client3 -&gt; client4;    client4 -&gt; client6;    client6 -&gt; null_3;}"></p>
+<p>如果某个客户端对 <code>key1</code> 进行了修改（比如执行 <code>DEL key1</code> ）， 那么所有监视 <code>key1</code> 的客户端， 包括 <code>client2</code> 、 <code>client5</code> 和 <code>client1</code> 的 <code>REDIS_DIRTY_CAS</code> 选项都会被打开， 当客户端 <code>client2</code> 、 <code>client5</code> 和 <code>client1</code> 执行 <a href="http://redis.readthedocs.org/en/latest/transaction/exec.html#exec" target="_blank" rel="noopener">EXEC</a> 的时候， 它们的事务都会以失败告终。</p>
+<p>最后，当一个客户端结束它的事务时，无论事务是成功执行，还是失败， <code>watched_keys</code> 字典中和这个客户端相关的资料都会被清除。</p>
+<h2 id="事务的-ACID-性质"><a href="#事务的-ACID-性质" class="headerlink" title="事务的 ACID 性质"></a>事务的 ACID 性质</h2><p>勘误：Redis 的事务是保证原子性的，本节的内容将原子性和回滚功能混淆了，等待修复中。 —— 2013.6.23</p>
+<p>在传统的关系式数据库中，常常用 <a href="http://en.wikipedia.org/wiki/ACID" target="_blank" rel="noopener">ACID 性质</a>来检验事务功能的安全性。</p>
+<p>Redis 事务保证了其中的一致性（C）和隔离性（I），但并不保证原子性（A）和持久性（D）。</p>
+<p>以下四小节是关于这四个性质的详细讨论。</p>
+<h3 id="原子性（Atomicity）"><a href="#原子性（Atomicity）" class="headerlink" title="原子性（Atomicity）"></a>原子性（Atomicity）</h3><p>单个 Redis 命令的执行是原子性的，但 Redis 没有在事务上增加任何维持原子性的机制，所以 Redis 事务的执行并不是原子性的。</p>
+<p>如果一个事务队列中的所有命令都被成功地执行，那么称这个事务执行成功。</p>
+<p>另一方面，如果 Redis 服务器进程在执行事务的过程中被停止 —— 比如接到 KILL 信号、宿主机器停机，等等，那么事务执行失败。</p>
+<p>当事务失败时，Redis 也不会进行任何的重试或者回滚动作。</p>
+<h3 id="一致性（Consistency）"><a href="#一致性（Consistency）" class="headerlink" title="一致性（Consistency）"></a>一致性（Consistency）</h3><p>Redis 的一致性问题可以分为三部分来讨论：入队错误、执行错误、Redis 进程被终结。</p>
+<h4 id="入队错误"><a href="#入队错误" class="headerlink" title="入队错误"></a>入队错误</h4><p>在命令入队的过程中，如果客户端向服务器发送了错误的命令，比如命令的参数数量不对，等等， 那么服务器将向客户端返回一个出错信息， 并且将客户端的事务状态设为 <code>REDIS_DIRTY_EXEC</code> 。</p>
+<p>当客户端执行 <a href="http://redis.readthedocs.org/en/latest/transaction/exec.html#exec" target="_blank" rel="noopener">EXEC</a> 命令时， Redis 会拒绝执行状态为 <code>REDIS_DIRTY_EXEC</code> 的事务， 并返回失败信息。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">redis 127.0.0.1:6379&gt; MULTI</span><br><span class="line">OK</span><br><span class="line"></span><br><span class="line">redis 127.0.0.1:6379&gt; set key</span><br><span class="line">(error) ERR wrong number of arguments for &apos;set&apos; command</span><br><span class="line"></span><br><span class="line">redis 127.0.0.1:6379&gt; EXISTS key</span><br><span class="line">QUEUED</span><br><span class="line"></span><br><span class="line">redis 127.0.0.1:6379&gt; EXEC</span><br><span class="line">(error) EXECABORT Transaction discarded because of previous errors.</span><br></pre></td></tr></table></figure>
+<p>因此，带有不正确入队命令的事务不会被执行，也不会影响数据库的一致性。</p>
+<h4 id="执行错误"><a href="#执行错误" class="headerlink" title="执行错误"></a>执行错误</h4><p>如果命令在事务执行的过程中发生错误，比如说，对一个不同类型的 key 执行了错误的操作， 那么 Redis 只会将错误包含在事务的结果中， 这不会引起事务中断或整个失败，不会影响已执行事务命令的结果，也不会影响后面要执行的事务命令， 所以它对事务的一致性也没有影响。</p>
+<h4 id="Redis-进程被终结"><a href="#Redis-进程被终结" class="headerlink" title="Redis 进程被终结"></a>Redis 进程被终结</h4><p>如果 Redis 服务器进程在执行事务的过程中被其他进程终结，或者被管理员强制杀死，那么根据 Redis 所使用的持久化模式，可能有以下情况出现：</p>
+<ul>
+<li><p>内存模式：如果 Redis 没有采取任何持久化机制，那么重启之后的数据库总是空白的，所以数据总是一致的。</p>
+</li>
+<li><p>RDB 模式：在执行事务时，Redis 不会中断事务去执行保存 RDB 的工作，只有在事务执行之后，保存 RDB 的工作才有可能开始。所以当 RDB 模式下的 Redis 服务器进程在事务中途被杀死时，事务内执行的命令，不管成功了多少，都不会被保存到 RDB 文件里。恢复数据库需要使用现有的 RDB 文件，而这个 RDB 文件的数据保存的是最近一次的数据库快照（snapshot），所以它的数据可能不是最新的，但只要 RDB 文件本身没有因为其他问题而出错，那么还原后的数据库就是一致的。</p>
+</li>
+<li><p>AOF 模式：因为保存 AOF 文件的工作在后台线程进行，所以即使是在事务执行的中途，保存 AOF 文件的工作也可以继续进行，因此，根据事务语句是否被写入并保存到 AOF 文件，有以下两种情况发生：</p>
+<p>1）如果事务语句未写入到 AOF 文件，或 AOF 未被 SYNC 调用保存到磁盘，那么当进程被杀死之后，Redis 可以根据最近一次成功保存到磁盘的 AOF 文件来还原数据库，只要 AOF 文件本身没有因为其他问题而出错，那么还原后的数据库总是一致的，但其中的数据不一定是最新的。</p>
+<p>2）如果事务的部分语句被写入到 AOF 文件，并且 AOF 文件被成功保存，那么不完整的事务执行信息就会遗留在 AOF 文件里，当重启 Redis 时，程序会检测到 AOF 文件并不完整，Redis 会退出，并报告错误。需要使用 redis-check-aof 工具将部分成功的事务命令移除之后，才能再次启动服务器。还原之后的数据总是一致的，而且数据也是最新的（直到事务执行之前为止）。</p>
+</li>
+</ul>
+<h3 id="隔离性（Isolation）"><a href="#隔离性（Isolation）" class="headerlink" title="隔离性（Isolation）"></a>隔离性（Isolation）</h3><p>Redis 是单进程程序，并且它保证在执行事务时，不会对事务进行中断，事务可以运行直到执行完所有事务队列中的命令为止。因此，Redis 的事务是总是带有隔离性的。</p>
+<h3 id="持久性（Durability）"><a href="#持久性（Durability）" class="headerlink" title="持久性（Durability）"></a>持久性（Durability）</h3><p>因为事务不过是用队列包裹起了一组 Redis 命令，并没有提供任何额外的持久性功能，所以事务的持久性由 Redis 所使用的持久化模式决定：</p>
+<ul>
+<li><p>在单纯的内存模式下，事务肯定是不持久的。</p>
+</li>
+<li><p>在 RDB 模式下，服务器可能在事务执行之后、RDB 文件更新之前的这段时间失败，所以 RDB 模式下的 Redis 事务也是不持久的。</p>
+</li>
+<li><p>在 AOF 的“总是 SYNC ”模式下，事务的每条命令在执行成功之后，都会立即调用 <code>fsync</code> 或 <code>fdatasync</code> 将事务数据写入到 AOF 文件。但是，这种保存是由后台线程进行的，主线程不会阻塞直到保存成功，所以从命令执行成功到数据保存到硬盘之间，还是有一段非常小的间隔，所以这种模式下的事务也是不持久的。</p>
+<p>其他 AOF 模式也和“总是 SYNC ”模式类似，所以它们都是不持久的。</p>
+</li>
+</ul>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><ul>
+<li>事务提供了一种将多个命令打包，然后一次性、有序地执行的机制。</li>
+<li>事务在执行过程中不会被中断，所有事务命令执行完之后，事务才能结束。</li>
+<li>多个命令会被入队到事务队列中，然后按先进先出（FIFO）的顺序执行。</li>
+<li>带 <code>WATCH</code> 命令的事务会将客户端和被监视的键在数据库的 <code>watched_keys</code> 字典中进行关联，当键被修改时，程序会将所有监视被修改键的客户端的 <code>REDIS_DIRTY_CAS</code> 选项打开。</li>
+<li>只有在客户端的 <code>REDIS_DIRTY_CAS</code> 选项未被打开时，才能执行事务，否则事务直接返回失败。</li>
+<li>Redis 的事务保证了 ACID 中的一致性（C）和隔离性（I），但并不保证原子性（A）和持久性（D）。</li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="http://redisbook.readthedocs.io/en/latest/feature/transaction.html" target="_blank" rel="noopener">事务</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/transaction/" rel="tag"># transaction</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/redis/分布式锁的几种实现方式/" rel="next" title="分布式锁的几种实现方式">
+                <i class="fa fa-chevron-left"></i> 分布式锁的几种实现方式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <p class="site-author-name" itemprop="name">joyo</p>
+            <p class="site-description motion-element" itemprop="description">一入java深似海，从此娱乐是路人。</p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">38</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://yakirchen.com/" title="yakir's notes" target="_blank">yakir's notes</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#事务"><span class="nav-number">1.</span> <span class="nav-text">事务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开始事务"><span class="nav-number">2.</span> <span class="nav-text">开始事务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#命令入队"><span class="nav-number">3.</span> <span class="nav-text">命令入队</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#执行事务"><span class="nav-number">4.</span> <span class="nav-text">执行事务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在事务和非事务状态下执行命令"><span class="nav-number">5.</span> <span class="nav-text">在事务和非事务状态下执行命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事务状态下的-DISCARD-、-MULTI-和-WATCH-命令"><span class="nav-number">6.</span> <span class="nav-text">事务状态下的 DISCARD 、 MULTI 和 WATCH 命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#带-WATCH-的事务"><span class="nav-number">7.</span> <span class="nav-text">带 WATCH 的事务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WATCH-命令的实现"><span class="nav-number">8.</span> <span class="nav-text">WATCH 命令的实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WATCH-的触发"><span class="nav-number">9.</span> <span class="nav-text">WATCH 的触发</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事务的-ACID-性质"><span class="nav-number">10.</span> <span class="nav-text">事务的 ACID 性质</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#原子性（Atomicity）"><span class="nav-number">10.1.</span> <span class="nav-text">原子性（Atomicity）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一致性（Consistency）"><span class="nav-number">10.2.</span> <span class="nav-text">一致性（Consistency）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#入队错误"><span class="nav-number">10.2.1.</span> <span class="nav-text">入队错误</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#执行错误"><span class="nav-number">10.2.2.</span> <span class="nav-text">执行错误</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis-进程被终结"><span class="nav-number">10.2.3.</span> <span class="nav-text">Redis 进程被终结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#隔离性（Isolation）"><span class="nav-number">10.3.</span> <span class="nav-text">隔离性（Isolation）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#持久性（Durability）"><span class="nav-number">10.4.</span> <span class="nav-text">持久性（Durability）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">11.</span> <span class="nav-text">小结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">12.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 &mdash; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-joyo"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">joyo</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://joyo.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://www.iforfee.com/redis/redis事务/';
+          this.page.identifier = 'redis/redis事务/';
+          this.page.title = 'redis事务';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://joyo.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
