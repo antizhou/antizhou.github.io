@@ -116,7 +116,7 @@
 <meta property="og:image" content="http://www.iforfee.com/images/typora/image-201803192318116.png">
 <meta property="og:image" content="http://www.iforfee.com/Users/joyo/Documents/面试/image-201803282306260.png">
 <meta property="og:image" content="http://www.iforfee.com/images/typora/image-201803202344054.png">
-<meta property="og:updated_time" content="2018-04-13T10:00:30.000Z">
+<meta property="og:updated_time" content="2018-04-15T14:29:37.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试">
 <meta name="twitter:description" content="跳槽时时刻刻都在发生，但是我建议大家跳槽之前，先想清楚为什么要跳槽。切不可跟风，看到同事一个个都走了，自己也盲目的面试起来（期间也没有准备充分），到底是因为技术原因（影响自己的发展，偏移自己规划的轨迹），还是钱给少了，不受重视。 准备不充分的面试，完全是浪费时间，更是对自己的不负责（如果title很高，当我没说）。 今天给大家分享下chenssy在这次跳槽中整理的Java面试大纲，其中大部分都是面">
@@ -247,6 +247,14 @@
 
       
       
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />搜索</a>
+        </li>
+      
     </ul>
   
 
@@ -255,6 +263,29 @@
 
   
 
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
   
 </nav>
 
@@ -391,9 +422,9 @@
 <p>7、明确项目的优缺点,如果重新设计你会如何设计。</p>
 <p>8、明确项目的亮点。（这个项目有什么亮点？）</p>
 <p>9、明确技术成长。（你通过这个项目有哪些技术成长？）</p>
-<h2 id="Java基础"><a href="#Java基础" class="headerlink" title="Java基础"></a>Java基础</h2><h3 id="List-、-Set、Map-的区别"><a href="#List-、-Set、Map-的区别" class="headerlink" title="List 、 Set、Map 的区别"></a>List 、 Set、Map 的区别</h3><p><a href="http://localhost:4000/2018/04/02/java/datastructure/ListSetMap/" target="_blank" rel="noopener">http://localhost:4000/2018/04/02/java/datastructure/ListSetMap/</a></p>
-<h3 id="HashSet-是如何保证不重复的"><a href="#HashSet-是如何保证不重复的" class="headerlink" title="HashSet 是如何保证不重复的"></a>HashSet 是如何保证不重复的</h3><p><a href="http://localhost:4000/2018/04/02/java/datastructure/ListSetMap/" target="_blank" rel="noopener">http://localhost:4000/2018/04/02/java/datastructure/ListSetMap/</a></p>
-<h3 id="HashMap-是线程安全的吗，为什么不是线程安全的（最好画图说明多线程环境下不安全）"><a href="#HashMap-是线程安全的吗，为什么不是线程安全的（最好画图说明多线程环境下不安全）" class="headerlink" title="HashMap 是线程安全的吗，为什么不是线程安全的（最好画图说明多线程环境下不安全）?"></a>HashMap 是线程安全的吗，为什么不是线程安全的（最好画图说明多线程环境下不安全）?</h3><p><a href="http://localhost:4000/2018/04/02/java/datastructure/ListSetMap/" target="_blank" rel="noopener">http://localhost:4000/2018/04/02/java/datastructure/ListSetMap/</a></p>
+<h2 id="Java基础"><a href="#Java基础" class="headerlink" title="Java基础"></a>Java基础</h2><h3 id="List-、-Set、Map-的区别"><a href="#List-、-Set、Map-的区别" class="headerlink" title="List 、 Set、Map 的区别"></a>List 、 Set、Map 的区别</h3><p><a href="/java/datastructure/ListSetMap">List、Set、Map</a></p>
+<h3 id="HashSet-是如何保证不重复的"><a href="#HashSet-是如何保证不重复的" class="headerlink" title="HashSet 是如何保证不重复的"></a>HashSet 是如何保证不重复的</h3><p><a href="/java/datastructure/ListSetMap">List、Set、Map</a></p>
+<h3 id="HashMap-是线程安全的吗，为什么不是线程安全的（最好画图说明多线程环境下不安全）"><a href="#HashMap-是线程安全的吗，为什么不是线程安全的（最好画图说明多线程环境下不安全）" class="headerlink" title="HashMap 是线程安全的吗，为什么不是线程安全的（最好画图说明多线程环境下不安全）?"></a>HashMap 是线程安全的吗，为什么不是线程安全的（最好画图说明多线程环境下不安全）?</h3><p><a href="/java/datastructure/ListSetMap">List、Set、Map</a></p>
 <h3 id="HashMap-的扩容过程"><a href="#HashMap-的扩容过程" class="headerlink" title="HashMap 的扩容过程"></a>HashMap 的扩容过程</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> Node&lt;K,V&gt;[] resize() &#123;</span><br><span class="line">    Node&lt;K,V&gt;[] oldTab = table;</span><br><span class="line">    <span class="keyword">int</span> oldCap = (oldTab == <span class="keyword">null</span>) ? <span class="number">0</span> : oldTab.length;</span><br><span class="line">    <span class="keyword">int</span> oldThr = threshold;</span><br><span class="line">    <span class="keyword">int</span> newCap, newThr = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span> (oldCap &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="comment">// 超过最大值就不再扩充了，就只好随你碰撞去吧</span></span><br><span class="line">        <span class="keyword">if</span> (oldCap &gt;= MAXIMUM_CAPACITY) &#123;</span><br><span class="line">            threshold = Integer.MAX_VALUE;</span><br><span class="line">            <span class="keyword">return</span> oldTab;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 没超过最大值，就扩充为原来的2倍</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> ((newCap = oldCap &lt;&lt; <span class="number">1</span>) &lt; MAXIMUM_CAPACITY &amp;&amp;</span><br><span class="line">                 oldCap &gt;= DEFAULT_INITIAL_CAPACITY)</span><br><span class="line">            newThr = oldThr &lt;&lt; <span class="number">1</span>; <span class="comment">// double threshold</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (oldThr &gt; <span class="number">0</span>) <span class="comment">// initial capacity was placed in threshold</span></span><br><span class="line">        newCap = oldThr;</span><br><span class="line">    <span class="keyword">else</span> &#123;               <span class="comment">// zero initial threshold signifies using defaults</span></span><br><span class="line">        newCap = DEFAULT_INITIAL_CAPACITY;</span><br><span class="line">        newThr = (<span class="keyword">int</span>)(DEFAULT_LOAD_FACTOR * DEFAULT_INITIAL_CAPACITY);</span><br><span class="line">    &#125;</span><br><span class="line">     <span class="comment">// 计算新的resize上限</span></span><br><span class="line">    <span class="keyword">if</span> (newThr == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">float</span> ft = (<span class="keyword">float</span>)newCap * loadFactor;</span><br><span class="line">        newThr = (newCap &lt; MAXIMUM_CAPACITY &amp;&amp; ft &lt; (<span class="keyword">float</span>)MAXIMUM_CAPACITY ?</span><br><span class="line">                  (<span class="keyword">int</span>)ft : Integer.MAX_VALUE);</span><br><span class="line">    &#125;</span><br><span class="line">    threshold = newThr;</span><br><span class="line">    <span class="meta">@SuppressWarnings</span>(&#123;<span class="string">"rawtypes"</span>,<span class="string">"unchecked"</span>&#125;)</span><br><span class="line">        Node&lt;K,V&gt;[] newTab = (Node&lt;K,V&gt;[])<span class="keyword">new</span> Node[newCap];</span><br><span class="line">    table = newTab;</span><br><span class="line">    <span class="keyword">if</span> (oldTab != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="comment">// 把每个bucket都移动到新的buckets中</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; oldCap; ++j) &#123;</span><br><span class="line">            Node&lt;K,V&gt; e;</span><br><span class="line">            <span class="keyword">if</span> ((e = oldTab[j]) != <span class="keyword">null</span>) &#123;</span><br><span class="line">                oldTab[j] = <span class="keyword">null</span>;</span><br><span class="line">                <span class="keyword">if</span> (e.next == <span class="keyword">null</span>)</span><br><span class="line">                    newTab[e.hash &amp; (newCap - <span class="number">1</span>)] = e;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (e <span class="keyword">instanceof</span> TreeNode)</span><br><span class="line">                    ((TreeNode&lt;K,V&gt;)e).split(<span class="keyword">this</span>, newTab, j, oldCap);</span><br><span class="line">                <span class="keyword">else</span> &#123; <span class="comment">// 链表优化重hash的代码块</span></span><br><span class="line">                    Node&lt;K,V&gt; loHead = <span class="keyword">null</span>, loTail = <span class="keyword">null</span>;</span><br><span class="line">                    Node&lt;K,V&gt; hiHead = <span class="keyword">null</span>, hiTail = <span class="keyword">null</span>;</span><br><span class="line">                    Node&lt;K,V&gt; next;</span><br><span class="line">                    <span class="keyword">do</span> &#123;</span><br><span class="line">                        next = e.next;</span><br><span class="line">                        <span class="comment">// 原索引</span></span><br><span class="line">                        <span class="keyword">if</span> ((e.hash &amp; oldCap) == <span class="number">0</span>) &#123;</span><br><span class="line">                            <span class="keyword">if</span> (loTail == <span class="keyword">null</span>)</span><br><span class="line">                                loHead = e;</span><br><span class="line">                            <span class="keyword">else</span></span><br><span class="line">                                loTail.next = e;</span><br><span class="line">                            loTail = e;</span><br><span class="line">                        &#125;</span><br><span class="line">                        <span class="comment">// 原索引+oldCap</span></span><br><span class="line">                        <span class="keyword">else</span> &#123;</span><br><span class="line">                            <span class="keyword">if</span> (hiTail == <span class="keyword">null</span>)</span><br><span class="line">                                hiHead = e;</span><br><span class="line">                            <span class="keyword">else</span></span><br><span class="line">                                hiTail.next = e;</span><br><span class="line">                            hiTail = e;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125; <span class="keyword">while</span> ((e = next) != <span class="keyword">null</span>);</span><br><span class="line">                     <span class="comment">// 原索引放到bucket里</span></span><br><span class="line">                    <span class="keyword">if</span> (loTail != <span class="keyword">null</span>) &#123;</span><br><span class="line">                        loTail.next = <span class="keyword">null</span>;</span><br><span class="line">                        newTab[j] = loHead;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="comment">// 原索引+oldCap放到bucket里</span></span><br><span class="line">                    <span class="keyword">if</span> (hiTail != <span class="keyword">null</span>) &#123;</span><br><span class="line">                        hiTail.next = <span class="keyword">null</span>;</span><br><span class="line">                        newTab[j + oldCap] = hiHead;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> newTab;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><a href="https://tech.meituan.com/java-hashmap.html" target="_blank" rel="noopener">Java 8系列之重新认识HashMap</a><br><a href="http://www.cnblogs.com/dpains/p/7169030.html" target="_blank" rel="noopener">HashMap原理-1.8</a></p>
 <h3 id="HashMap-1-7-与-1-8-的-区别，说明-1-8-做了哪些优化，如何优化的？"><a href="#HashMap-1-7-与-1-8-的-区别，说明-1-8-做了哪些优化，如何优化的？" class="headerlink" title="HashMap 1.7 与 1.8 的 区别，说明 1.8 做了哪些优化，如何优化的？"></a>HashMap 1.7 与 1.8 的 区别，说明 1.8 做了哪些优化，如何优化的？</h3><ol>
@@ -435,6 +466,7 @@
 </tr>
 </tbody>
 </table>
+<p><a href="http://www.cnblogs.com/lcplcpjava/p/6594575.html" target="_blank" rel="noopener">关于java内存泄露的总结–引用的类型：强引用，弱引用，软引用</a><br><a href="https://cloud.tencent.com/developer/article/1031730" target="_blank" rel="noopener">从面试题中看Java的Reference（引用）</a></p>
 <h3 id="Java反射"><a href="#Java反射" class="headerlink" title="Java反射"></a>Java反射</h3><p><a href="http://blog.jobbole.com/105299/" target="_blank" rel="noopener">说说 Java 反射机制</a></p>
 <p><a href="https://www.jianshu.com/p/3ea4a6b57f87" target="_blank" rel="noopener">深入分析Java方法反射的实现原理</a></p>
 <h3 id="Arrays-sort-实现原理和-Collection-实现原理"><a href="#Arrays-sort-实现原理和-Collection-实现原理" class="headerlink" title="Arrays.sort 实现原理和 Collection 实现原理"></a>Arrays.sort 实现原理和 Collection 实现原理</h3><h3 id="LinkedHashMap的应用"><a href="#LinkedHashMap的应用" class="headerlink" title="LinkedHashMap的应用"></a>LinkedHashMap的应用</h3><p>LinkedHashMap 能够做到按照插入顺序或者访问顺序进行迭代，这样在我们以后的开发中遇到相似的问题，才能想到用 LinkedHashMap 来解决，否则就算对其内部结构非常了解，不去使用也是没有什么用的。</p>
@@ -462,6 +494,13 @@
 <p><img src="/images/typora/image-201803192109284.png" alt="mage-20180319210928"></p>
 <h3 id="wait和sleep的区别"><a href="#wait和sleep的区别" class="headerlink" title="wait和sleep的区别"></a>wait和sleep的区别</h3><p>wait：调用后，必须被通知才能重新运行，且释放锁资源。</p>
 <p>sleep：睡眠一定时间后继续执行，且不释放锁资源。</p>
+<ul>
+<li>首先，要记住这个差别，“sleep是Thread类的方法,wait是Object类中定义的方法”。尽管这两个方法都会影响线程的执行行为，但是本质上是有区别的。</li>
+<li>Thread.sleep不会导致锁行为的改变，如果当前线程是拥有锁的，那么Thread.sleep不会让线程释放锁。如果能够帮助你记忆的话，可以简单认为和锁相关的方法都定义在Object类中，因此调用Thread.sleep是不会影响锁的相关行为。</li>
+<li>Thread.sleep和Object.wait都会暂停当前的线程，对于CPU资源来说，不管是哪种方式暂停的线程，都表示它暂时不再需要CPU的执行时间。OS会将执行时间分配给其它线程。区别是，调用wait后，需要别的线程执行notify/notifyAll才能够重新获得CPU执行时间。</li>
+<li>线程的状态参考 Thread.State的定义。新创建的但是没有执行（还没有调用start())的线程处于“就绪”，或者说Thread.State.NEW状态。</li>
+<li>Thread.State.BLOCKED（阻塞）表示线程正在获取锁时，因为锁不能获取到而被迫暂停执行下面的指令，一直等到这个锁被别的线程释放。BLOCKED状态下线程，OS调度机制需要决定下一个能够获取锁的线程是哪个，这种情况下，就是产生锁的争用，无论如何这都是很耗时的操作。</li>
+</ul>
 <h3 id="数组在内存中如何分配"><a href="#数组在内存中如何分配" class="headerlink" title="数组在内存中如何分配"></a>数组在内存中如何分配</h3><p>对象在堆上分配连续空间。</p>
 <h2 id="Java-并发"><a href="#Java-并发" class="headerlink" title="Java 并发"></a>Java 并发</h2><h3 id="synchronized-的实现原理以及锁优化？"><a href="#synchronized-的实现原理以及锁优化？" class="headerlink" title="synchronized 的实现原理以及锁优化？"></a>synchronized 的实现原理以及锁优化？</h3><p>JVM基于进入和退出Monitor对象来实现方法同步和代码同步。使用monitorenter和monitorexit指令实现。</p>
 <p>每个对象有一个监视器锁（monitor）；</p>
@@ -478,12 +517,25 @@
 <h3 id="怎么实现所有线程在等待某个事件的发生才会去执行？"><a href="#怎么实现所有线程在等待某个事件的发生才会去执行？" class="headerlink" title="怎么实现所有线程在等待某个事件的发生才会去执行？"></a>怎么实现所有线程在等待某个事件的发生才会去执行？</h3><p>CountDownLatch、CyclicBarrier</p>
 <h3 id="CAS？CAS-有什么缺陷，如何解决？"><a href="#CAS？CAS-有什么缺陷，如何解决？" class="headerlink" title="CAS？CAS 有什么缺陷，如何解决？"></a>CAS？CAS 有什么缺陷，如何解决？</h3><p>CompareAndSwap，不用加锁</p>
 <p>存在ABA问题，通过添加版本号来区分（AtomicStampedReference）；循环时间开销大；</p>
-<h3 id="synchronized-和-lock-有什么区别？"><a href="#synchronized-和-lock-有什么区别？" class="headerlink" title="synchronized 和 lock 有什么区别？"></a>synchronized 和 lock 有什么区别？</h3><p>lock能够非阻塞获取锁、中断地获取所、超时获取锁、更加灵活。</p>
+<h3 id="synchronized-和-lock-有什么区别？"><a href="#synchronized-和-lock-有什么区别？" class="headerlink" title="synchronized 和 lock 有什么区别？"></a>synchronized 和 lock 有什么区别？</h3><ul>
+<li>lock能够非阻塞获取锁、中断地获取锁、超时获取锁、更加灵活。</li>
+<li>悲观锁与乐观锁</li>
+<li>synchronized由jvm自动释放，lock需要手动释放</li>
+<li>在资源竞争不是很激烈的情况下，Synchronized的性能要优于ReetrantLock，但是在资源竞争很激烈的情况下，Synchronized的性能会下降几十倍，但是ReetrantLock的性能能维持常态；</li>
+</ul>
+<p><a href="http://hanhailong.com/2016/12/10/Synchronized%E4%B8%8ELock%E9%94%81%E7%9A%84%E5%8C%BA%E5%88%AB/" target="_blank" rel="noopener">Synchronized与Lock锁的区别</a></p>
 <h3 id="Hashtable-是怎么加锁的-？"><a href="#Hashtable-是怎么加锁的-？" class="headerlink" title="Hashtable 是怎么加锁的 ？"></a>Hashtable 是怎么加锁的 ？</h3><p>synchronized</p>
 <h3 id="HashMap-的并发问题？"><a href="#HashMap-的并发问题？" class="headerlink" title="HashMap 的并发问题？"></a>HashMap 的并发问题？</h3><p>死循环导致CPU100%使用</p>
 <p><a href="https://www.jianshu.com/p/1e9cf0ac07f4" target="_blank" rel="noopener">HashMap的死循环</a></p>
 <h3 id="ConcurrenHashMap-介绍？1-8-中为什么要用红黑树？"><a href="#ConcurrenHashMap-介绍？1-8-中为什么要用红黑树？" class="headerlink" title="ConcurrenHashMap 介绍？1.8 中为什么要用红黑树？"></a>ConcurrenHashMap 介绍？1.8 中为什么要用红黑树？</h3><p><a href="/java/datastructure/treemap">彻底看懂 so called 红黑树</a><br><a href="https://tech.meituan.com/redblack-tree.html" target="_blank" rel="noopener">红黑树深入剖析及Java实现</a></p>
 <h3 id="AQS"><a href="#AQS" class="headerlink" title="AQS"></a>AQS</h3><p>抽象队列同步器，AbstractQueueSynchronizer。</p>
+<ul>
+<li>模板方法</li>
+<li>volatile int 状态变量</li>
+<li>CAS</li>
+<li>同步队列（FIFO双向队列）</li>
+<li>共享、独占获取同步状态</li>
+</ul>
 <h3 id="如何检测死锁？怎么预防死锁？"><a href="#如何检测死锁？怎么预防死锁？" class="headerlink" title="如何检测死锁？怎么预防死锁？"></a>如何检测死锁？怎么预防死锁？</h3><p>检测：</p>
 <ol>
 <li>cpu使用率低</li>
@@ -512,9 +564,7 @@
 </ol>
 <h3 id="分析线程池的实现原理和线程的调度过程？"><a href="#分析线程池的实现原理和线程的调度过程？" class="headerlink" title="分析线程池的实现原理和线程的调度过程？"></a>分析线程池的实现原理和线程的调度过程？</h3><p>worker从队列中不断取任务执行，当任务队列为空时，worker线程阻塞；</p>
 <h3 id="线程池如何调优，最大数目如何确认？"><a href="#线程池如何调优，最大数目如何确认？" class="headerlink" title="线程池如何调优，最大数目如何确认？"></a>线程池如何调优，最大数目如何确认？</h3><p>取决于任务的类型，CPU密集型可以coreNum + 1；IO密集型可以2coreNum；</p>
-<h3 id="ThreadLocal原理，用的时候需要注意什么？"><a href="#ThreadLocal原理，用的时候需要注意什么？" class="headerlink" title="ThreadLocal原理，用的时候需要注意什么？"></a>ThreadLocal原理，用的时候需要注意什么？</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadLocalExample</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">MyRunnable</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span> ThreadLocal threadLocal = <span class="keyword">new</span> ThreadLocal();</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            threadLocal.set((<span class="keyword">int</span>) (Math.random() * <span class="number">100</span>D));</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">            Thread.sleep(<span class="number">2000</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println(threadLocal.get());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">         MyRunnable sharedRunnableInstance = <span class="keyword">new</span> MyRunnable();</span><br><span class="line">         Thread thread1 = <span class="keyword">new</span> Thread(sharedRunnableInstance);</span><br><span class="line">         Thread thread2 = <span class="keyword">new</span> Thread(sharedRunnableInstance);</span><br><span class="line">         thread1.start();</span><br><span class="line">         thread2.start();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>get and Set:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">	* Sets the current thread's copy of this thread-local variable</span></span><br><span class="line"><span class="comment">    * to the specified value.  Most subclasses will have no need to</span></span><br><span class="line"><span class="comment">    * override this method, relying solely on the &#123;<span class="doctag">@link</span> #initialValue&#125;</span></span><br><span class="line"><span class="comment">    * method to set the values of thread-locals.</span></span><br><span class="line"><span class="comment">    *</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@param</span> value the value to be stored in the current thread's copy of</span></span><br><span class="line"><span class="comment"> 	*        this thread-local.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">set</span><span class="params">(T value)</span> </span>&#123;</span><br><span class="line">    Thread t = Thread.currentThread();</span><br><span class="line">    ThreadLocalMap map = getMap(t);</span><br><span class="line">    <span class="keyword">if</span> (map != <span class="keyword">null</span>)</span><br><span class="line">        map.set(<span class="keyword">this</span>, value);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        createMap(t, value);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">	* Returns the value in the current thread's copy of this</span></span><br><span class="line"><span class="comment">    * thread-local variable.  If the variable has no value for the</span></span><br><span class="line"><span class="comment">    * current thread, it is first initialized to the value returned</span></span><br><span class="line"><span class="comment">    * by an invocation of the &#123;<span class="doctag">@link</span> #initialValue&#125; method.</span></span><br><span class="line"><span class="comment">    *</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@return</span> the current thread's value of this thread-local</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> T <span class="title">get</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Thread t = Thread.currentThread();</span><br><span class="line">    ThreadLocalMap map = getMap(t);</span><br><span class="line">    <span class="keyword">if</span> (map != <span class="keyword">null</span>) &#123;</span><br><span class="line">        ThreadLocalMap.Entry e = map.getEntry(<span class="keyword">this</span>);</span><br><span class="line">        <span class="keyword">if</span> (e != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</span><br><span class="line">            T result = (T)e.value;</span><br><span class="line">            <span class="keyword">return</span> result;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> setInitialValue();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="ThreadLocal原理，用的时候需要注意什么？"><a href="#ThreadLocal原理，用的时候需要注意什么？" class="headerlink" title="ThreadLocal原理，用的时候需要注意什么？"></a>ThreadLocal原理，用的时候需要注意什么？</h3><p><a href="/java/datastructure/ThreadLocal">ThreadLocal</a></p>
 <h3 id="CountDownLatch-和-CyclicBarrier-的用法，以及相互之间的差别"><a href="#CountDownLatch-和-CyclicBarrier-的用法，以及相互之间的差别" class="headerlink" title="CountDownLatch 和 CyclicBarrier 的用法，以及相互之间的差别?"></a>CountDownLatch 和 CyclicBarrier 的用法，以及相互之间的差别?</h3><p>区别：CyclicBarrier可以重复使用，CountDownLatch只能使用一次。</p>
 <h3 id="LockSupport工具"><a href="#LockSupport工具" class="headerlink" title="LockSupport工具"></a>LockSupport工具</h3><p>park、unpark</p>
 <h3 id="Condition接口及其实现原理"><a href="#Condition接口及其实现原理" class="headerlink" title="Condition接口及其实现原理"></a>Condition接口及其实现原理</h3><p>底层依赖LockSupport方法</p>
@@ -564,10 +614,10 @@
 <p>如果是无界阻塞队列，队列不可能会出现满的情况，所以使用put或offer方法永远不会被阻塞，而且使用offer方法时，该方法永远返回rue。</p>
 <p>实现：</p>
 <p>通过Lock和Condition实现，插入市判断容量调用LockSupport的await或signal方法</p>
-<h2 id="JVM"><a href="#JVM" class="headerlink" title="JVM"></a>JVM</h2><h3 id="详细jvm内存模型"><a href="#详细jvm内存模型" class="headerlink" title="详细jvm内存模型"></a>详细jvm内存模型</h3><p><a href="http://www.iforfee.com/2018/03/22/java/jvm%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/">jvm内存模型</a></p>
+<h2 id="JVM"><a href="#JVM" class="headerlink" title="JVM"></a>JVM</h2><h3 id="详细jvm内存模型"><a href="#详细jvm内存模型" class="headerlink" title="详细jvm内存模型"></a>详细jvm内存模型</h3><p><a href="/java/jvm内存模型">jvm内存模型</a></p>
 <h3 id="讲讲什么情况下回出现内存溢出，内存泄漏？"><a href="#讲讲什么情况下回出现内存溢出，内存泄漏？" class="headerlink" title="讲讲什么情况下回出现内存溢出，内存泄漏？"></a>讲讲什么情况下回出现内存溢出，内存泄漏？</h3><p>内存溢出：指程序申请内存时,没有足够的内存空间使用</p>
 <p>内存泄漏：指程序申请了内存后(new),用完的内存没有释放(delete),一直被某个或某些实例所持有却不再被使用导致 GC 不能回收</p>
-<p><a href="https://www.jianshu.com/p/e97ed5d8a403" target="_blank" rel="noopener">https://www.jianshu.com/p/e97ed5d8a403</a></p>
+<p><a href="https://www.jianshu.com/p/e97ed5d8a403" target="_blank" rel="noopener">https://www.jianshu.com/p/e97ed5d8a403</a><br><a href="http://www.cnblogs.com/lcplcpjava/p/6594575.html" target="_blank" rel="noopener">关于java内存泄露的总结–引用的类型：强引用，弱引用，软引用</a></p>
 <h3 id="说说Java线程栈"><a href="#说说Java线程栈" class="headerlink" title="说说Java线程栈"></a>说说Java线程栈</h3><p><a href="https://blog.csdn.net/hust_superman/article/details/39402087" target="_blank" rel="noopener">https://blog.csdn.net/hust_superman/article/details/39402087</a></p>
 <h3 id="JVM-年轻代到年老代的晋升过程的判断条件是什么呢？"><a href="#JVM-年轻代到年老代的晋升过程的判断条件是什么呢？" class="headerlink" title="JVM 年轻代到年老代的晋升过程的判断条件是什么呢？"></a>JVM 年轻代到年老代的晋升过程的判断条件是什么呢？</h3><ol>
 <li>大对象直接进入老年代</li>
@@ -774,7 +824,10 @@
 <li>setNX锁</li>
 <li>watch + 事务</li>
 </ol>
-<h3 id="Redis持久化的几种方式，优缺点是什么，怎么实现的"><a href="#Redis持久化的几种方式，优缺点是什么，怎么实现的" class="headerlink" title="Redis持久化的几种方式，优缺点是什么，怎么实现的"></a>Redis持久化的几种方式，优缺点是什么，怎么实现的</h3><h3 id="Redis的缓存失效策略"><a href="#Redis的缓存失效策略" class="headerlink" title="Redis的缓存失效策略"></a>Redis的缓存失效策略</h3><h3 id="Redis集群，高可用，原理"><a href="#Redis集群，高可用，原理" class="headerlink" title="Redis集群，高可用，原理"></a>Redis集群，高可用，原理</h3><h3 id="Redis缓存分片"><a href="#Redis缓存分片" class="headerlink" title="Redis缓存分片"></a>Redis缓存分片</h3><h3 id="Redis的数据淘汰策略"><a href="#Redis的数据淘汰策略" class="headerlink" title="Redis的数据淘汰策略"></a>Redis的数据淘汰策略</h3><p><a href="https://mp.weixin.qq.com/s/tDmBPPk0LAbNZ8d809-2ZA" target="_blank" rel="noopener">原文</a>   <a href="https://mp.weixin.qq.com/s?__biz=MzIwMzY1OTU1NQ==&amp;mid=2247484038&amp;idx=1&amp;sn=a31c83f3a132ee8fa816f7b1db3839eb&amp;chksm=96cd42caa1bacbdc807724ab48e5ce085f368fd17c1da7f7845c8faf2f1a39138c242d0161a8&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">原文</a></p>
+<h3 id="Redis持久化的几种方式，优缺点是什么，怎么实现的"><a href="#Redis持久化的几种方式，优缺点是什么，怎么实现的" class="headerlink" title="Redis持久化的几种方式，优缺点是什么，怎么实现的"></a>Redis持久化的几种方式，优缺点是什么，怎么实现的</h3><p><a href="http://redisdoc.com/topic/persistence.html" target="_blank" rel="noopener">持久化</a></p>
+<h3 id="Redis的缓存失效策略"><a href="#Redis的缓存失效策略" class="headerlink" title="Redis的缓存失效策略"></a>Redis的缓存失效策略</h3><h3 id="Redis集群，高可用，原理"><a href="#Redis集群，高可用，原理" class="headerlink" title="Redis集群，高可用，原理"></a>Redis集群，高可用，原理</h3><h3 id="Redis缓存分片"><a href="#Redis缓存分片" class="headerlink" title="Redis缓存分片"></a>Redis缓存分片</h3><p><a href="https://my.oschina.net/andylucc/blog/675986" target="_blank" rel="noopener">Redis分区实现原理</a></p>
+<h3 id="Redis的数据淘汰策略"><a href="#Redis的数据淘汰策略" class="headerlink" title="Redis的数据淘汰策略"></a>Redis的数据淘汰策略</h3><p><a href="https://github.com/bingbo/blog/wiki/Redis%E6%95%B0%E6%8D%AE%E6%B7%98%E6%B1%B0%E6%9C%BA%E5%88%B6" target="_blank" rel="noopener">Redis数据淘汰机制</a></p>
+<p><a href="https://mp.weixin.qq.com/s/tDmBPPk0LAbNZ8d809-2ZA" target="_blank" rel="noopener">原文</a>   <a href="https://mp.weixin.qq.com/s?__biz=MzIwMzY1OTU1NQ==&amp;mid=2247484038&amp;idx=1&amp;sn=a31c83f3a132ee8fa816f7b1db3839eb&amp;chksm=96cd42caa1bacbdc807724ab48e5ce085f368fd17c1da7f7845c8faf2f1a39138c242d0161a8&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">原文</a></p>
 
       
     </div>
@@ -898,7 +951,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">39</span>
+                    <span class="site-state-item-count">40</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -986,7 +1039,15 @@
                     
                       
                     
-                    <span class="site-state-item-count">19</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">20</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -1184,7 +1245,7 @@
   
 
   
-    <script id="dsq-count-scr" src="https://http-www-iforfee-com.disqus.com/count.js" async></script>
+    <script id="dsq-count-scr" src="https://zj23qq.disqus.com/count.js" async></script>
   
 
   
@@ -1196,7 +1257,7 @@
       };
       function loadComments () {
         var d = document, s = d.createElement('script');
-        s.src = 'https://http-www-iforfee-com.disqus.com/embed.js';
+        s.src = 'https://zj23qq.disqus.com/embed.js';
         s.setAttribute('data-timestamp', '' + +new Date());
         (d.head || d.body).appendChild(s);
       }
@@ -1230,6 +1291,326 @@
 
 
   
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
 
 
 
