@@ -116,7 +116,7 @@
 <meta property="og:image" content="http://www.iforfee.com/images/typora/image-201803192318116.png">
 <meta property="og:image" content="http://www.iforfee.com/Users/joyo/Documents/面试/image-201803282306260.png">
 <meta property="og:image" content="http://www.iforfee.com/images/typora/image-201803202344054.png">
-<meta property="og:updated_time" content="2018-04-15T14:29:37.000Z">
+<meta property="og:updated_time" content="2018-04-17T10:46:20.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试">
 <meta name="twitter:description" content="跳槽时时刻刻都在发生，但是我建议大家跳槽之前，先想清楚为什么要跳槽。切不可跟风，看到同事一个个都走了，自己也盲目的面试起来（期间也没有准备充分），到底是因为技术原因（影响自己的发展，偏移自己规划的轨迹），还是钱给少了，不受重视。 准备不充分的面试，完全是浪费时间，更是对自己的不负责（如果title很高，当我没说）。 今天给大家分享下chenssy在这次跳槽中整理的Java面试大纲，其中大部分都是面">
@@ -227,6 +227,14 @@
           <li class="menu-item menu-item-home">
     <a href="/" rel="section">
       <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
   </li>
         
         
@@ -566,8 +574,9 @@
 <h3 id="线程池如何调优，最大数目如何确认？"><a href="#线程池如何调优，最大数目如何确认？" class="headerlink" title="线程池如何调优，最大数目如何确认？"></a>线程池如何调优，最大数目如何确认？</h3><p>取决于任务的类型，CPU密集型可以coreNum + 1；IO密集型可以2coreNum；</p>
 <h3 id="ThreadLocal原理，用的时候需要注意什么？"><a href="#ThreadLocal原理，用的时候需要注意什么？" class="headerlink" title="ThreadLocal原理，用的时候需要注意什么？"></a>ThreadLocal原理，用的时候需要注意什么？</h3><p><a href="/java/datastructure/ThreadLocal">ThreadLocal</a></p>
 <h3 id="CountDownLatch-和-CyclicBarrier-的用法，以及相互之间的差别"><a href="#CountDownLatch-和-CyclicBarrier-的用法，以及相互之间的差别" class="headerlink" title="CountDownLatch 和 CyclicBarrier 的用法，以及相互之间的差别?"></a>CountDownLatch 和 CyclicBarrier 的用法，以及相互之间的差别?</h3><p>区别：CyclicBarrier可以重复使用，CountDownLatch只能使用一次。</p>
-<h3 id="LockSupport工具"><a href="#LockSupport工具" class="headerlink" title="LockSupport工具"></a>LockSupport工具</h3><p>park、unpark</p>
+<h3 id="LockSupport工具"><a href="#LockSupport工具" class="headerlink" title="LockSupport工具"></a>LockSupport工具</h3><p><a href="/java/LockSupport">LockSupport</a></p>
 <h3 id="Condition接口及其实现原理"><a href="#Condition接口及其实现原理" class="headerlink" title="Condition接口及其实现原理"></a>Condition接口及其实现原理</h3><p>底层依赖LockSupport方法</p>
+<p><a href="/java/锁">condition</a></p>
 <h3 id="Fork-Join框架的理解"><a href="#Fork-Join框架的理解" class="headerlink" title="Fork/Join框架的理解"></a>Fork/Join框架的理解</h3><p>需要通过ForkJoinPool来提交任务。任务一般通过使用ForkJoinTask的子类来实现：</p>
 <ol>
 <li>RecursiveAction：用于没有返回结果的任务</li>
@@ -951,7 +960,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">40</span>
+                    <span class="site-state-item-count">42</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1047,7 +1056,7 @@
                     
                       
                     
-                    <span class="site-state-item-count">20</span>
+                    <span class="site-state-item-count">23</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

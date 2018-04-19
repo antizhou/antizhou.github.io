@@ -114,14 +114,14 @@
 <meta property="og:image" content="http://www.iforfee.com/images/typora/image-201803221605372.png">
 <meta property="og:image" content="http://www.iforfee.com/images/typora/image-201803221605440.png">
 <meta property="og:image" content="http://www.iforfee.com/images/typora/image-201803221548165.png">
-<meta property="og:image" content="http://img.blog.csdn.net/20170228102953203">
-<meta property="og:image" content="http://img.blog.csdn.net/20170228103026021">
-<meta property="og:image" content="http://img.blog.csdn.net/20170228110737416">
-<meta property="og:image" content="http://img.blog.csdn.net/20170228112128055">
-<meta property="og:image" content="http://img.blog.csdn.net/20170228112156530">
-<meta property="og:image" content="http://img.blog.csdn.net/20170228112243931">
-<meta property="og:image" content="http://img.blog.csdn.net/20170228120023427">
-<meta property="og:updated_time" content="2018-03-22T08:28:52.000Z">
+<meta property="og:image" content="http://www.iforfee.com/images/20170228102953203">
+<meta property="og:image" content="http://www.iforfee.com/images/20170228103026021">
+<meta property="og:image" content="http://www.iforfee.com/images/20170228110737416">
+<meta property="og:image" content="http://www.iforfee.com/images/20170228112128055">
+<meta property="og:image" content="http://www.iforfee.com/images/20170228112156530">
+<meta property="og:image" content="http://www.iforfee.com/images/20170228112243931">
+<meta property="og:image" content="http://www.iforfee.com/images/20170228120023427">
+<meta property="og:updated_time" content="2018-04-19T08:13:39.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="jvm内存模型">
 <meta name="twitter:description" content="内存模型 （1）线程私有区：  程序计数器，记录正在执行的虚拟机字节码的地址； 虚拟机栈：方法执行的内存区，每个方法执行时会在虚拟机栈中创建栈帧； 本地方法栈：虚拟机的Native方法执行的内存区；  （2）线程共享区：  Java堆：对象分配内存的区域； 方法区：存放类信息、常量、静态变量、编译器编译后的代码等数据； 常量池：存放编译器生成的各种字面量和符号引用，是方法区的一部分。">
@@ -232,6 +232,14 @@
           <li class="menu-item menu-item-home">
     <a href="/" rel="section">
       <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
   </li>
         
         
@@ -496,9 +504,9 @@
 <p>下面我们简单的模拟一个堆内存溢出的情况：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.paddx.test.memory;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by root on 2/28/17.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HeapOomMock</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        List&lt;<span class="keyword">byte</span>[]&gt; list = <span class="keyword">new</span> ArrayList&lt;<span class="keyword">byte</span>[]&gt;();</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">boolean</span> flag = <span class="keyword">true</span>;</span><br><span class="line">        <span class="keyword">while</span>(flag) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                i++;</span><br><span class="line">                list.add(<span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span> * <span class="number">1024</span>]); <span class="comment">// 每次增加1M大小的数组对象</span></span><br><span class="line">            &#125;<span class="keyword">catch</span>(Throwable e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">                flag = <span class="keyword">false</span>;</span><br><span class="line">                System.out.println(<span class="string">"Count = "</span> + i); <span class="comment">// 记录运行的次数</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>首先配置运行时虚拟机的启动参数：</p>
-<p><img src="http://img.blog.csdn.net/20170228102953203" alt="img"></p>
+<p><img src="/images/20170228102953203" alt="img"></p>
 <p>然后运行代码，输出结果如下：</p>
-<p><img src="http://img.blog.csdn.net/20170228103026021" alt="img"></p>
+<p><img src="/images/20170228103026021" alt="img"></p>
 <p>注意，这里我们指定了堆内存的大小为16M，所以这个地方显示的Count=13(这个数字不是固定的)，至于为什么会是13或其他数字，需要根据GC日志来判断。</p>
 <h3 id="方法区"><a href="#方法区" class="headerlink" title="方法区"></a>方法区</h3><p>方法区主要存放的是已被虚拟机加载的类信息、常量、静态变量、编译器编译后的代码等数据。GC在该区域出现的比较少。</p>
 <p><strong>异常(Exception)</strong>：Java虚拟机规范规定该区域可抛出OutOfMemoryError。</p>
@@ -517,17 +525,17 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.paddx.test.memory;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.File;</span><br><span class="line"><span class="keyword">import</span> java.net.URL;</span><br><span class="line"><span class="keyword">import</span> java.net.URLClassLoader;</span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PermGenOomMock</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		URL url = <span class="keyword">null</span>;</span><br><span class="line">		List&lt;ClassLoader&gt; classLoaderList = <span class="keyword">new</span> ArrayList&lt;ClassLoader&gt;();</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			url = <span class="keyword">new</span> File(<span class="string">"/tmp"</span>).toURI().toURL();</span><br><span class="line">			URL[] urls = &#123;url&#125;;</span><br><span class="line">			<span class="keyword">while</span>(<span class="keyword">true</span>) &#123;</span><br><span class="line">				ClassLoader loader = <span class="keyword">new</span> URLClassLoader(urls);</span><br><span class="line">				classLoaderList.add(loader);</span><br><span class="line">				loader.loadClass(<span class="string">"com.paddx.test.memory.Test"</span>);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;<span class="keyword">catch</span>(Exception e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.paddx.test.memory;  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
 <p>运行结果如下：</p>
-<p><img src="http://img.blog.csdn.net/20170228110737416" alt="img"></p>
+<p><img src="/images/20170228110737416" alt="img"></p>
 <p>本例中使用的JDK版本是1.7，指定的PermGen区的大小为8M。通过每次生成不同URLClassLoader对象加载Test类，从而生成不同的类对象，这样就能看到我们熟悉的“java.lang.OutOfMemoryError: PermGen space”异常了。这里之所以采用JDK 1.7，是因为在JDK 1.8中，HotSpot已经没有“PermGen space”这个区间了，取而代之是一个叫做Metaspace(元空间)的东西。下面我们就来看看Metaspace与PermGen space的区别。</p>
 <h3 id="Metaspace-元空间"><a href="#Metaspace-元空间" class="headerlink" title="Metaspace(元空间)"></a>Metaspace(元空间)</h3><p>其实，移除永久代的工作从JDK 1.7就开始了。JDK 1.7中，存储在永久代的部分数据就已经转移到Java Heap或者Native Heap。但永久代仍存在于JDK 1.7中，并没有完全移除，譬如符号引用(Symbols)转移到了native heap；字面量(interned strings)转移到了Java heap；类的静态变量(class statics)转移到了Java heap。我们可以通过一段程序来比较JDK 1.6、JDK 1.7与JDK 1.8的区别，以字符串常量为例：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.paddx.test.memory;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StringOomMock</span> </span>&#123;</span><br><span class="line">	<span class="keyword">static</span> String base = <span class="string">"string"</span>;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		List&lt;String&gt; list = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; Integer.MAX_VALUE; i++) &#123;</span><br><span class="line">			String str = base + base;</span><br><span class="line">			base = str;</span><br><span class="line">			list.add(str.intern());</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这段程序以2的指数级不断的生成新的字符串，这样可以比较快速的消耗内存。我们通过JDK 1.6、JDK 1.7和JDK 1.8分别运行：</p>
 <p>JDK 1.6的运行结果：</p>
-<p><img src="http://img.blog.csdn.net/20170228112128055" alt="img"></p>
+<p><img src="/images/20170228112128055" alt="img"></p>
 <p>JDK 1.7的运行结果：</p>
-<p><img src="http://img.blog.csdn.net/20170228112156530" alt="img"></p>
+<p><img src="/images/20170228112156530" alt="img"></p>
 <p>JDK 1.8的运行结果：</p>
-<p><img src="http://img.blog.csdn.net/20170228112243931" alt="img"></p>
+<p><img src="/images/20170228112243931" alt="img"></p>
 <p>从上述结果可以看出，JDK 1.6下，会出现“PermGen space”的内存溢出，而在JDK 1.7和JDK 1.8中，会出现堆内存溢出，并且JDK 1.8中参数PermSize和MaxPermSize已经失效。因此，可以大致验证JDK 1.7和JDK 1.8中将字符串常量由永久代转移到堆中，并且JDK 1.8中已经不存在永久代的结论。现在我们来看一看元空间到底是一个什么东西？</p>
 <p>JDK1.8对JVM架构的改造将类元数据放到本地内存中，另外，将常量池和静态变量放到Java堆里。HotSpot VM将会为类的元数据明确分配和释放本地内存。在这种架构下，类元信息就突破了原来-XX:MaxPermSize的限制，现在可以使用更多的本地内存。这样就从一定程度上解决了原来在运行时生成大量类造成经常Full GC问题，如运行时使用反射、代理等。所以升级以后Java堆空间可能会增加。</p>
 <p>元空间的本质和永久代类似，都是对JVM规范中方法区的实现。不过元空间与永久代之间的最大区别在于：元空间并不在虚拟机中，而是使用本地内存。因此，默认情况下，元空间的大小仅受本地内存限制，但可以通过以下参数指定元空间的大小：</p>
@@ -541,12 +549,22 @@
 <p>-XX:MaxMetaspaceFreeRatio，在GC之后，最大的Metaspace剩余空间容量的百分比，减少为释放空间所导致的垃圾收集。</p>
 </blockquote>
 <p>现在我们在JDK 1.8重新运行一下上面第二部分(PermGen(永久代))的代码，不过这次不再指定PermSize和MaxPermSize。而是制定MetaspaceSize和MaxMetaspaceSize的大小。输出结果如下：</p>
-<p><img src="http://img.blog.csdn.net/20170228120023427" alt="img"></p>
+<p><img src="/images/20170228120023427" alt="img"></p>
 <p>从输出结果，我们可以看出，这次不再出现永久代溢出，而是出现元空间的溢出。</p>
-<p>参考</p>
-<ol>
+<h2 id="对象分配规则"><a href="#对象分配规则" class="headerlink" title="对象分配规则"></a>对象分配规则</h2><ul>
+<li>对象优先分配在Eden区，如果Eden区没有足够的空间时，虚拟机执行一次Minor GC。</li>
+<li>大对象直接进入老年代（大对象是指需要大量连续内存空间的对象）。这样做的目的是避免在Eden区和两个Survivor区之间发生大量的内存拷贝（新生代采用复制算法收集内存）。</li>
+<li>长期存活的对象进入老年代。虚拟机为每个对象定义了一个年龄计数器，如果对象经过了1次Minor GC那么对象会进入Survivor区，之后每经过一次Minor GC那么对象的年龄加1，直到达到阀值对象进入老年区。</li>
+<li>动态判断对象的年龄。如果Survivor区中相同年龄的所有对象大小的总和大于Survivor空间的一半，年龄大于或等于该年龄的对象可以直接进入老年代。</li>
+<li>空间分配担保。每次进行Minor GC时，JVM会计算Survivor区移至老年区的对象的平均大小，如果这个值大于老年区的剩余值大小则进行一次Full GC，如果小于检查HandlePromotionFailure设置，如果true则只进行Monitor GC,如果false则进行Full GC。</li>
+</ul>
+<blockquote>
+<p><em>如何通过参数来控制个各个内存区域</em><br><em>参考此文章：</em><a href="http://www.importnew.com/?p=23746" target="_blank" rel="noopener">JVM（2）：JVM内存结构</a></p>
+</blockquote>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
 <li><a href="http://gityuan.com/2016/01/09/java-memory/" target="_blank" rel="noopener">http://gityuan.com/2016/01/09/java-memory/</a></li>
 <li><a href="http://blog.csdn.net/universe_ant/article/details/58585854" target="_blank" rel="noopener">http://blog.csdn.net/universe_ant/article/details/58585854</a></li>
+<li><a href="https://blog.csdn.net/qian520ao/article/details/79118474" target="_blank" rel="noopener">Java —— 运行时栈帧结构</a></li>
 </ol>
 
       
@@ -677,7 +695,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">40</span>
+                    <span class="site-state-item-count">42</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -773,7 +791,7 @@
                     
                       
                     
-                    <span class="site-state-item-count">20</span>
+                    <span class="site-state-item-count">23</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -823,7 +841,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#内存模型"><span class="nav-number">1.</span> <span class="nav-text">内存模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#详细模型"><span class="nav-number">2.</span> <span class="nav-text">详细模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#程序计数器PC"><span class="nav-number">2.1.</span> <span class="nav-text">程序计数器PC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#虚拟机栈"><span class="nav-number">2.2.</span> <span class="nav-text">虚拟机栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#本地方法栈"><span class="nav-number">2.3.</span> <span class="nav-text">本地方法栈</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Java堆"><span class="nav-number">2.3.1.</span> <span class="nav-text">Java堆</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法区"><span class="nav-number">2.4.</span> <span class="nav-text">方法区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运行时常量池"><span class="nav-number">2.5.</span> <span class="nav-text">运行时常量池</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jdk-1-8中的改进"><span class="nav-number">3.</span> <span class="nav-text">jdk 1.8中的改进</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PermGen永久代"><span class="nav-number">3.1.</span> <span class="nav-text">PermGen永久代</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Metaspace-元空间"><span class="nav-number">3.2.</span> <span class="nav-text">Metaspace(元空间)</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#内存模型"><span class="nav-number">1.</span> <span class="nav-text">内存模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#详细模型"><span class="nav-number">2.</span> <span class="nav-text">详细模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#程序计数器PC"><span class="nav-number">2.1.</span> <span class="nav-text">程序计数器PC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#虚拟机栈"><span class="nav-number">2.2.</span> <span class="nav-text">虚拟机栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#本地方法栈"><span class="nav-number">2.3.</span> <span class="nav-text">本地方法栈</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Java堆"><span class="nav-number">2.3.1.</span> <span class="nav-text">Java堆</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法区"><span class="nav-number">2.4.</span> <span class="nav-text">方法区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运行时常量池"><span class="nav-number">2.5.</span> <span class="nav-text">运行时常量池</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jdk-1-8中的改进"><span class="nav-number">3.</span> <span class="nav-text">jdk 1.8中的改进</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PermGen永久代"><span class="nav-number">3.1.</span> <span class="nav-text">PermGen永久代</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Metaspace-元空间"><span class="nav-number">3.2.</span> <span class="nav-text">Metaspace(元空间)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对象分配规则"><span class="nav-number">4.</span> <span class="nav-text">对象分配规则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>

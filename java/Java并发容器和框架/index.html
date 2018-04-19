@@ -107,7 +107,7 @@
 <meta property="og:site_name" content="joyo&#39;s world">
 <meta property="og:description" content="主要介绍ConcurrentHashMap、ConcurrentLinkedQueue、阻塞队列、Fork/Join框架">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-03-18T08:54:05.000Z">
+<meta property="og:updated_time" content="2018-04-17T11:13:35.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java并发容器和框架">
 <meta name="twitter:description" content="主要介绍ConcurrentHashMap、ConcurrentLinkedQueue、阻塞队列、Fork/Join框架">
@@ -217,6 +217,14 @@
           <li class="menu-item menu-item-home">
     <a href="/" rel="section">
       <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
   </li>
         
         
@@ -424,7 +432,7 @@
 <li>支持阻塞地移除方法：意思是当队列空时，获取元素的线程会等待队列变空。</li>
 </ol>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">public interface BlockingQueue&lt;E&gt; extends Queue&lt;E&gt; &#123;</span><br><span class="line">    boolean add(E e);</span><br><span class="line"></span><br><span class="line">    boolean offer(E e);</span><br><span class="line"></span><br><span class="line">    void put(E e) throws InterruptedException;</span><br><span class="line"></span><br><span class="line">    boolean offer(E e, long timeout, TimeUnit unit)</span><br><span class="line">        throws InterruptedException;</span><br><span class="line"></span><br><span class="line">    E take() throws InterruptedException;</span><br><span class="line"></span><br><span class="line">    E poll(long timeout, TimeUnit unit)</span><br><span class="line">        throws InterruptedException;</span><br><span class="line"></span><br><span class="line">    int remainingCapacity();</span><br><span class="line"></span><br><span class="line">    boolean remove(Object o);</span><br><span class="line"></span><br><span class="line">    public boolean contains(Object o);</span><br><span class="line"></span><br><span class="line">    int drainTo(Collection&lt;? super E&gt; c);</span><br><span class="line"></span><br><span class="line">    int drainTo(Collection&lt;? super E&gt; c, int maxElements);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="接口方法"><a href="#接口方法" class="headerlink" title="接口方法"></a>接口方法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">public interface BlockingQueue&lt;E&gt; extends Queue&lt;E&gt; &#123;</span><br><span class="line">    boolean add(E e);</span><br><span class="line"></span><br><span class="line">    boolean offer(E e);</span><br><span class="line"></span><br><span class="line">    void put(E e) throws InterruptedException;</span><br><span class="line"></span><br><span class="line">    boolean offer(E e, long timeout, TimeUnit unit)</span><br><span class="line">        throws InterruptedException;</span><br><span class="line"></span><br><span class="line">    E take() throws InterruptedException;</span><br><span class="line"></span><br><span class="line">    E poll(long timeout, TimeUnit unit)</span><br><span class="line">        throws InterruptedException;</span><br><span class="line"></span><br><span class="line">    int remainingCapacity();</span><br><span class="line"></span><br><span class="line">    boolean remove(Object o);</span><br><span class="line"></span><br><span class="line">    public boolean contains(Object o);</span><br><span class="line"></span><br><span class="line">    int drainTo(Collection&lt;? super E&gt; c);</span><br><span class="line"></span><br><span class="line">    int drainTo(Collection&lt;? super E&gt; c, int maxElements);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <table>
 <thead>
 <tr>
@@ -459,7 +467,19 @@
 </tr>
 </tbody>
 </table>
-<h3 id="DelayedWorkQueue"><a href="#DelayedWorkQueue" class="headerlink" title="DelayedWorkQueue"></a>DelayedWorkQueue</h3><h2 id="Fork-Join框架"><a href="#Fork-Join框架" class="headerlink" title="Fork/Join框架"></a>Fork/Join框架</h2>
+<h3 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h3><p>使用通知模式实现。<br>以ArrayBlockingQueue为例：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** Main lock guarding all access */</span></span><br><span class="line"><span class="keyword">final</span> ReentrantLock lock;</span><br><span class="line"></span><br><span class="line"><span class="comment">/** Condition for waiting takes */</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Condition notEmpty;</span><br><span class="line"></span><br><span class="line"><span class="comment">/** Condition for waiting puts */</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Condition notFull;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">put</span><span class="params">(E e)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">    checkNotNull(e);</span><br><span class="line">    <span class="keyword">final</span> ReentrantLock lock = <span class="keyword">this</span>.lock;</span><br><span class="line">    lock.lockInterruptibly();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">while</span> (count == items.length)</span><br><span class="line">            notFull.await();</span><br><span class="line">        enqueue(e);</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        lock.unlock();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> E <span class="title">take</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> ReentrantLock lock = <span class="keyword">this</span>.lock;</span><br><span class="line">    lock.lockInterruptibly();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">while</span> (count == <span class="number">0</span>)</span><br><span class="line">            notEmpty.await();</span><br><span class="line">        <span class="keyword">return</span> dequeue();</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        lock.unlock();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="队列"><a href="#队列" class="headerlink" title="队列"></a>队列</h3><ul>
+<li>ArrayBlockingQueue</li>
+<li>LinkedBlockingQueue</li>
+<li>PriorityBlockingQueue</li>
+<li>DelayQueue</li>
+<li>DelayedWorkQueue</li>
+<li>SynchronousQueue</li>
+<li>LinkedTransferQueue</li>
+<li>LinkedBlockingDeque</li>
+</ul>
+<p><a href="https://javadoop.com/post/java-concurrent-queue" target="_blank" rel="noopener">https://javadoop.com/post/java-concurrent-queue</a></p>
+<h2 id="Fork-Join框架"><a href="#Fork-Join框架" class="headerlink" title="Fork/Join框架"></a>Fork/Join框架</h2>
       
     </div>
 
@@ -588,7 +608,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">40</span>
+                    <span class="site-state-item-count">42</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -684,7 +704,7 @@
                     
                       
                     
-                    <span class="site-state-item-count">20</span>
+                    <span class="site-state-item-count">23</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -734,7 +754,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ConcurrentHashMap"><span class="nav-number">1.</span> <span class="nav-text">ConcurrentHashMap</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ConcurrentLinkedQueue"><span class="nav-number">2.</span> <span class="nav-text">ConcurrentLinkedQueue</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#阻塞队列"><span class="nav-number">3.</span> <span class="nav-text">阻塞队列</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DelayedWorkQueue"><span class="nav-number">3.1.</span> <span class="nav-text">DelayedWorkQueue</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Fork-Join框架"><span class="nav-number">4.</span> <span class="nav-text">Fork/Join框架</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ConcurrentHashMap"><span class="nav-number">1.</span> <span class="nav-text">ConcurrentHashMap</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ConcurrentLinkedQueue"><span class="nav-number">2.</span> <span class="nav-text">ConcurrentLinkedQueue</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#阻塞队列"><span class="nav-number">3.</span> <span class="nav-text">阻塞队列</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#接口方法"><span class="nav-number">3.1.</span> <span class="nav-text">接口方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现原理"><span class="nav-number">3.2.</span> <span class="nav-text">实现原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#队列"><span class="nav-number">3.3.</span> <span class="nav-text">队列</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Fork-Join框架"><span class="nav-number">4.</span> <span class="nav-text">Fork/Join框架</span></a></li></ol></div>
             
 
           </div>
