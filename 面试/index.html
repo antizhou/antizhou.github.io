@@ -116,7 +116,7 @@
 <meta property="og:image" content="http://www.iforfee.com/images/typora/image-201803192318116.png">
 <meta property="og:image" content="http://www.iforfee.com/Users/joyo/Documents/面试/image-201803282306260.png">
 <meta property="og:image" content="http://www.iforfee.com/images/typora/image-201803202344054.png">
-<meta property="og:updated_time" content="2018-04-17T10:46:20.000Z">
+<meta property="og:updated_time" content="2018-04-24T08:08:01.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试">
 <meta name="twitter:description" content="跳槽时时刻刻都在发生，但是我建议大家跳槽之前，先想清楚为什么要跳槽。切不可跟风，看到同事一个个都走了，自己也盲目的面试起来（期间也没有准备充分），到底是因为技术原因（影响自己的发展，偏移自己规划的轨迹），还是钱给少了，不受重视。 准备不充分的面试，完全是浪费时间，更是对自己的不负责（如果title很高，当我没说）。 今天给大家分享下chenssy在这次跳槽中整理的Java面试大纲，其中大部分都是面">
@@ -667,7 +667,7 @@
 <tbody>
 <tr>
 <td>Serial</td>
-<td>client机器上</td>
+<td>client机器上、简单而高效</td>
 <td>单线程；STW</td>
 </tr>
 <tr>
@@ -692,12 +692,13 @@
 </tr>
 <tr>
 <td>CMS</td>
-<td>占用用户时间少</td>
-<td>CPU资源会更多</td>
+<td>占用用户时间少；并发收集、低停顿</td>
+<td>CPU资源非常敏感；无法处理浮动垃圾；空间碎片</td>
 </tr>
 <tr>
 <td>G1</td>
-<td></td>
+<td>无空间碎片；</td>
+<td>是的</td>
 </tr>
 </tbody>
 </table>
