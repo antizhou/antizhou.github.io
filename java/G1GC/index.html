@@ -99,24 +99,42 @@
 
 
 
-  <meta name="description" content="一入java深似海，从此娱乐是路人。">
+  <meta name="description" content="GarbageFirst（G1）G1（Garbage-First）收集器是当今收集器技术发展最前沿的成果之一，它是一款面向服务端应用的垃圾收集器，HotSpot开发团队赋予它的使命是（在比较长期的）未来可以替换掉JDK 1.5中发布的CMS收集器。与其他GC收集器相比，G1具备如下特点：  并行与并发 G1 能充分利用多CPU、多核环境下的硬件优势，使用多个CPU来缩短“Stop The Worl">
+<meta name="keywords" content="gc">
 <meta property="og:type" content="article">
-<meta property="og:title" content="G1Gc">
-<meta property="og:url" content="http://www.iforfee.com/java/G1Gc/index.html">
+<meta property="og:title" content="G1 GC">
+<meta property="og:url" content="http://www.iforfee.com/java/G1GC/index.html">
 <meta property="og:site_name" content="joyo&#39;s world">
-<meta property="og:description" content="一入java深似海，从此娱乐是路人。">
+<meta property="og:description" content="GarbageFirst（G1）G1（Garbage-First）收集器是当今收集器技术发展最前沿的成果之一，它是一款面向服务端应用的垃圾收集器，HotSpot开发团队赋予它的使命是（在比较长期的）未来可以替换掉JDK 1.5中发布的CMS收集器。与其他GC收集器相比，G1具备如下特点：  并行与并发 G1 能充分利用多CPU、多核环境下的硬件优势，使用多个CPU来缩短“Stop The Worl">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-04-24T07:29:17.000Z">
+<meta property="og:image" content="http://www.iforfee.com/images/image-20180420173712264.png">
+<meta property="og:image" content="http://www.iforfee.com/images/0bce1667.png">
+<meta property="og:image" content="http://www.iforfee.com/images/50877d4b41c80010b1f131de5759b689.png">
+<meta property="og:image" content="http://www.iforfee.com/images/a245f9decda81cbf12f69412d38f3177.png">
+<meta property="og:image" content="http://www.iforfee.com/images/bd7d9f4a8e43312cb189863a568c4630.png">
+<meta property="og:image" content="http://www.iforfee.com/images/8efbc44ba3b845e6086a83377e912bb9.png">
+<meta property="og:image" content="http://www.iforfee.com/images/f56ab01de2138dc3b4a4bb3d50f54594.png">
+<meta property="og:image" content="http://www.iforfee.com/images/c4f581fd4a8877375d54a55e4af27841.png">
+<meta property="og:image" content="http://www.iforfee.com/images/5dd0686b02e1898ec1a987c2e1571548.png">
+<meta property="og:image" content="http://www.iforfee.com/images/78ad6fbc199fca514a5336b2167bd8f7.png">
+<meta property="og:image" content="http://www.iforfee.com/images/f4765bacd1941792df63c6296ad12e3a.png">
+<meta property="og:image" content="http://www.iforfee.com/images/0860c63775ccbc265095b5a844f0d381.png">
+<meta property="og:image" content="http://www.iforfee.com/images/599b50c478126754a1cc614a85b149bd.png">
+<meta property="og:image" content="http://www.iforfee.com/images/693.png">
+<meta property="og:image" content="http://www.iforfee.com/images/700.png">
+<meta property="og:image" content="http://www.iforfee.com/images/700-20180424103245937.png">
+<meta property="og:updated_time" content="2018-04-24T13:38:53.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="G1Gc">
-<meta name="twitter:description" content="一入java深似海，从此娱乐是路人。">
+<meta name="twitter:title" content="G1 GC">
+<meta name="twitter:description" content="GarbageFirst（G1）G1（Garbage-First）收集器是当今收集器技术发展最前沿的成果之一，它是一款面向服务端应用的垃圾收集器，HotSpot开发团队赋予它的使命是（在比较长期的）未来可以替换掉JDK 1.5中发布的CMS收集器。与其他GC收集器相比，G1具备如下特点：  并行与并发 G1 能充分利用多CPU、多核环境下的硬件优势，使用多个CPU来缩短“Stop The Worl">
+<meta name="twitter:image" content="http://www.iforfee.com/images/image-20180420173712264.png">
 
 
 
 
 
 
-  <link rel="canonical" href="http://www.iforfee.com/java/G1Gc/"/>
+  <link rel="canonical" href="http://www.iforfee.com/java/G1GC/"/>
 
 
 
@@ -126,7 +144,7 @@
   };
 </script>
 
-  <title>G1Gc | joyo's world</title>
+  <title>G1 GC | joyo's world</title>
   
 
 
@@ -321,7 +339,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.iforfee.com/java/G1Gc/">
+    <link itemprop="mainEntityOfPage" href="http://www.iforfee.com/java/G1GC/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="joyo">
@@ -338,7 +356,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">G1Gc
+          <h1 class="post-title" itemprop="name headline">G1 GC
               
             
           </h1>
@@ -367,6 +385,24 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a></span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -375,9 +411,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/java/G1Gc/#comments" itemprop="discussionUrl">
+                <a href="/java/G1GC/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="java/G1Gc/" itemprop="commentCount"></span>
+                        data-disqus-identifier="java/G1GC/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -405,791 +441,122 @@
       
 
       
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/java/jvm/虚拟机字节码执行引擎/" rel="next" title="虚拟机字节码执行引擎">
-                <i class="fa fa-chevron-left"></i> 虚拟机字节码执行引擎
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/java/G1GC/" rel="prev" title="G1 GC">
-                G1 GC <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-
-    <div class="post-spread">
-      
-    </div>
-  </div>
-
-
-          </div>
-          
-
-  
-    <div class="comments" id="comments">
-      <div id="disqus_thread">
-        <noscript>
-          Please enable JavaScript to view the
-          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
-        </noscript>
-      </div>
-    </div>
-
-  
-
-
-
-        </div>
-        
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    
-    <div class="sidebar-inner">
-
-      
-
-      
-
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <p class="site-author-name" itemprop="name">joyo</p>
-              <p class="site-description motion-element" itemprop="description">一入java深似海，从此娱乐是路人。</p>
-          </div>
-
-          
-            <nav class="site-state motion-element">
-              
-                <div class="site-state-item site-state-posts">
-                
-                  <a href="/archives/">
-                
-                    <span class="site-state-item-count">45</span>
-                    <span class="site-state-item-name">日志</span>
-                  </a>
-                </div>
-              
-
-              
-                
-                
-                <div class="site-state-item site-state-categories">
-                  <a href="/categories/index.html">
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">12</span>
-                    <span class="site-state-item-name">分类</span>
-                  </a>
-                </div>
-              
-
-              
-                
-                
-                <div class="site-state-item site-state-tags">
-                  <a href="/tags/index.html">
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">23</span>
-                    <span class="site-state-item-name">标签</span>
-                  </a>
-                </div>
-              
-            </nav>
-          
-
-          
-
-          
-
-          
-          
-
-          
-          
-            <div class="links-of-blogroll motion-element links-of-blogroll-block">
-              <div class="links-of-blogroll-title">
-                <i class="fa  fa-fw fa-link"></i>
-                友情链接
-              </div>
-              <ul class="links-of-blogroll-list">
-                
-                  <li class="links-of-blogroll-item">
-                    <a href="http://yakirchen.com/" title="yakir's notes" target="_blank">yakir's notes</a>
-                  </li>
-                
-              </ul>
-            </div>
-          
-
-          
-            
-          
-          
-
-        </div>
-      </section>
-
-      
-
-      
-
-    </div>
-  </aside>
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
-  <span class="with-love" id="animate">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">joyo</span>
-
-  
-
-  
-</div>
-
-
-
-
-  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.0</div>
-
-
-
-  <span class="post-meta-divider">|</span>
-
-
-
-  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Mist</a> v6.1.0</div>
-
-
-
-
-        
-
-
-
-
-
-
-
-
-        
-      </div>
-    </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
-
-    
-
-  </div>
-
-  
-
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=6.1.0"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=6.1.0"></script>
-
-
-
-  
-  
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.1.0"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=6.1.0"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.1.0"></script>
-
-
-
-  
-
-  
-    <script id="dsq-count-scr" src="https://zj23qq.disqus.com/count.js" async></script>
-  
-
-  
-    <script type="text/javascript">
-      var disqus_config = function () {
-        this.page.url = 'http://www.iforfee.com/java/G1Gc/';
-        this.page.identifier = 'java/G1Gc/';
-        this.page.title = 'G1Gc';
-      };
-      function loadComments () {
-        var d = document, s = d.createElement('script');
-        s.src = 'https://zj23qq.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', '' + +new Date());
-        (d.head || d.body).appendChild(s);
-      }
-      
-        loadComments();
-      
-    </script>
-  
-
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-  <script type="text/javascript">
-    // Popup Window;
-    var isfetched = false;
-    var isXml = true;
-    // Search DB path;
-    var search_path = "search.xml";
-    if (search_path.length === 0) {
-      search_path = "search.xml";
-    } else if (/json$/i.test(search_path)) {
-      isXml = false;
-    }
-    var path = "/" + search_path;
-    // monitor main search box;
-
-    var onPopupClose = function (e) {
-      $('.popup').hide();
-      $('#local-search-input').val('');
-      $('.search-result-list').remove();
-      $('#no-result').remove();
-      $(".local-search-pop-overlay").remove();
-      $('body').css('overflow', '');
-    }
-
-    function proceedsearch() {
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
-        .css('overflow', 'hidden');
-      $('.search-popup-overlay').click(onPopupClose);
-      $('.popup').toggle();
-      var $localSearchInput = $('#local-search-input');
-      $localSearchInput.attr("autocapitalize", "none");
-      $localSearchInput.attr("autocorrect", "off");
-      $localSearchInput.focus();
-    }
-
-    // search function;
-    var searchFunc = function(path, search_id, content_id) {
-      'use strict';
-
-      // start loading animation
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
-          '<div id="search-loading-icon">' +
-          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
-          '</div>' +
-          '</div>')
-        .css('overflow', 'hidden');
-      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
-
-      
-
-      $.ajax({
-        url: path,
-        dataType: isXml ? "xml" : "json",
-        async: true,
-        success: function(res) {
-          // get the contents from search data
-          isfetched = true;
-          $('.popup').detach().appendTo('.header-inner');
-          var datas = isXml ? $("entry", res).map(function() {
-            return {
-              title: $("title", this).text(),
-              content: $("content",this).text(),
-              url: $("url" , this).text()
-            };
-          }).get() : res;
-          var input = document.getElementById(search_id);
-          var resultContent = document.getElementById(content_id);
-          var inputEventFunction = function() {
-            var searchText = input.value.trim().toLowerCase();
-            var keywords = searchText.split(/[\s\-]+/);
-            if (keywords.length > 1) {
-              keywords.push(searchText);
-            }
-            var resultItems = [];
-            if (searchText.length > 0) {
-              // perform local searching
-              datas.forEach(function(data) {
-                var isMatch = false;
-                var hitCount = 0;
-                var searchTextCount = 0;
-                var title = data.title.trim();
-                var titleInLowerCase = title.toLowerCase();
-                var content = data.content.trim().replace(/<[^>]+>/g,"");
-                
-                var contentInLowerCase = content.toLowerCase();
-                var articleUrl = decodeURIComponent(data.url);
-                var indexOfTitle = [];
-                var indexOfContent = [];
-                // only match articles with not empty titles
-                if(title != '') {
-                  keywords.forEach(function(keyword) {
-                    function getIndexByWord(word, text, caseSensitive) {
-                      var wordLen = word.length;
-                      if (wordLen === 0) {
-                        return [];
-                      }
-                      var startPosition = 0, position = [], index = [];
-                      if (!caseSensitive) {
-                        text = text.toLowerCase();
-                        word = word.toLowerCase();
-                      }
-                      while ((position = text.indexOf(word, startPosition)) > -1) {
-                        index.push({position: position, word: word});
-                        startPosition = position + wordLen;
-                      }
-                      return index;
-                    }
-
-                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
-                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
-                  });
-                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
-                    isMatch = true;
-                    hitCount = indexOfTitle.length + indexOfContent.length;
-                  }
-                }
-
-                // show search results
-
-                if (isMatch) {
-                  // sort index by position of keyword
-
-                  [indexOfTitle, indexOfContent].forEach(function (index) {
-                    index.sort(function (itemLeft, itemRight) {
-                      if (itemRight.position !== itemLeft.position) {
-                        return itemRight.position - itemLeft.position;
-                      } else {
-                        return itemLeft.word.length - itemRight.word.length;
-                      }
-                    });
-                  });
-
-                  // merge hits into slices
-
-                  function mergeIntoSlice(text, start, end, index) {
-                    var item = index[index.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    var hits = [];
-                    var searchTextCountInSlice = 0;
-                    while (position + word.length <= end && index.length != 0) {
-                      if (word === searchText) {
-                        searchTextCountInSlice++;
-                      }
-                      hits.push({position: position, length: word.length});
-                      var wordEnd = position + word.length;
-
-                      // move to next position of hit
-
-                      index.pop();
-                      while (index.length != 0) {
-                        item = index[index.length - 1];
-                        position = item.position;
-                        word = item.word;
-                        if (wordEnd > position) {
-                          index.pop();
-                        } else {
-                          break;
-                        }
-                      }
-                    }
-                    searchTextCount += searchTextCountInSlice;
-                    return {
-                      hits: hits,
-                      start: start,
-                      end: end,
-                      searchTextCount: searchTextCountInSlice
-                    };
-                  }
-
-                  var slicesOfTitle = [];
-                  if (indexOfTitle.length != 0) {
-                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
-                  }
-
-                  var slicesOfContent = [];
-                  while (indexOfContent.length != 0) {
-                    var item = indexOfContent[indexOfContent.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    // cut out 100 characters
-                    var start = position - 20;
-                    var end = position + 80;
-                    if(start < 0){
-                      start = 0;
-                    }
-                    if (end < position + word.length) {
-                      end = position + word.length;
-                    }
-                    if(end > content.length){
-                      end = content.length;
-                    }
-                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
-                  }
-
-                  // sort slices in content by search text's count and hits' count
-
-                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
-                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
-                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
-                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
-                      return sliceRight.hits.length - sliceLeft.hits.length;
-                    } else {
-                      return sliceLeft.start - sliceRight.start;
-                    }
-                  });
-
-                  // select top N slices in content
-
-                  var upperBound = parseInt('1');
-                  if (upperBound >= 0) {
-                    slicesOfContent = slicesOfContent.slice(0, upperBound);
-                  }
-
-                  // highlight title and content
-
-                  function highlightKeyword(text, slice) {
-                    var result = '';
-                    var prevEnd = slice.start;
-                    slice.hits.forEach(function (hit) {
-                      result += text.substring(prevEnd, hit.position);
-                      var end = hit.position + hit.length;
-                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
-                      prevEnd = end;
-                    });
-                    result += text.substring(prevEnd, slice.end);
-                    return result;
-                  }
-
-                  var resultItem = '';
-
-                  if (slicesOfTitle.length != 0) {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
-                  } else {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
-                  }
-
-                  slicesOfContent.forEach(function (slice) {
-                    resultItem += "<a href='" + articleUrl + "'>" +
-                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
-                      "...</p>" + "</a>";
-                  });
-
-                  resultItem += "</li>";
-                  resultItems.push({
-                    item: resultItem,
-                    searchTextCount: searchTextCount,
-                    hitCount: hitCount,
-                    id: resultItems.length
-                  });
-                }
-              })
-            };
-            if (keywords.length === 1 && keywords[0] === "") {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
-            } else if (resultItems.length === 0) {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
-            } else {
-              resultItems.sort(function (resultLeft, resultRight) {
-                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
-                  return resultRight.searchTextCount - resultLeft.searchTextCount;
-                } else if (resultLeft.hitCount !== resultRight.hitCount) {
-                  return resultRight.hitCount - resultLeft.hitCount;
-                } else {
-                  return resultRight.id - resultLeft.id;
-                }
-              });
-              var searchResultList = '<ul class=\"search-result-list\">';
-              resultItems.forEach(function (result) {
-                searchResultList += result.item;
-              })
-              searchResultList += "</ul>";
-              resultContent.innerHTML = searchResultList;
-            }
-          }
-
-          if ('auto' === 'auto') {
-            input.addEventListener('input', inputEventFunction);
-          } else {
-            $('.search-icon').click(inputEventFunction);
-            input.addEventListener('keypress', function (event) {
-              if (event.keyCode === 13) {
-                inputEventFunction();
-              }
-            });
-          }
-
-          // remove loading animation
-          $(".local-search-pop-overlay").remove();
-          $('body').css('overflow', '');
-
-          proceedsearch();
-        }
-      });
-    }
-
-    // handle and trigger popup window;
-    $('.popup-trigger').click(function(e) {
-      e.stopPropagation();
-      if (isfetched === false) {
-        searchFunc(path, 'local-search-input', 'local-search-result');
-      } else {
-        proceedsearch();
-      };
-    });
-
-    $('.popup-btn-close').click(onPopupClose);
-    $('.popup').click(function(e){
-      e.stopPropagation();
-    });
-    $(document).on('keyup', function (event) {
-      var shouldDismissSearchPopup = event.which === 27 &&
-        $('.search-popup').is(':visible');
-      if (shouldDismissSearchPopup) {
-        onPopupClose();
-      }
-    });
-  </script>
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-</body>
-</html>
-" alt="11"></a></p>
+        <h1 id="GarbageFirst（G1）"><a href="#GarbageFirst（G1）" class="headerlink" title="GarbageFirst（G1）"></a>GarbageFirst（G1）</h1><p><strong>G1（Garbage-First）</strong>收集器是当今收集器技术发展最前沿的成果之一，它是一款<strong>面向服务端应用</strong>的垃圾收集器，HotSpot开发团队赋予它的使命是（在比较长期的）未来可以替换掉JDK 1.5中发布的CMS收集器。与其他GC收集器相比，G1具备如下特点：</p>
+<ul>
+<li><strong>并行与并发</strong> G1 能充分利用多CPU、多核环境下的硬件优势，使用多个CPU来缩短“Stop The World”停顿时间，部分其他收集器原本需要停顿Java线程执行的GC动作，G1收集器仍然可以通过并发的方式让Java程序继续执行。</li>
+<li><strong>分代收集</strong> 与其他收集器一样，分代概念在G1中依然得以保留。虽然G1可以不需要其他收集器配合就能独立管理整个GC堆，但它能够采用不同方式去处理新创建的对象和已存活一段时间、熬过多次GC的旧对象来获取更好的收集效果。</li>
+<li><strong>空间整合</strong> G1从整体来看是基于<strong>“标记-整理”</strong>算法实现的收集器，从局部（两个Region之间）上来看是基于<strong>“复制”</strong>算法实现的。这意味着G1运行期间不会产生内存空间碎片，收集后能提供规整的可用内存。此特性有利于程序长时间运行，分配大对象时不会因为无法找到连续内存空间而提前触发下一次GC。</li>
+<li><strong>可预测的停顿</strong> 这是G1相对CMS的一大优势，降低停顿时间是G1和CMS共同的关注点，但G1除了降低停顿外，还能建立可预测的停顿时间模型，能让使用者明确指定在一个长度为M毫秒的时间片段内，消耗在GC上的时间不得超过N毫秒，这几乎已经是实时Java（RTSJ）的垃圾收集器的特征了。</li>
+</ul>
+<h2 id="内存划分Region"><a href="#内存划分Region" class="headerlink" title="内存划分Region"></a>内存划分Region</h2><p>G1算法将堆划分为若干个区域（Region），它仍然属于分代收集器。不过，这些区域的一部分包含新生代，新生代的垃圾收集依然采用暂停所有应用线程的方式，将存活对象拷贝到老年代或者Survivor空间。老年代也分成很多区域，G1收集器通过将对象从一个区域复制到另外一个区域，完成了清理工作。这就意味着，在正常的处理过程中，G1完成了堆的压缩（至少是部分堆的压缩），这样也就不会有cms内存碎片问题的存在了。</p>
+<p><img src="/images/image-20180420173712264.png" alt="image-20180420173712264"></p>
+<p>在G1中，还有一种特殊的区域，叫Humongous区域。 <strong>如果一个对象占用的空间超过了分区容量50%以上，G1收集器就认为这是一个巨型对象</strong>。这些巨型对象，默认直接会被分配在年老代，但是如果它是一个短期存在的巨型对象，就会对垃圾收集器造成负面影响。为了解决这个问题，G1划分了一个Humongous区，它用来专门存放巨型对象。如果一个H区装不下一个巨型对象，那么G1会寻找连续的H分区来存储。为了能找到连续的H区，有时候不得不启动Full GC。</p>
+<p>PS：在java 8中，持久代也移动到了普通的堆内存空间中，改为元空间。</p>
+<p><strong>对象分配策略</strong></p>
+<p>说起大对象的分配，我们不得不谈谈对象的分配策略。它分为3个阶段：</p>
+<ol>
+<li>TLAB(Thread Local Allocation Buffer)线程本地分配缓冲区</li>
+<li>Eden区中分配</li>
+<li>Humongous区分配</li>
+</ol>
+<p>TLAB为线程本地分配缓冲区，它的目的为了使对象尽可能快的分配出来。如果对象在一个共享的空间中分配，我们需要采用一些同步机制来管理这些空间内的空闲空间指针。在Eden空间中，每一个线程都有一个固定的分区用于分配对象，即一个TLAB。分配对象时，线程之间不再需要进行任何的同步。</p>
+<p>对TLAB空间中无法分配的对象，JVM会尝试在Eden空间中进行分配。如果Eden空间无法容纳该对象，就只能在老年代中进行分配空间。</p>
+<p><strong>建立可预测的时间模型</strong></p>
+<p>G1收集器之所以能建立可预测的停顿时间模型，是因为它可以<strong>有计划地避免在整个Java堆中进行全区域的垃圾收集</strong>。G1跟踪各个Region里面的垃圾堆积的价值大小（回收所获得的空间大小以及回收所需时间的经验值），<strong>在后台维护一个优先列表</strong>，每次根据允许的收集时间，<strong>优先回收价值最大的Region（这也就是Garbage-First名称的来由）</strong>。这种使用Region划分内存空间以及有优先级的区域回收方式，保证了G1收集器在有限的时间内可以获取尽可能高的收集效率。</p>
+<p><strong>避免全堆扫描——Remembered Set</strong></p>
+<p>G1把Java堆分为多个Region，就是“化整为零”。但是Region不可能是孤立的，一个对象分配在某个Region中，可以与整个Java堆任意的对象发生引用关系。在做可达性分析确定对象是否存活的时候，需要扫描整个Java堆才能保证准确性，这显然是对GC效率的极大伤害。</p>
+<p>为了避免全堆扫描的发生，虚拟机<strong>为G1中每个Region维护了一个与之对应的Remembered Set</strong>。虚拟机发现程序在对Reference类型的数据进行写操作时，会产生一个Write Barrier暂时中断写操作，检查Reference引用的对象是否处于不同的Region之中（在分代的例子中就是检查是否老年代中的对象引用了新生代中的对象），如果是，便通过CardTable<strong>把相关引用信息记录到被引用对象所属的Region的Remembered Set之中</strong>。当进行内存回收时，在GC根节点的枚举范围中加入Remembered Set即可保证不对全堆扫描也不会有遗漏。</p>
+<p>如果不计算维护Remembered Set的操作，G1收集器的运作大致可划分为以下几个步骤：</p>
+<ul>
+<li><strong>初始标记（Initial Marking）</strong> 仅仅只是标记一下GC Roots 能直接关联到的对象，并且修改<strong>TAMS（Nest Top Mark Start）</strong>的值，让下一阶段用户程序并发运行时，能在正确可以的Region中创建对象，此阶段需要<strong>停顿线程</strong>，但耗时很短。</li>
+<li><strong>并发标记（Concurrent Marking）</strong> 从GC Root 开始对堆中对象进行<strong>可达性分析</strong>，找到存活对象，此阶段耗时较长，但<strong>可与用户程序并发执行</strong>。</li>
+<li><strong>最终标记（Final Marking）</strong> 为了修正在并发标记期间因用户程序继续运作而导致标记产生变动的那一部分标记记录，虚拟机将这段时间对象变化记录在<strong>线程的Remembered Set Logs</strong>里面，最终标记阶段需要<strong>把Remembered Set Logs的数据合并到Remembered Set中</strong>，这阶段需要<strong>停顿线程</strong>，但是<strong>可并行执行</strong>。</li>
+<li><strong>筛选回收（Live Data Counting and Evacuation）</strong> 首先对各个Region中的回收价值和成本进行排序，根据用户所期望的GC 停顿是时间来制定回收计划。此阶段其实也可以做到与用户程序一起并发执行，但是因为只回收一部分Region，时间是用户可控制的，而且停顿用户线程将大幅度提高收集效率。</li>
+</ul>
+<p><img src="/images/0bce1667.png" alt="img"></p>
+<h2 id="GC模式"><a href="#GC模式" class="headerlink" title="GC模式"></a>GC模式</h2><h3 id="G1-Young-GC"><a href="#G1-Young-GC" class="headerlink" title="G1 Young GC"></a>G1 Young GC</h3><p>Young GC主要是对Eden区进行GC，它在Eden空间耗尽时会被触发。在这种情况下，Eden空间的数据移动到Survivor空间中，如果Survivor空间不够，Eden空间的部分数据会直接晋升到年老代空间。Survivor区的数据移动到新的Survivor区中，也有部分数据晋升到老年代空间中。最终Eden空间的数据为空，GC停止工作，应用线程继续执行。</p>
+<p><a href="http://jbcdn2.b0.upaiyun.com/2016/12/50877d4b41c80010b1f131de5759b689.png" target="_blank" rel="noopener"><img src="/images/50877d4b41c80010b1f131de5759b689.png" alt="3"></a></p>
+<p><a href="http://jbcdn2.b0.upaiyun.com/2016/12/a245f9decda81cbf12f69412d38f3177.png" target="_blank" rel="noopener"><img src="/images/a245f9decda81cbf12f69412d38f3177.png" alt="4"></a></p>
+<p>这时，我们需要考虑一个问题，如果仅仅GC 新生代对象，我们如何找到所有的根对象呢？ 老年代的所有对象都是根么？那这样扫描下来会耗费大量的时间。于是，G1引进了RSet的概念。它的全称是Remembered Set，作用是跟踪指向某个heap区内的对象引用。</p>
+<p><a href="http://jbcdn2.b0.upaiyun.com/2016/12/bd7d9f4a8e43312cb189863a568c4630.png" target="_blank" rel="noopener"><img src="/images/bd7d9f4a8e43312cb189863a568c4630.png" alt="5"></a></p>
+<p>在CMS中，也有RSet的概念，在老年代中有一块区域用来记录指向新生代的引用。这是一种point-out，在进行Young GC时，扫描根时，仅仅需要扫描这一块区域，而不需要扫描整个老年代。</p>
+<p>但在G1中，并没有使用point-out，这是由于一个分区太小，分区数量太多，如果是用point-out的话，会造成大量的扫描浪费，有些根本不需要GC的分区引用也扫描了。于是G1中使用point-in来解决。point-in的意思是哪些分区引用了当前分区中的对象。这样，仅仅将这些对象当做根来扫描就避免了无效的扫描。由于新生代有多个，那么我们需要在新生代之间记录引用吗？这是不必要的，原因在于每次GC时，所有新生代都会被扫描，所以只需要记录老年代到新生代之间的引用即可。</p>
+<p>需要注意的是，如果引用的对象很多，赋值器需要对每个引用做处理，赋值器开销会很大，为了解决赋值器开销这个问题，在G1 中又引入了另外一个概念，卡表（Card Table）。一个Card Table将一个分区在逻辑上划分为固定大小的连续区域，每个区域称之为卡。卡通常较小，介于128到512字节之间。Card Table通常为字节数组，由Card的索引（即数组下标）来标识每个分区的空间地址。默认情况下，每个卡都未被引用。当一个地址空间被引用时，这个地址空间对应的数组索引的值被标记为”0″，即标记为脏被引用，此外RSet也将这个数组下标记录下来。一般情况下，这个RSet其实是一个Hash Table，Key是别的Region的起始地址，Value是一个集合，里面的元素是Card Table的Index。</p>
+<p>Young GC 阶段：</p>
+<ul>
+<li>阶段1：根扫描<br>静态和本地对象被扫描</li>
+<li>阶段2：更新RS<br>处理dirty card队列更新RS</li>
+<li>阶段3：处理RS<br>检测从年轻代指向年老代的对象</li>
+<li>阶段4：对象拷贝<br>拷贝存活的对象到survivor/old区域</li>
+<li>阶段5：处理引用队列<br>软引用，弱引用，虚引用处理</li>
+</ul>
+<h3 id="G1-Mix-GC"><a href="#G1-Mix-GC" class="headerlink" title="G1 Mix GC"></a>G1 Mix GC</h3><p>Mix GC是伴随着Young GC一起发生的。</p>
+<p>Mix GC不仅进行正常的新生代垃圾收集，同时也回收部分后台扫描线程标记的老年代分区。</p>
+<p>它的GC步骤分2步：</p>
+<ol>
+<li>全局并发标记（global concurrent marking）</li>
+<li>拷贝存活对象（evacuation）</li>
+</ol>
+<p>在进行Mix GC之前，会先进行global concurrent marking（全局并发标记）。 global concurrent marking的执行过程是怎样的呢？</p>
+<p>在G1 GC中，它主要是为Mixed GC提供标记服务的，并不是一次GC过程的一个必须环节。global concurrent marking的执行过程分为五个步骤：</p>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(1) Initial Mark<em>(Stop the World Event)</em><br>初始标记</td>
+<td>This is a stop the world event. With G1, it is piggybacked on a normal young GC. Mark survivor regions (root regions) which may have references to objects in old generation.<br>是STW的事件，并且依赖于young GC的发生。标记survivor regions作为root regions，因为它可能有指向老年代的引用。</td>
+</tr>
+<tr>
+<td>(2) Root Region Scanning<br>root region 扫描</td>
+<td>Scan survivor regions for references into the old generation. This happens while the application continues to run. The phase must be completed before a young GC can occur.<br>扫描survivor regions 中指向 old generation 的引用。同时，应用还在继续执行。这个阶段必须在young GC发生之前完成。</td>
+</tr>
+<tr>
+<td>(3) Concurrent Marking<br>并发标记</td>
+<td>Find live objects over the entire heap. This happens while the application is running. This phase can be interrupted by young generation garbage collections.<br>找到整个heap 中存活的对象。同时，应用程序继续执行。这个阶段可以被young GC中断。</td>
+</tr>
+<tr>
+<td>(4) Remark<em>(Stop the World Event)</em><br>最终标记</td>
+<td>Completes the marking of live object in the heap. Uses an algorithm called snapshot-at-the-beginning (SATB) which is much faster than what was used in the CMS collector.<br>使用SATB算法完成heap中活对象的标记。</td>
+</tr>
+<tr>
+<td>(5) Cleanup<em>(Stop the World Event and Concurrent)</em></td>
+<td>- Performs accounting on live objects and completely free regions. (Stop the world)<br>- Scrubs the Remembered Sets. (Stop the world)<br>- Reset the empty regions and return them to the free list. (Concurrent)<br>- 计算存活对象和完全空闲的regions。<br>- 重置remember set。 <br>- 重置空闲regions，并放入空闲列表中。</td>
+</tr>
+<tr>
+<td>(<em>) Copying</em>(Stop the World Event)*</td>
+<td>These are the stop the world pauses to evacuate or copy live objects to new unused regions. This can be done with young generation regions which are logged as <code>[GC pause (young)]</code>. Or both young and old generation regions which are logged as <code>[GC Pause (mixed)]</code>.<br>计算并拷贝存活对象到新的regions中。这个阶段可能发生在yong GC 和mixed GC 中。</td>
+</tr>
+</tbody>
+</table>
+<p><strong>三色标记算法</strong></p>
+<p>提到并发标记，我们不得不了解并发标记的三色标记算法。它是描述追踪式回收器的一种有用的方法，利用它可以推演回收器的正确性。 首先，我们将对象分成三种类型的。</p>
+<ul>
+<li>黑色:根对象，或者该对象与它的子对象都被扫描</li>
+<li>灰色:对象本身被扫描,但还没扫描完该对象中的子对象</li>
+<li>白色:未被扫描对象，扫描完成所有对象之后，最终为白色的为不可达对象，即垃圾对象</li>
+</ul>
+<p>当GC开始扫描对象时，按照如下图步骤进行对象的扫描：</p>
+<p>根对象被置为黑色，子对象被置为灰色。</p>
+<p><a href="http://jbcdn2.b0.upaiyun.com/2016/12/8efbc44ba3b845e6086a83377e912bb9.png" target="_blank" rel="noopener"><img src="/images/8efbc44ba3b845e6086a83377e912bb9.png" alt="6"></a></p>
+<p>继续由灰色遍历,将已扫描了子对象的对象置为黑色。</p>
+<p><a href="http://jbcdn2.b0.upaiyun.com/2016/12/f56ab01de2138dc3b4a4bb3d50f54594.png" target="_blank" rel="noopener"><img src="/images/f56ab01de2138dc3b4a4bb3d50f54594.png" alt="7"></a></p>
+<p>遍历了所有可达的对象后，所有可达的对象都变成了黑色。不可达的对象即为白色，需要被清理。<br><a href="http://jbcdn2.b0.upaiyun.com/2016/12/c4f581fd4a8877375d54a55e4af27841.png" target="_blank" rel="noopener"><img src="/images/c4f581fd4a8877375d54a55e4af27841.png" alt="8"></a></p>
+<p>这看起来很美好，但是如果在标记过程中，应用程序也在运行，那么对象的指针就有可能改变。这样的话，我们就会遇到一个问题：对象丢失问题</p>
+<p>我们看下面一种情况，当垃圾收集器扫描到下面情况时：</p>
+<p><a href="http://jbcdn2.b0.upaiyun.com/2016/12/5dd0686b02e1898ec1a987c2e1571548.png" target="_blank" rel="noopener"><img src="/images/5dd0686b02e1898ec1a987c2e1571548.png" alt="9"></a></p>
+<p>这时候应用程序执行了以下操作：</p>
+<blockquote>
+<p>A.c=C<br>B.c=null</p>
+</blockquote>
+<p>这样，对象的状态图变成如下情形：</p>
+<p><a href="http://jbcdn2.b0.upaiyun.com/2016/12/78ad6fbc199fca514a5336b2167bd8f7.png" target="_blank" rel="noopener"><img src="/images/78ad6fbc199fca514a5336b2167bd8f7.png" alt="10"></a></p>
+<p>这时候垃圾收集器再标记扫描的时候就会下图成这样：</p>
+<p><a href="http://jbcdn2.b0.upaiyun.com/2016/12/f4765bacd1941792df63c6296ad12e3a.png" target="_blank" rel="noopener"><img src="/images/f4765bacd1941792df63c6296ad12e3a.png" alt="11"></a></p>
 <p>很显然，此时C是白色，被认为是垃圾需要清理掉，显然这是不合理的。那么我们如何保证应用程序在运行的时候，GC标记的对象不丢失呢？有如下2中可行的方式：</p>
 <ol>
 <li>在插入的时候记录对象</li>
@@ -1310,13 +677,7 @@
 <li>young gc 和 mixed gc</li>
 <li>remember set、card table、satb(snapshot-at-the-beginning)</li>
 </ul>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://crowhawk.github.io/2017/08/15/jvm_3/" target="_blank" rel="noopener">https://crowhawk.github.io/2017/08/15/jvm_3/</a></p>
-<p><a href="http://blog.jobbole.com/109170/" target="_blank" rel="noopener">http://blog.jobbole.com/109170/</a></p>
-<p><a href="https://www.jianshu.com/p/8bd15969a641" target="_blank" rel="noopener">https://www.jianshu.com/p/8bd15969a641</a></p>
-<p><a href="http://www.importnew.com/27793.html" target="_blank" rel="noopener">http://www.importnew.com/27793.html</a></p>
-<p><a href="https://tech.meituan.com/g1.html" target="_blank" rel="noopener">https://tech.meituan.com/g1.html</a></p>
-<p><a href="http://www.oracle.com/technetwork/tutorials/tutorials-1876574.html" target="_blank" rel="noopener">http://www.oracle.com/technetwork/tutorials/tutorials-1876574.html</a></p>
-<p><a href="https://blog.csdn.net/renfufei/article/details/41897113" target="_blank" rel="noopener">https://blog.csdn.net/renfufei/article/details/41897113</a></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://crowhawk.github.io/2017/08/15/jvm_3/" target="_blank" rel="noopener">https://crowhawk.github.io/2017/08/15/jvm_3/</a><br><a href="http://blog.jobbole.com/109170/" target="_blank" rel="noopener">http://blog.jobbole.com/109170/</a><br><a href="https://www.jianshu.com/p/8bd15969a641" target="_blank" rel="noopener">https://www.jianshu.com/p/8bd15969a641</a><br><a href="http://www.importnew.com/27793.html" target="_blank" rel="noopener">http://www.importnew.com/27793.html</a><br><a href="https://tech.meituan.com/g1.html" target="_blank" rel="noopener">https://tech.meituan.com/g1.html</a><br><a href="http://www.oracle.com/technetwork/tutorials/tutorials-1876574.html" target="_blank" rel="noopener">http://www.oracle.com/technetwork/tutorials/tutorials-1876574.html</a><br><a href="https://blog.csdn.net/renfufei/article/details/41897113" target="_blank" rel="noopener">https://blog.csdn.net/renfufei/article/details/41897113</a><br><a href="https://www.jianshu.com/p/870abddaba41" target="_blank" rel="noopener">https://www.jianshu.com/p/870abddaba41</a></p>
 
       
     </div>

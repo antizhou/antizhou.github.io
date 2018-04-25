@@ -116,7 +116,7 @@
 <meta property="og:image" content="http://www.iforfee.com/images/typora/image-201803192318116.png">
 <meta property="og:image" content="http://www.iforfee.com/Users/joyo/Documents/面试/image-201803282306260.png">
 <meta property="og:image" content="http://www.iforfee.com/images/typora/image-201803202344054.png">
-<meta property="og:updated_time" content="2018-04-24T08:08:01.000Z">
+<meta property="og:updated_time" content="2018-04-24T08:15:30.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试">
 <meta name="twitter:description" content="跳槽时时刻刻都在发生，但是我建议大家跳槽之前，先想清楚为什么要跳槽。切不可跟风，看到同事一个个都走了，自己也盲目的面试起来（期间也没有准备充分），到底是因为技术原因（影响自己的发展，偏移自己规划的轨迹），还是钱给少了，不受重视。 准备不充分的面试，完全是浪费时间，更是对自己的不负责（如果title很高，当我没说）。 今天给大家分享下chenssy在这次跳槽中整理的Java面试大纲，其中大部分都是面">
@@ -655,7 +655,6 @@
 <h3 id="JVM-中一次完整的-GC-流程（从-ygc-到-fgc）是怎样的"><a href="#JVM-中一次完整的-GC-流程（从-ygc-到-fgc）是怎样的" class="headerlink" title="JVM 中一次完整的 GC 流程（从 ygc 到 fgc）是怎样的"></a>JVM 中一次完整的 GC 流程（从 ygc 到 fgc）是怎样的</h3><p>答：对象优先在Eden区中分配，若没有足够空间，Minor GC；<br>大对象（需要大量连续内存空间）直接进入老年态；长期存活的对象进入老年态。如果对象在新生代出生并经过第一次MGC后仍然存活，年龄+1，若年龄超过一定限制（15），则被晋升到老年态。</p>
 <p><a href="https://blog.csdn.net/zd836614437/article/details/64126826" target="_blank" rel="noopener">https://blog.csdn.net/zd836614437/article/details/64126826</a></p>
 <h3 id="各种回收器，各自优缺点，重点CMS、G1"><a href="#各种回收器，各自优缺点，重点CMS、G1" class="headerlink" title="各种回收器，各自优缺点，重点CMS、G1"></a>各种回收器，各自优缺点，重点CMS、G1</h3><p><img src="/Users/joyo/Documents/面试/image-201803282306260.png" alt="mage-20180328230626"></p>
-<p><a href="https://blog.csdn.net/qq_25396633/article/details/72972008" target="_blank" rel="noopener">CMS收集器和G1收集器优缺点</a></p>
 <table>
 <thead>
 <tr>
@@ -697,11 +696,12 @@
 </tr>
 <tr>
 <td>G1</td>
-<td>无空间碎片；</td>
+<td>无空间碎片；低停顿；并发执行；支持大内存；</td>
 <td>是的</td>
 </tr>
 </tbody>
 </table>
+<p><a href="https://blog.csdn.net/qq_25396633/article/details/72972008" target="_blank" rel="noopener">CMS收集器和G1收集器优缺点</a><br><a href="/java/G1GC">g1 gc</a></p>
 <h3 id="各种回收算法"><a href="#各种回收算法" class="headerlink" title="各种回收算法"></a>各种回收算法</h3><ol>
 <li>标记 - 清除</li>
 <li>标记 - 整理</li>
