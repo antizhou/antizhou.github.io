@@ -121,7 +121,7 @@
 <meta property="og:image" content="http://www.iforfee.com/images/20170228112156530">
 <meta property="og:image" content="http://www.iforfee.com/images/20170228112243931">
 <meta property="og:image" content="http://www.iforfee.com/images/20170228120023427">
-<meta property="og:updated_time" content="2018-04-19T08:13:39.000Z">
+<meta property="og:updated_time" content="2018-04-27T07:20:08.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="jvm内存模型">
 <meta name="twitter:description" content="内存模型 （1）线程私有区：  程序计数器，记录正在执行的虚拟机字节码的地址； 虚拟机栈：方法执行的内存区，每个方法执行时会在虚拟机栈中创建栈帧； 本地方法栈：虚拟机的Native方法执行的内存区；  （2）线程共享区：  Java堆：对象分配内存的区域； 方法区：存放类信息、常量、静态变量、编译器编译后的代码等数据； 常量池：存放编译器生成的各种字面量和符号引用，是方法区的一部分。">
@@ -527,7 +527,7 @@
 <p>运行结果如下：</p>
 <p><img src="/images/20170228110737416" alt="img"></p>
 <p>本例中使用的JDK版本是1.7，指定的PermGen区的大小为8M。通过每次生成不同URLClassLoader对象加载Test类，从而生成不同的类对象，这样就能看到我们熟悉的“java.lang.OutOfMemoryError: PermGen space”异常了。这里之所以采用JDK 1.7，是因为在JDK 1.8中，HotSpot已经没有“PermGen space”这个区间了，取而代之是一个叫做Metaspace(元空间)的东西。下面我们就来看看Metaspace与PermGen space的区别。</p>
-<h3 id="Metaspace-元空间"><a href="#Metaspace-元空间" class="headerlink" title="Metaspace(元空间)"></a>Metaspace(元空间)</h3><p>其实，移除永久代的工作从JDK 1.7就开始了。JDK 1.7中，存储在永久代的部分数据就已经转移到Java Heap或者Native Heap。但永久代仍存在于JDK 1.7中，并没有完全移除，譬如符号引用(Symbols)转移到了native heap；字面量(interned strings)转移到了Java heap；类的静态变量(class statics)转移到了Java heap。我们可以通过一段程序来比较JDK 1.6、JDK 1.7与JDK 1.8的区别，以字符串常量为例：</p>
+<h3 id="Metaspace-元空间"><a href="#Metaspace-元空间" class="headerlink" title="Metaspace(元空间)"></a>Metaspace(元空间)</h3><p>其实，移除永久代的工作从JDK 1.7就开始了。JDK 1.7中，存储在永久代的部分数据就已经转移到Java Heap或者Native Heap。但永久代仍存在于JDK 1.7中，并没有完全移除，<strong>譬如符号引用(Symbols)转移到了native heap；字面量(interned strings)转移到了Java heap；类的静态变量(class statics)转移到了Java heap。</strong>我们可以通过一段程序来比较JDK 1.6、JDK 1.7与JDK 1.8的区别，以字符串常量为例：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.paddx.test.memory;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StringOomMock</span> </span>&#123;</span><br><span class="line">	<span class="keyword">static</span> String base = <span class="string">"string"</span>;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		List&lt;String&gt; list = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; Integer.MAX_VALUE; i++) &#123;</span><br><span class="line">			String str = base + base;</span><br><span class="line">			base = str;</span><br><span class="line">			list.add(str.intern());</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这段程序以2的指数级不断的生成新的字符串，这样可以比较快速的消耗内存。我们通过JDK 1.6、JDK 1.7和JDK 1.8分别运行：</p>
 <p>JDK 1.6的运行结果：</p>
@@ -695,7 +695,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">46</span>
+                    <span class="site-state-item-count">49</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -734,7 +734,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">13</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">14</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -795,7 +799,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">24</span>
+                      
+                    
+                    <span class="site-state-item-count">25</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
