@@ -99,20 +99,21 @@
 
 
 
-  <meta name="description" content="JMMJava内存模型定义了多线程之间共享变量的可见性以及如何在需要的时候对共享变量进行同步。 Java内存模型定义了volatile和synchronized的行为，更重要的是保证了同步的java程序在所有的处理器架构下面都能正确的运行。  并发编程模型的两个关键问题线程之间如何通信和同步。 如何通信  共享内存 消息传递  如何同步  显式 隐式  在共享内存并发模型中，同步是显式进行的。程序">
-<meta name="keywords" content="jmm">
+  <meta name="description" content="主要关注点：  什么是类的加载 类的生命周期 类加载器 双亲委派模型  什么是类的加载类的加载指的是将类的.class文件中的二进制数据读入到内存中，将其放在运行时数据区的方法区内，然后在堆区创建一个java.lang.Class对象，用来封装类在方法区内的数据结构。类的加载的最终产品是位于堆区中的Class对象，Class对象封装了类在方法区内的数据结构，并且向Java程序员提供了访问方法区内的">
+<meta name="keywords" content="jvm">
 <meta property="og:type" content="article">
-<meta property="og:title" content="java内存模型">
-<meta property="og:url" content="http://www.iforfee.com/java/Java内存模型/index.html">
+<meta property="og:title" content="类加载机制">
+<meta property="og:url" content="http://www.iforfee.com/java/jvm/类加载机制/index.html">
 <meta property="og:site_name" content="joyo&#39;s world">
-<meta property="og:description" content="JMMJava内存模型定义了多线程之间共享变量的可见性以及如何在需要的时候对共享变量进行同步。 Java内存模型定义了volatile和synchronized的行为，更重要的是保证了同步的java程序在所有的处理器架构下面都能正确的运行。  并发编程模型的两个关键问题线程之间如何通信和同步。 如何通信  共享内存 消息传递  如何同步  显式 隐式  在共享内存并发模型中，同步是显式进行的。程序">
+<meta property="og:description" content="主要关注点：  什么是类的加载 类的生命周期 类加载器 双亲委派模型  什么是类的加载类的加载指的是将类的.class文件中的二进制数据读入到内存中，将其放在运行时数据区的方法区内，然后在堆区创建一个java.lang.Class对象，用来封装类在方法区内的数据结构。类的加载的最终产品是位于堆区中的Class对象，Class对象封装了类在方法区内的数据结构，并且向Java程序员提供了访问方法区内的">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://www.iforfee.com/images/typora/image-201803192318116.png">
-<meta property="og:updated_time" content="2018-04-15T14:59:46.000Z">
+<meta property="og:image" content="http://www.iforfee.com/images/java/jvm/class.png">
+<meta property="og:image" content="http://www.iforfee.com/images/java/jvm/calssloader.png">
+<meta property="og:updated_time" content="2018-04-27T08:44:09.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="java内存模型">
-<meta name="twitter:description" content="JMMJava内存模型定义了多线程之间共享变量的可见性以及如何在需要的时候对共享变量进行同步。 Java内存模型定义了volatile和synchronized的行为，更重要的是保证了同步的java程序在所有的处理器架构下面都能正确的运行。  并发编程模型的两个关键问题线程之间如何通信和同步。 如何通信  共享内存 消息传递  如何同步  显式 隐式  在共享内存并发模型中，同步是显式进行的。程序">
-<meta name="twitter:image" content="http://www.iforfee.com/images/typora/image-201803192318116.png">
+<meta name="twitter:title" content="类加载机制">
+<meta name="twitter:description" content="主要关注点：  什么是类的加载 类的生命周期 类加载器 双亲委派模型  什么是类的加载类的加载指的是将类的.class文件中的二进制数据读入到内存中，将其放在运行时数据区的方法区内，然后在堆区创建一个java.lang.Class对象，用来封装类在方法区内的数据结构。类的加载的最终产品是位于堆区中的Class对象，Class对象封装了类在方法区内的数据结构，并且向Java程序员提供了访问方法区内的">
+<meta name="twitter:image" content="http://www.iforfee.com/images/java/jvm/class.png">
 
 
 
@@ -121,7 +122,7 @@
 
 
 
-  <link rel="canonical" href="http://www.iforfee.com/java/Java内存模型/"/>
+  <link rel="canonical" href="http://www.iforfee.com/java/jvm/类加载机制/"/>
 
 
 
@@ -131,7 +132,7 @@
   };
 </script>
 
-  <title>java内存模型 | joyo's world</title>
+  <title>类加载机制 | joyo's world</title>
   
 
 
@@ -326,7 +327,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.iforfee.com/java/Java内存模型/">
+    <link itemprop="mainEntityOfPage" href="http://www.iforfee.com/java/jvm/类加载机制/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="joyo">
@@ -343,7 +344,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">java内存模型
+          <h1 class="post-title" itemprop="name headline">类加载机制
               
             
           </h1>
@@ -362,7 +363,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-13T21:33:30+08:00">2018-03-13</time>
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-27T16:21:32+08:00">2018-04-27</time>
             
 
             
@@ -398,9 +399,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/java/Java内存模型/#comments" itemprop="discussionUrl">
+                <a href="/java/jvm/类加载机制/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="java/Java内存模型/" itemprop="commentCount"></span>
+                        data-disqus-identifier="java/jvm/类加载机制/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -428,88 +429,93 @@
       
 
       
-        <h2 id="JMM"><a href="#JMM" class="headerlink" title="JMM"></a>JMM</h2><p>Java内存模型定义了多线程之间共享变量的可见性以及如何在需要的时候对共享变量进行同步。</p>
-<p>Java内存模型定义了volatile和synchronized的行为，更重要的是保证了同步的java程序在所有的处理器架构下面都能正确的运行。</p>
-<p><img src="/images/typora/image-201803192318116.png" alt="mage-20180319231811"></p>
-<h3 id="并发编程模型的两个关键问题"><a href="#并发编程模型的两个关键问题" class="headerlink" title="并发编程模型的两个关键问题"></a>并发编程模型的两个关键问题</h3><p>线程之间如何通信和同步。</p>
-<p>如何通信</p>
-<ol>
-<li>共享内存</li>
-<li>消息传递</li>
-</ol>
-<p>如何同步</p>
-<ol>
-<li>显式</li>
-<li>隐式</li>
-</ol>
-<p>在共享内存并发模型中，同步是显式进行的。程序员必须显式指定某个方法或某段代码需要在线程之间互斥执行。在消息传递的并发模型里，由于消息的发送必须在消息的接受之前，因此同步是隐式进行的。</p>
-<a id="more"></a>
-<h3 id="JMM的抽象结构"><a href="#JMM的抽象结构" class="headerlink" title="JMM的抽象结构"></a>JMM的抽象结构</h3><p>线程之间的共享变量存储在主内存，每个线程都有一个私有的本地内存，本地内存中存储了该线程以读/写共享变量的副本。本地内存是JMM的一个抽象概念，并不真实存在。它涵盖了缓存、写缓冲区、寄存器以及其他的硬件和编译器优化。</p>
-<h3 id="happens-before"><a href="#happens-before" class="headerlink" title="happens-before"></a>happens-before</h3><p>happens-before规则是JMM为了保证程序的正确结果。</p>
-<h3 id="重排序"><a href="#重排序" class="headerlink" title="重排序"></a>重排序</h3><p>为了提高性能，需要对指令进行重排序。重排序分类：</p>
-<ol>
-<li>编译器</li>
-<li>处理器<ol>
-<li>指令级并行重排序</li>
-<li>内存系统重排序</li>
-</ol>
-</li>
-</ol>
-<h2 id="happens-before-1"><a href="#happens-before-1" class="headerlink" title="happens-before"></a>happens-before</h2><p>happens-before是JMM最核心的概念。</p>
-<p>一个happens-before规则对应于一个或多个编译器和处理器重排序规则。</p>
-<p>定义</p>
-<blockquote>
-<p>1.如果一个操作happens-before另一个操作，那么第一个操作的执行结果将对第二个操作可见，而且第一个操作的执行顺序排在第二个操作之前。</p>
-</blockquote>
-<blockquote>
-<p>2.两个操作之间存在happens-before关系，并不意味着Java平台的具体实现必须按照happens-before关系执行的顺序来执行。</p>
-</blockquote>
-<p>定义1是JMM对程序员的承诺；定义2是JMM对编译器和处理器重排序的约束原则。</p>
-<p>happens-before和as-if-serial是一回事，都有两重意思。从程序员的角度来说，好像是顺序执行的，但是只要不破坏结果，处理器和编译器怎么优化都可以</p>
-<ol>
-<li>as-is-serial语义保证<code>单线程</code>内程序的执行结果不变，happens-before语义保证正确同步的<code>多线程程序</code>执行结果不变。</li>
-<li>as-is-serial语义给程序员一个幻境：单线程程序是按照程序的顺序来执行的。happens-before关系给编写正确同步的程序员一个幻境：正确同步的多线程程序是按照happens-before指定的顺序来执行的。</li>
-</ol>
-<p>happens-before规则</p>
-<ol>
-<li>程序顺序规则</li>
-<li>监视器锁规则</li>
-<li>volatile变量规则</li>
-<li>传递性</li>
-<li>start()规则：如果线程A执行操作ThreatB.start()，那么A线程的ThreadB.start()操作happens-before于B线程中的任意操作。</li>
-<li>join()规则：线程A执行ThreadB.join()并成功返回，那么线程B中任意操作happens-before于线程A从ThreadB.join()操作成功返回。</li>
-</ol>
-<h2 id="重排序-1"><a href="#重排序-1" class="headerlink" title="重排序"></a>重排序</h2><blockquote>
-<p>happens-before依赖于重排序的实现。一个happens-before对应多个重排序。</p>
-</blockquote>
-<h3 id="1-数据依赖性"><a href="#1-数据依赖性" class="headerlink" title="1. 数据依赖性"></a>1. 数据依赖性</h3><p>数据依赖的操作不可重排序</p>
-<h3 id="2-as-if-serial语义"><a href="#2-as-if-serial语义" class="headerlink" title="2. as-if-serial语义"></a>2. as-if-serial语义</h3><p>不管怎么重排序（编译器和处理器为了提高并行度），（单线程）程序的执行结果不能被改变。编译器和处理器不会对存在数据依赖的操作重排序</p>
-<h2 id="顺序一致性内存模型"><a href="#顺序一致性内存模型" class="headerlink" title="顺序一致性内存模型"></a>顺序一致性内存模型</h2><p>顺序一致行内存模型是一个理论参考模型，在设计的时候，处理器的内存模型和编程语言的内存模型都会以顺序一致性内存模型作为参照</p>
-<h3 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h3><ol>
-<li>JMM对正确同步的多线程程序的内存一致性做了如下保证：如果程序是正确同步的，程序的执行将具有顺序一致性。即程序的执行结果与该程序在顺序一致性内存模型中的执行结果相同。</li>
-<li>一个线程中的所有操作必须按照程序的顺序来执行，即不进行重排序</li>
-<li>（不管程序是否同步）所有线程都只能看到一个单一的操作执行顺序。在顺序一致性内存模型中，每个操作都必须原子执行且立刻对所有线程可见。</li>
-</ol>
-<h2 id="volatile的内存语义"><a href="#volatile的内存语义" class="headerlink" title="volatile的内存语义"></a>volatile的内存语义</h2><h3 id="特性-1"><a href="#特性-1" class="headerlink" title="特性"></a>特性</h3><ol>
-<li>可见性</li>
-<li>原子性</li>
-</ol>
-<h3 id="内存语义"><a href="#内存语义" class="headerlink" title="内存语义"></a>内存语义</h3><ol>
-<li>当写一个volatile变量时，JMM会把线程对应的本地内存中的共享变量值刷新到主内存。</li>
-<li>当读一个volatile变量时，JMM会把该线程对应的本地内存置为无效。线程接下来从主内存中读取共享变量。</li>
-</ol>
-<h3 id="如何实现"><a href="#如何实现" class="headerlink" title="如何实现"></a>如何实现</h3><blockquote>
-<p>在指令序列中插入内存屏障来禁止特定类型的处理器排序。</p>
-</blockquote>
-<p>比如storestore屏障可以保证volatile之前的普通写操作，在volatile变量写入之前，被刷新到主内存。</p>
-<h3 id="JSR-33为什么要增强volatile的语义"><a href="#JSR-33为什么要增强volatile的语义" class="headerlink" title="JSR-33为什么要增强volatile的语义"></a>JSR-33为什么要增强volatile的语义</h3><blockquote>
-<p>为了提供一种比锁更轻量级的线程之间通信的机制。</p>
-</blockquote>
-<p>在JSR—33之前，普通变量和volatile可以重排序，会导致普通变量没有写入刷新到主内存。</p>
-<h2 id="锁的内存语义"><a href="#锁的内存语义" class="headerlink" title="锁的内存语义"></a>锁的内存语义</h2><h3 id="内存语义-1"><a href="#内存语义-1" class="headerlink" title="内存语义"></a>内存语义</h3><ul>
-<li>当线程释放锁时，JMM会把该线程对应的本地内存中的共享变量刷新到内存中。</li>
-<li>当线程获取锁时，JMM会把该线程对应的本地内存置为无效。</li>
+        <p>主要关注点：</p>
+<ul>
+<li>什么是类的加载</li>
+<li>类的生命周期</li>
+<li>类加载器</li>
+<li>双亲委派模型</li>
 </ul>
+<h1 id="什么是类的加载"><a href="#什么是类的加载" class="headerlink" title="什么是类的加载"></a>什么是类的加载</h1><p>类的加载指的是将类的.class文件中的二进制数据读入到内存中，将其放在运行时数据区的方法区内，然后在堆区创建一个java.lang.Class对象，用来封装类在方法区内的数据结构。类的加载的最终产品是位于堆区中的Class对象，Class对象封装了类在方法区内的数据结构，并且向Java程序员提供了访问方法区内的数据结构的接口。</p>
+<h1 id="类的生命周期"><a href="#类的生命周期" class="headerlink" title="类的生命周期"></a>类的生命周期</h1><p>类的生命周期包括这几个部分，加载、连接、初始化、使用和卸载，其中前三部是类的加载的过程,如下图；</p>
+<p><img src="/images/java/jvm/class.png" alt="img"></p>
+<ul>
+<li>加载，查找并加载类的二进制数据，在Java堆中也创建一个java.lang.Class类的对象</li>
+<li>连接，连接又包含三块内容：验证、准备、初始化。1）验证，文件格式、元数据、字节码、符号引用验证；2）准备，为类的静态变量分配内存，并将其初始化为默认值；3）解析，把类中的符号引用转换为直接引用</li>
+<li>初始化，为类的静态变量赋予正确的初始值</li>
+<li>使用，new出对象程序中使用</li>
+<li>卸载，执行垃圾回收</li>
+</ul>
+<p>其中类加载的过程包括了加载、验证、准备、解析、初始化五个阶段。在这五个阶段中，加载、验证、准备、初始化和卸载这5个阶段发生的顺序是确定的，<strong>而解析阶段则不一定，它在某些情况下可以在初始化阶段之后开始，这是为了支持 Java 语言的运行时绑定（也成为动态绑定或晚期绑定）。</strong>另外注意这里的几个阶段是按顺序开始，而不是按顺序进行或完成，因为这些阶段通常都是互相交叉地混合进行的，通常在一个阶段执行的过程中调用或激活另一个阶段。</p>
+<h2 id="加载"><a href="#加载" class="headerlink" title="加载"></a>加载</h2><p>加载是类加载过程中的一个阶段，这个阶段会在内存中生成一个代表这个类的java.lang.Class对象，作为方法区这个类的各种数据的入口。注意这里不一定非得要从一个Class文件获取，这里既可以从ZIP包中读取（比如从jar包和war包中读取），也可以在运行时计算生成（动态代理），也可以由其它文件生成（比如将JSP文件转换成对应的Class类）。</p>
+<ol>
+<li>通过一个类的全限定名获取描述此类的二进制字节流；</li>
+<li>将这个字节流所代表的静态存储结构保存为方法区的运行时数据结构；</li>
+<li>在内存（并不一定是java堆，可能在方法区，取决于vm的实现）中生成一个代表这个类的java.lang.Class对象，作为方法区这个类的各种数据的访问入口。</li>
+</ol>
+<h2 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h2><p>这一阶段的主要目的是为了确保Class文件的字节流中包含的信息是否符合当前虚拟机的要求，并且不会危害虚拟机自身的安全。</p>
+<ol>
+<li>文件格式</li>
+<li>元数据</li>
+<li>字节码</li>
+<li>符号引用验证</li>
+</ol>
+<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><p>准备阶段是正式为类变量分配内存并设置类变量的初始值阶段，即在方法区中分配这些变量所使用的内存空间。注意这里所说的初始值概念，比如一个类变量定义为：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> v = <span class="number">8080</span>;</span><br></pre></td></tr></table></figure>
+<p>实际上变量v在准备阶段过后的初始值为0而不是8080，将v赋值为8080的putstatic指令是程序被编译后，存放于类构造器<clinit>方法之中，这里我们后面会解释。<br>但是注意如果声明为：</clinit></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> v = <span class="number">8080</span>;</span><br></pre></td></tr></table></figure>
+<p>在编译阶段会为v生成ConstantValue属性，在准备阶段虚拟机会根据ConstantValue属性将v赋值为8080。</p>
+<h2 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h2><p>解析阶段是指虚拟机将常量池中的符号引用替换为直接引用的过程。符号引用就是class文件中的：</p>
+<ul>
+<li>CONSTANT_Class_info</li>
+<li>CONSTANT_Field_info</li>
+<li>CONSTANT_Method_info</li>
+</ul>
+<p>等类型的常量。</p>
+<p>下面我们解释一下符号引用和直接引用的概念：</p>
+<ul>
+<li>符号引用与虚拟机实现的布局无关，引用的目标并不一定要已经加载到内存中。各种虚拟机实现的内存布局可以各不相同，但是它们能接受的符号引用必须是一致的，因为符号引用的字面量形式明确定义在Java虚拟机规范的Class文件格式中。</li>
+<li>直接引用可以是指向目标的指针，相对偏移量或是一个能间接定位到目标的句柄。如果有了直接引用，那引用的目标必定已经在内存中存在。</li>
+</ul>
+<h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><p>何时开始初始化：</p>
+<p><strong>Java并没有规定什么时候开始第一个阶段：加载，但是Java虚拟机规范规定有且只有5种情况必须立即对类进行初始化（而加载、验证、准备自然需要在此之前开始）</strong><br>1）遇到new、getstatic、putstatic或invokestatic这4条字节码指令时，如果类没有进行过初始化，则需要先触发其初始化。生成这4条指令的最常见的Java代码场景是：使用new关键字实例化对象的时候、读取或设置一个类的静态字段（被final修饰、已在编译器把结果放入常量池的静态字段除外）的时候，以及调用一个类的静态方法的时候。<br>2）使用java.lang.reflect包的方法对类进行反射调用的时候，如果类没有进行过初始化，则需要先触发其初始化。<br>3）当初始化一个类的时候，如果发现其父类还没有进行过初始化，则需要先触发其父类初始化。<br>4）当虚拟机启动时，用户需要指定一个要执行的主类（包含main方法的），虚拟机会优先初始化这个主类。<br>5）当使用JDK1.7的动态语言支持时，如果一个java.lang.invoke.MethodHandle实例最后的解析结果REF_getStatic等时， 这个方法的类还没有进行过初始化，则需要先触发其初始化。</p>
+<p>初始化阶段是类加载最后一个阶段，前面的类加载阶段之后，除了在加载阶段可以自定义类加载器以外，其它操作都由JVM主导。到了初始阶段，才开始真正执行类中定义的Java程序代码。</p>
+<p>初始化阶段是执行类构造器<clinit>方法的过程。<clinit>方法是由编译器自动收集类中的类变量的赋值操作和静态语句块中的语句合并而成的。<clinit>方法不需要显式调用父类的构造器，虚拟机会保证<clinit>方法执行之前，父类的<clinit>方法已经执行完毕。p.s: 如果一个类中没有对静态变量赋值也没有静态语句块，那么编译器可以不为这个类生成<clinit>()方法。</clinit></clinit></clinit></clinit></clinit></clinit></p>
+<p>最后看一下接口的初始化过程与类初始化过程的不同。</p>
+<p> 接口也有初始化过程，上面的代码中我们都是用静态语句块来输出初始化信息的，而在接口中不能使用“static{}”语句块，但编译器仍然会为接口生成<clinit>类构造器，用于初始化接口中定义的成员变量（实际上是static final修饰的全局常量）。</clinit></p>
+<p>二者在初始化时最主要的区别是：当一个类在初始化时，要求其父类全部已经初始化过了，但是一个接口在初始化时，并不要求其父接口全部都完成了初始化，只有在真正使用到父接口的时候（如引用接口中定义的常量），才会初始化该父接口。这点也与类初始化的情况很不同，调用类中的static final常量时并不会 触发该类的初始化，但是调用接口中的static final常量时便会触发该接口的初始化。</p>
+<p>注意以下几种情况不会执行类初始化：</p>
+<ul>
+<li>通过子类引用父类的静态字段，只会触发父类的初始化，而不会触发子类的初始化。</li>
+<li>定义对象数组，不会触发该类的初始化。</li>
+<li>常量在编译期间会存入调用类的常量池中，本质上并没有直接引用定义常量的类，不会触发定义常量所在的类。</li>
+<li>通过类名获取Class对象，不会触发类的初始化。</li>
+<li>通过Class.forName加载指定类时，如果指定参数initialize为false时，也不会触发类初始化，其实这个参数是告诉虚拟机，是否要对类进行初始化。</li>
+<li>通过ClassLoader默认的loadClass方法，也不会触发初始化动作。</li>
+</ul>
+<blockquote>
+<p><em>几个小问题？</em><br><em>1、JVM初始化步骤 ？ 2、类初始化时机 ？3、哪几种情况下，Java虚拟机将结束生命周期？</em><br><em>答案参考这篇文章</em><a href="http://www.importnew.com/?p=23742" target="_blank" rel="noopener">JVM（1）：Java 类的加载机制</a></p>
+</blockquote>
+<h1 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h1><p><img src="/images/java/jvm/calssloader.png" alt="img"></p>
+<ul>
+<li>启动类加载器：Bootstrap ClassLoader，负责加载存放在JDK\jre\lib(JDK代表JDK的安装目录，下同)下，或被-Xbootclasspath参数指定的路径中的，并且能被虚拟机识别的类库</li>
+<li>扩展类加载器：Extension ClassLoader，该加载器由sun.misc.Launcher$ExtClassLoader实现，它负责加载DK\jre\lib\ext目录中，或者由java.ext.dirs系统变量指定的路径中的所有类库（如javax.*开头的类），开发者可以直接使用扩展类加载器。</li>
+<li>应用程序类加载器：Application ClassLoader，该类加载器由sun.misc.Launcher$AppClassLoader来实现，它负责加载用户类路径（ClassPath）所指定的类，开发者可以直接使用该类加载器</li>
+</ul>
+<p>类加载机制</p>
+<ul>
+<li>全盘负责，当一个类加载器负责加载某个Class时，该Class所依赖的和引用的其他Class也将由该类加载器负责载入，除非显示使用另外一个类加载器来载入</li>
+<li>父类委托，先让父类加载器试图加载该类，只有在父类加载器无法加载该类时才尝试从自己的类路径中加载该类</li>
+<li>缓存机制，缓存机制将会保证所有加载过的Class都会被缓存，当程序中需要使用某个Class时，类加载器先从缓存区寻找该Class，只有缓存区不存在，系统才会读取该类对应的二进制数据，并将其转换成Class对象，存入缓存区。这就是为什么修改了Class后，必须重启JVM，程序的修改才会生效</li>
+</ul>
+<p>好处：</p>
+<p>解决基础类的统一问题。比如位于rt.jar包中的类java.lang.Object，无论哪个加载器加载这个类，最终都是委托给顶层的启动类加载器进行加载，确保了Object类在各种加载器环境中都是同一个类。</p>
+<p>双亲委托模型打破：</p>
+<ol>
+<li><a href="https://blog.csdn.net/yangcheng33/article/details/52631940" target="_blank" rel="noopener">线程上下文类加载器（Thread Context Classloader）</a></li>
+<li>OSGI</li>
+</ol>
+<p><a href="https://blog.csdn.net/briblue/article/details/54973413" target="_blank" rel="noopener">https://blog.csdn.net/briblue/article/details/54973413</a></p>
 
       
     </div>
@@ -530,7 +536,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/jmm/" rel="tag"># jmm</a>
+            <a href="/tags/jvm/" rel="tag"># jvm</a>
           
         </div>
       
@@ -543,8 +549,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/git/" rel="next" title="git基本操作">
-                <i class="fa fa-chevron-left"></i> git基本操作
+              <a href="/java/jvm/jvm梳理/" rel="next" title="jvm梳理">
+                <i class="fa fa-chevron-left"></i> jvm梳理
               </a>
             
           </div>
@@ -552,10 +558,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/common-sense/安全驾驶/" rel="prev" title="安全驾驶">
-                安全驾驶 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -802,7 +804,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#JMM"><span class="nav-number">1.</span> <span class="nav-text">JMM</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#并发编程模型的两个关键问题"><span class="nav-number">1.1.</span> <span class="nav-text">并发编程模型的两个关键问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JMM的抽象结构"><span class="nav-number">1.2.</span> <span class="nav-text">JMM的抽象结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#happens-before"><span class="nav-number">1.3.</span> <span class="nav-text">happens-before</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重排序"><span class="nav-number">1.4.</span> <span class="nav-text">重排序</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#happens-before-1"><span class="nav-number">2.</span> <span class="nav-text">happens-before</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重排序-1"><span class="nav-number">3.</span> <span class="nav-text">重排序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-数据依赖性"><span class="nav-number">3.1.</span> <span class="nav-text">1. 数据依赖性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-as-if-serial语义"><span class="nav-number">3.2.</span> <span class="nav-text">2. as-if-serial语义</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#顺序一致性内存模型"><span class="nav-number">4.</span> <span class="nav-text">顺序一致性内存模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#特性"><span class="nav-number">4.1.</span> <span class="nav-text">特性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#volatile的内存语义"><span class="nav-number">5.</span> <span class="nav-text">volatile的内存语义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#特性-1"><span class="nav-number">5.1.</span> <span class="nav-text">特性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内存语义"><span class="nav-number">5.2.</span> <span class="nav-text">内存语义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何实现"><span class="nav-number">5.3.</span> <span class="nav-text">如何实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JSR-33为什么要增强volatile的语义"><span class="nav-number">5.4.</span> <span class="nav-text">JSR-33为什么要增强volatile的语义</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#锁的内存语义"><span class="nav-number">6.</span> <span class="nav-text">锁的内存语义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#内存语义-1"><span class="nav-number">6.1.</span> <span class="nav-text">内存语义</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#什么是类的加载"><span class="nav-number">1.</span> <span class="nav-text">什么是类的加载</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#类的生命周期"><span class="nav-number">2.</span> <span class="nav-text">类的生命周期</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#加载"><span class="nav-number">2.1.</span> <span class="nav-text">加载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#验证"><span class="nav-number">2.2.</span> <span class="nav-text">验证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#准备"><span class="nav-number">2.3.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解析"><span class="nav-number">2.4.</span> <span class="nav-text">解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#初始化"><span class="nav-number">2.5.</span> <span class="nav-text">初始化</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#类加载器"><span class="nav-number">3.</span> <span class="nav-text">类加载器</span></a></li></ol></div>
             
 
           </div>
@@ -956,9 +958,9 @@
   
     <script type="text/javascript">
       var disqus_config = function () {
-        this.page.url = 'http://www.iforfee.com/java/Java内存模型/';
-        this.page.identifier = 'java/Java内存模型/';
-        this.page.title = 'java内存模型';
+        this.page.url = 'http://www.iforfee.com/java/jvm/类加载机制/';
+        this.page.identifier = 'java/jvm/类加载机制/';
+        this.page.title = '类加载机制';
       };
       function loadComments () {
         var d = document, s = d.createElement('script');
