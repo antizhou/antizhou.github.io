@@ -106,7 +106,7 @@
 <meta property="og:site_name" content="joyo&#39;s world">
 <meta property="og:description" content="学习良好的编程习惯和代码可读性。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-04-03T06:15:50.000Z">
+<meta property="og:updated_time" content="2018-04-26T08:50:02.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="最佳实践">
 <meta name="twitter:description" content="学习良好的编程习惯和代码可读性。">
@@ -425,8 +425,10 @@
       
 
       
-        <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 不允许调用方法</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> V <span class="title">setValue</span><span class="params">(V value)</span> </span>&#123;  </span><br><span class="line">   <span class="keyword">throw</span> <span class="keyword">new</span> UnsupportedOperationException();  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 空指针校验</span></span><br><span class="line"><span class="keyword">if</span> (key == <span class="keyword">null</span>) </span><br><span class="line">   <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException();</span><br></pre></td></tr></table></figure>
+        <p>非法的方法<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 不允许调用方法</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> V <span class="title">setValue</span><span class="params">(V value)</span> </span>&#123;  </span><br><span class="line">   <span class="keyword">throw</span> <span class="keyword">new</span> UnsupportedOperationException();  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>空指针校验<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 空指针校验</span></span><br><span class="line"><span class="keyword">if</span> (key == <span class="keyword">null</span>) </span><br><span class="line">   <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException();</span><br></pre></td></tr></table></figure></p>
+<p>非法参数<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (corePoolSize &lt; <span class="number">0</span> ||</span><br><span class="line">    maximumPoolSize &lt;= <span class="number">0</span> ||</span><br><span class="line">    maximumPoolSize &lt; corePoolSize ||</span><br><span class="line">    keepAliveTime &lt; <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException();</span><br></pre></td></tr></table></figure></p>
+
       
     </div>
 
@@ -540,7 +542,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">45</span>
+                    <span class="site-state-item-count">46</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -577,7 +579,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">12</span>
+                      
+                    
+                    <span class="site-state-item-count">13</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -636,7 +640,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">23</span>
+                      
+                    
+                    <span class="site-state-item-count">24</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
