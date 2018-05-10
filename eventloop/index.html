@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.1.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.1.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.1.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.1.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Netty 源码分析之 三 我就是大名鼎鼎的 EventLoop@(Netty)[Netty, 源码分析] [TOC]  简述这一章是 Netty 源码分析 的第三章, 我将在这一章中大家一起探究一下 Netty 的 EventLoop 的底层原理, 让大家对 Netty 的线程模型有更加深入的了解. NioEventLoopGroup在 Netty 源码分析之 一 揭开 Bootstrap 神秘">
+<meta property="og:type" content="article">
+<meta property="og:title" content="eventloop">
+<meta property="og:url" content="http://www.iforfee.com/eventloop/index.html">
+<meta property="og:site_name" content="joyo&#39;s world">
+<meta property="og:description" content="Netty 源码分析之 三 我就是大名鼎鼎的 EventLoop@(Netty)[Netty, 源码分析] [TOC]  简述这一章是 Netty 源码分析 的第三章, 我将在这一章中大家一起探究一下 Netty 的 EventLoop 的底层原理, 让大家对 Netty 的线程模型有更加深入的了解. NioEventLoopGroup在 Netty 源码分析之 一 揭开 Bootstrap 神秘">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://www.iforfee.com/eventloop/Reactor%20单线程模型.png">
+<meta property="og:image" content="http://www.iforfee.com/eventloop/Reactor%20多线程模型.png">
+<meta property="og:image" content="http://www.iforfee.com/eventloop/Reactor%20主从多线程模型.png">
+<meta property="og:image" content="http://www.iforfee.com/eventloop/NioEventLoopGroup.png">
+<meta property="og:image" content="http://www.iforfee.com/eventloop/NioEventLoopGroup%20初始化顺序图.png">
+<meta property="og:image" content="http://www.iforfee.com/eventloop/NioEventLoop.png">
+<meta property="og:image" content="http://www.iforfee.com/eventloop/NioEventLoop%20实例化顺序图.png">
+<meta property="og:image" content="http://www.iforfee.com/eventloop/NioEventLoop%20与%20Channel%20的关联过程.png">
+<meta property="og:image" content="http://www.iforfee.com/eventloop/NioEventLoop%20的启动过程.png">
+<meta property="og:updated_time" content="2018-05-08T07:05:05.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="eventloop">
+<meta name="twitter:description" content="Netty 源码分析之 三 我就是大名鼎鼎的 EventLoop@(Netty)[Netty, 源码分析] [TOC]  简述这一章是 Netty 源码分析 的第三章, 我将在这一章中大家一起探究一下 Netty 的 EventLoop 的底层原理, 让大家对 Netty 的线程模型有更加深入的了解. NioEventLoopGroup在 Netty 源码分析之 一 揭开 Bootstrap 神秘">
+<meta name="twitter:image" content="http://www.iforfee.com/eventloop/Reactor%20单线程模型.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="joyo's world" type="application/atom+xml" />
+
+
+
+
+  <link rel="canonical" href="http://www.iforfee.com/eventloop/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>eventloop | joyo's world</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">joyo's world</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.iforfee.com/eventloop/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="joyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="joyo's world">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">eventloop
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+                
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-08T15:04:47+08:00">2018-05-08</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/eventloop/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="eventloop/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Netty-源码分析之-三-我就是大名鼎鼎的-EventLoop"><a href="#Netty-源码分析之-三-我就是大名鼎鼎的-EventLoop" class="headerlink" title="Netty 源码分析之 三 我就是大名鼎鼎的 EventLoop"></a>Netty 源码分析之 三 我就是大名鼎鼎的 EventLoop</h1><p>@(Netty)[Netty, 源码分析]</p>
+<p>[TOC]</p>
+<hr>
+<h2 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h2><p>这一章是 Netty 源码分析 的第三章, 我将在这一章中大家一起探究一下 Netty 的 EventLoop 的底层原理, 让大家对 Netty 的线程模型有更加深入的了解.</p>
+<h2 id="NioEventLoopGroup"><a href="#NioEventLoopGroup" class="headerlink" title="NioEventLoopGroup"></a>NioEventLoopGroup</h2><p>在 <a href="https://segmentfault.com/a/1190000007282789" target="_blank" rel="noopener">Netty 源码分析之 一 揭开 Bootstrap 神秘的红盖头 (客户端)</a> 章节中我们已经知道了, 一个 Netty 程序启动时, 至少要指定一个 EventLoopGroup(如果使用到的是  NIO, 那么通常是 NioEventLoopGroup), 那么这个 NioEventLoopGroup 在 Netty 中到底扮演着什么角色呢? 我们知道, Netty 是 Reactor 模型的一个实现, 那么首先从 Reactor 的线程模型开始吧.</p>
+<h3 id="关于-Reactor-的线程模型"><a href="#关于-Reactor-的线程模型" class="headerlink" title="关于 Reactor 的线程模型"></a>关于 Reactor 的线程模型</h3><p>首先我们来看一下 Reactor 的线程模型.<br>Reactor 的线程模型有三种:</p>
+<ul>
+<li>单线程模型</li>
+<li>多线程模型</li>
+<li>主从多线程模型</li>
+</ul>
+<p>首先来看一下 <strong>单线程模型</strong>:<br><img src="./Reactor 单线程模型.png" alt="Alt text"></p>
+<p>所谓单线程, 即 acceptor 处理和 handler 处理都在一个线程中处理. 这个模型的坏处显而易见: 当其中某个 handler 阻塞时, 会导致其他所有的 client 的 handler 都得不到执行, 并且更严重的是, handler 的阻塞也会导致整个服务不能接收新的 client 请求(因为 acceptor 也被阻塞了). 因为有这么多的缺陷, 因此单线程Reactor 模型用的比较少.</p>
+<p>那么什么是 <strong>多线程模型</strong> 呢? Reactor 的多线程模型与单线程模型的区别就是 acceptor 是一个单独的线程处理, 并且有一组特定的 NIO 线程来负责各个客户端连接的 IO 操作. Reactor 多线程模型如下:<br><img src="./Reactor 多线程模型.png" alt="Alt text"></p>
+<p>Reactor 多线程模型 有如下特点:</p>
+<ul>
+<li>有专门一个线程, 即 Acceptor 线程用于监听客户端的TCP连接请求.</li>
+<li>客户端连接的 IO 操作都是由一个特定的 NIO 线程池负责. 每个客户端连接都与一个特定的 NIO 线程绑定, 因此在这个客户端连接中的所有 IO 操作都是在同一个线程中完成的.</li>
+<li>客户端连接有很多, 但是 NIO 线程数是比较少的, 因此一个 NIO 线程可以同时绑定到多个客户端连接中.</li>
+</ul>
+<p>接下来我们再来看一下 Reactor 的主从多线程模型.<br>一般情况下, Reactor 的多线程模式已经可以很好的工作了, 但是我们考虑一下如下情况: 如果我们的服务器需要同时处理大量的客户端连接请求或我们需要在客户端连接时, 进行一些权限的检查, 那么单线程的 Acceptor 很有可能就处理不过来, 造成了大量的客户端不能连接到服务器.<br>Reactor 的主从多线程模型就是在这样的情况下提出来的, 它的特点是: 服务器端接收客户端的连接请求不再是一个线程, 而是由一个独立的线程池组成. 它的线程模型如下:<br><img src="./Reactor 主从多线程模型.png" alt="Alt text"></p>
+<p>可以看到, Reactor 的主从多线程模型和 Reactor 多线程模型很类似, 只不过 Reactor 的主从多线程模型的 acceptor 使用了线程池来处理大量的客户端请求.</p>
+<h3 id="NioEventLoopGroup-与-Reactor-线程模型的对应"><a href="#NioEventLoopGroup-与-Reactor-线程模型的对应" class="headerlink" title="NioEventLoopGroup 与 Reactor 线程模型的对应"></a>NioEventLoopGroup 与 Reactor 线程模型的对应</h3><p>我们介绍了三种 Reactor 的线程模型, 那么它们和 NioEventLoopGroup 又有什么关系呢? 其实, 不同的设置 NioEventLoopGroup 的方式就对应了不同的 Reactor 的线程模型.</p>
+<h4 id="单线程模型"><a href="#单线程模型" class="headerlink" title="单线程模型"></a>单线程模型</h4><p>来看一下下面的例子:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">EventLoopGroup bossGroup = new NioEventLoopGroup(1);</span><br><span class="line">ServerBootstrap b = new ServerBootstrap();</span><br><span class="line">b.group(bossGroup)</span><br><span class="line"> .channel(NioServerSocketChannel.class)</span><br><span class="line"> ...</span><br></pre></td></tr></table></figure></p>
+<p>注意, 我们实例化了一个 NioEventLoopGroup, 构造器参数是1, 表示 NioEventLoopGroup 的线程池大小是1. 然后接着我们调用 <strong>b.group(bossGroup)</strong> 设置了服务器端的 EventLoopGroup. 有些朋友可能会有疑惑: 我记得在启动服务器端的 Netty 程序时, 是需要设置 bossGroup 和 workerGroup 的, 为什么这里就只有一个 bossGroup?<br>其实很简单, ServerBootstrap 重写了 group 方法:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public ServerBootstrap group(EventLoopGroup group) &#123;</span><br><span class="line">    return group(group, group);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>因此当传入一个 group 时, 那么 bossGroup 和 workerGroup 就是同一个 NioEventLoopGroup 了.<br>这时候呢, 因为 bossGroup 和 workerGroup 就是同一个 NioEventLoopGroup, 并且这个 NioEventLoopGroup 只有一个线程, 这样就会导致 Netty 中的 acceptor 和后续的所有客户端连接的 IO 操作都是在一个线程中处理的. 那么对应到 Reactor 的线程模型中, 我们这样设置 NioEventLoopGroup 时, 就相当于 <strong>Reactor 单线程模型</strong>.</p>
+<h4 id="多线程模型"><a href="#多线程模型" class="headerlink" title="多线程模型"></a>多线程模型</h4><p>同理, 再来看一下下面的例子:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">EventLoopGroup bossGroup = new NioEventLoopGroup(1);</span><br><span class="line">EventLoopGroup workerGroup = new NioEventLoopGroup();</span><br><span class="line">ServerBootstrap b = new ServerBootstrap();</span><br><span class="line">b.group(bossGroup, workerGroup)</span><br><span class="line"> .channel(NioServerSocketChannel.class)</span><br><span class="line"> ...</span><br></pre></td></tr></table></figure></p>
+<p>bossGroup 中只有一个线程, 而 workerGroup 中的线程是 CPU 核心数乘以2, 因此对应的到 Reactor 线程模型中, 我们知道, 这样设置的 NioEventLoopGroup 其实就是 <strong>Reactor 多线程模型</strong>.</p>
+<h4 id="主从多线程模型"><a href="#主从多线程模型" class="headerlink" title="主从多线程模型"></a>主从多线程模型</h4><p><del>相信读者朋友都想到了, 实现主从线程模型的例子如下:</del><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">EventLoopGroup bossGroup = new NioEventLoopGroup(4);</span><br><span class="line">EventLoopGroup workerGroup = new NioEventLoopGroup();</span><br><span class="line">ServerBootstrap b = new ServerBootstrap();</span><br><span class="line">b.group(bossGroup, workerGroup)</span><br><span class="line"> .channel(NioServerSocketChannel.class)</span><br><span class="line"> ...</span><br></pre></td></tr></table></figure></p>
+<p><del>bossGroup 线程池中的线程数我们设置为4, 而 workerGroup 中的线程是 CPU 核心数乘以2, 因此对应的到 Reactor 线程模型中, 我们知道, 这样设置的 NioEventLoopGroup 其实就是 <strong>Reactor 主从多线程模型</strong>.</del></p>
+<hr>
+<p>根据 @labmem 的提示, Netty 的服务器端的 acceptor 阶段, 没有使用到多线程, 因此上面的 <code>主从多线程模型</code> 在 Netty 的服务器端是不存在的.</p>
+<p>服务器端的 ServerSocketChannel 只绑定到了 bossGroup 中的一个线程, 因此在调用 Java NIO 的 Selector.select 处理客户端的连接请求时, 实际上是在一个线程中的, 所以对只有一个服务的应用来说, bossGroup 设置多个线程是没有什么作用的, 反而还会造成资源浪费.</p>
+<p>经 Google, Netty 中的 bossGroup 为什么使用线程池的原因大家众所纷纭, 不过我在 <a href="http://stackoverflow.com/questions/34275138/why-do-we-really-need-multiple-netty-boss-threads" target="_blank" rel="noopener">stackoverflow</a> 上找到一个比较靠谱的答案:</p>
+<blockquote>
+<p>the creator of Netty says multiple boss threads are useful if we share NioEventLoopGroup between different server bootstraps, but I don’t see the reason for it.<br>因此上面的 <code>主从多线程模型</code> 分析是有问题, 抱歉.</p>
+</blockquote>
+<h3 id="NioEventLoopGroup-类层次结构"><a href="#NioEventLoopGroup-类层次结构" class="headerlink" title="NioEventLoopGroup 类层次结构"></a>NioEventLoopGroup 类层次结构</h3><p><img src="./NioEventLoopGroup.png" alt="Alt text"></p>
+<h3 id="NioEventLoopGroup-实例化过程"><a href="#NioEventLoopGroup-实例化过程" class="headerlink" title="NioEventLoopGroup 实例化过程"></a>NioEventLoopGroup 实例化过程</h3><p>在前面 <a href="https://segmentfault.com/a/1190000007282789#articleHeader7" target="_blank" rel="noopener">Netty 源码分析之 一 揭开 Bootstrap 神秘的红盖头 (客户端)</a> 章节中, 我们已经简单地介绍了一下 NioEventLoopGroup 的初始化过程, 这里再回顾一下:<br><img src="./NioEventLoopGroup 初始化顺序图.png" alt="Alt text"><br><a href="https://github.com/yongshun/learn_netty_source_code/blob/master/Netty%20%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B9%8B%20%E4%B8%89%20%E6%88%91%E5%B0%B1%E6%98%AF%E5%A4%A7%E5%90%8D%E9%BC%8E%E9%BC%8E%E7%9A%84%20EventLoop/NioEventLoopGroup%20%E5%88%9D%E5%A7%8B%E5%8C%96%E9%A1%BA%E5%BA%8F%E5%9B%BE.png" target="_blank" rel="noopener">点此下载原图</a></p>
+<p>即:</p>
+<ul>
+<li>EventLoopGroup(其实是MultithreadEventExecutorGroup) 内部维护一个类型为 EventExecutor children 数组, 其大小是 nThreads, 这样就构成了一个线程池</li>
+<li>如果我们在实例化 NioEventLoopGroup 时, 如果指定线程池大小, 则 nThreads 就是指定的值, 反之是处理器核心数 * 2</li>
+<li>MultithreadEventExecutorGroup 中会调用 newChild 抽象方法来初始化 children 数组</li>
+<li>抽象方法 newChild 是在 NioEventLoopGroup 中实现的, 它返回一个 NioEventLoop 实例.</li>
+<li>NioEventLoop 属性:<ul>
+<li>SelectorProvider provider 属性: NioEventLoopGroup 构造器中通过 SelectorProvider.provider() 获取一个 SelectorProvider</li>
+<li>Selector selector 属性: NioEventLoop 构造器中通过调用通过 selector = provider.openSelector() 获取一个 selector 对象.</li>
+</ul>
+</li>
+</ul>
+<h2 id="NioEventLoop"><a href="#NioEventLoop" class="headerlink" title="NioEventLoop"></a>NioEventLoop</h2><p>NioEventLoop 继承于 SingleThreadEventLoop, 而 SingleThreadEventLoop 又继承于 SingleThreadEventExecutor. SingleThreadEventExecutor 是 Netty 中对本地线程的抽象, 它内部有一个 Thread thread 属性, 存储了一个本地 Java 线程. 因此我们可以认为, 一个 NioEventLoop 其实和一个特定的线程绑定, 并且在其生命周期内, 绑定的线程都不会再改变.</p>
+<h3 id="NioEventLoop-类层次结构"><a href="#NioEventLoop-类层次结构" class="headerlink" title="NioEventLoop 类层次结构"></a>NioEventLoop 类层次结构</h3><p><img src="./NioEventLoop.png" alt="Alt text"><br>NioEventLoop 的类层次结构图还是比较复杂的, 不过我们只需要关注几个重要的点即可. 首先 NioEventLoop 的继承链如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NioEventLoop -&gt; SingleThreadEventLoop -&gt; SingleThreadEventExecutor -&gt; AbstractScheduledEventExecutor</span><br></pre></td></tr></table></figure></p>
+<p>在 AbstractScheduledEventExecutor 中, Netty 实现了 NioEventLoop 的 schedule 功能, 即我们可以通过调用一个 NioEventLoop 实例的 schedule 方法来运行一些定时任务. 而在 SingleThreadEventLoop 中, 又实现了任务队列的功能, 通过它, 我们可以调用一个 NioEventLoop 实例的 execute 方法来向任务队列中添加一个 task, 并由 NioEventLoop 进行调度执行.</p>
+<p>通常来说, NioEventLoop 肩负着两种任务, 第一个是作为 IO 线程, 执行与 Channel 相关的 IO 操作, 包括 调用 select 等待就绪的 IO 事件、读写数据与数据的处理等; 而第二个任务是作为任务队列, 执行 taskQueue 中的任务, 例如用户调用 eventLoop.schedule 提交的定时任务也是这个线程执行的.</p>
+<h3 id="NioEventLoop-的实例化过程"><a href="#NioEventLoop-的实例化过程" class="headerlink" title="NioEventLoop 的实例化过程"></a>NioEventLoop 的实例化过程</h3><p><img src="./NioEventLoop 实例化顺序图.png" alt="Alt text"><br><a href="https://github.com/yongshun/learn_netty_source_code/blob/master/Netty%20%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B9%8B%20%E4%B8%89%20%E6%88%91%E5%B0%B1%E6%98%AF%E5%A4%A7%E5%90%8D%E9%BC%8E%E9%BC%8E%E7%9A%84%20EventLoop/NioEventLoop%20%E5%AE%9E%E4%BE%8B%E5%8C%96%E9%A1%BA%E5%BA%8F%E5%9B%BE.png" target="_blank" rel="noopener">点此下载原图</a></p>
+<p>从上图可以看到, SingleThreadEventExecutor 有一个名为 <strong>thread</strong> 的 Thread 类型字段, 这个字段就代表了与 SingleThreadEventExecutor 关联的本地线程.<br>下面是这个构造器的代码:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">protected SingleThreadEventExecutor(</span><br><span class="line">        EventExecutorGroup parent, ThreadFactory threadFactory, boolean addTaskWakesUp) &#123;</span><br><span class="line">    this.parent = parent;</span><br><span class="line">    this.addTaskWakesUp = addTaskWakesUp;</span><br><span class="line"></span><br><span class="line">    thread = threadFactory.newThread(new Runnable() &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public void run() &#123;</span><br><span class="line">            boolean success = false;</span><br><span class="line">            updateLastExecutionTime();</span><br><span class="line">            try &#123;</span><br><span class="line">                SingleThreadEventExecutor.this.run();</span><br><span class="line">                success = true;</span><br><span class="line">            &#125; catch (Throwable t) &#123;</span><br><span class="line">                logger.warn(&quot;Unexpected exception from an event executor: &quot;, t);</span><br><span class="line">            &#125; finally &#123;</span><br><span class="line">                // 省略清理代码</span><br><span class="line">                ...</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    threadProperties = new DefaultThreadProperties(thread);</span><br><span class="line">    taskQueue = newTaskQueue();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在 SingleThreadEventExecutor 构造器中, 通过 <strong>threadFactory.newThread</strong> 创建了一个新的 Java 线程. 在这个线程中所做的事情主要就是调用 <strong>SingleThreadEventExecutor.this.run()</strong> 方法, 而因为 NioEventLoop 实现了这个方法, 因此根据多态性, 其实调用的是 <strong>NioEventLoop.run()</strong> 方法.</p>
+<h3 id="EventLoop-与-Channel-的关联"><a href="#EventLoop-与-Channel-的关联" class="headerlink" title="EventLoop 与 Channel 的关联"></a>EventLoop 与 Channel 的关联</h3><p>Netty 中, 每个 Channel 都有且仅有一个 EventLoop 与之关联, 它们的关联过程如下:<br><img src="./NioEventLoop 与 Channel 的关联过程.png" alt="Alt text"><br><a href="https://github.com/yongshun/learn_netty_source_code/blob/master/Netty%20%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B9%8B%20%E4%B8%89%20%E6%88%91%E5%B0%B1%E6%98%AF%E5%A4%A7%E5%90%8D%E9%BC%8E%E9%BC%8E%E7%9A%84%20EventLoop/NioEventLoop%20%E4%B8%8E%20Channel%20%E7%9A%84%E5%85%B3%E8%81%94%E8%BF%87%E7%A8%8B.png" target="_blank" rel="noopener">点此下载原图</a></p>
+<p>从上图中我们可以看到, 当调用了 <strong>AbstractChannel#AbstractUnsafe.register</strong> 后, 就完成了 Channel 和 EventLoop 的关联. register 实现如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public final void register(EventLoop eventLoop, final ChannelPromise promise) &#123;</span><br><span class="line">    // 删除条件检查.</span><br><span class="line">    ...</span><br><span class="line">    AbstractChannel.this.eventLoop = eventLoop;</span><br><span class="line"></span><br><span class="line">    if (eventLoop.inEventLoop()) &#123;</span><br><span class="line">        register0(promise);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            eventLoop.execute(new OneTimeTask() &#123;</span><br><span class="line">                @Override</span><br><span class="line">                public void run() &#123;</span><br><span class="line">                    register0(promise);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125; catch (Throwable t) &#123;</span><br><span class="line">            ...</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在 <strong>AbstractChannel#AbstractUnsafe.register</strong> 中, 会将一个 EventLoop 赋值给 AbstractChannel 内部的 eventLoop 字段, 到这里就完成了 EventLoop 与 Channel 的关联过程.</p>
+<h3 id="EventLoop-的启动"><a href="#EventLoop-的启动" class="headerlink" title="EventLoop 的启动"></a>EventLoop 的启动</h3><p>在前面我们已经知道了, NioEventLoop 本身就是一个 SingleThreadEventExecutor, 因此 NioEventLoop  的启动, 其实就是 NioEventLoop 所绑定的本地 Java 线程的启动.<br>依照这个思想, 我们只要找到在哪里调用了 SingleThreadEventExecutor 的 thread 字段的 <strong>start()</strong> 方法就可以知道是在哪里启动的这个线程了.<br>从代码中搜索, thread.start() 被封装到 <strong>SingleThreadEventExecutor.startThread()</strong> 方法中了:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">private void startThread() &#123;</span><br><span class="line">    if (STATE_UPDATER.get(this) == ST_NOT_STARTED) &#123;</span><br><span class="line">        if (STATE_UPDATER.compareAndSet(this, ST_NOT_STARTED, ST_STARTED)) &#123;</span><br><span class="line">            thread.start();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>STATE_UPDATER</strong> 是 SingleThreadEventExecutor 内部维护的一个属性, 它的作用是标识当前的 thread 的状态. 在初始的时候, <code>STATE_UPDATER == ST_NOT_STARTED</code>, 因此第一次调用 startThread() 方法时, 就会进入到 if 语句内, 进而调用到 thread.start().<br>而这个关键的 <strong>startThread()</strong> 方法又是在哪里调用的呢? 经过方法调用关系搜索, 我们发现, startThread 是在 SingleThreadEventExecutor.execute 方法中调用的:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public void execute(Runnable task) &#123;</span><br><span class="line">    if (task == null) &#123;</span><br><span class="line">        throw new NullPointerException(&quot;task&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    boolean inEventLoop = inEventLoop();</span><br><span class="line">    if (inEventLoop) &#123;</span><br><span class="line">        addTask(task);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        startThread(); // 调用 startThread 方法, 启动EventLoop 线程.</span><br><span class="line">        addTask(task);</span><br><span class="line">        if (isShutdown() &amp;&amp; removeTask(task)) &#123;</span><br><span class="line">            reject();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (!addTaskWakesUp &amp;&amp; wakesUpForTask(task)) &#123;</span><br><span class="line">        wakeup(inEventLoop);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>既然如此, 那现在我们的工作就变为了寻找 <code>在哪里第一次调用了 SingleThreadEventExecutor.execute() 方法.</code><br>如果留心的读者可能已经注意到了, 我们在 <strong>EventLoop 与 Channel 的关联</strong> 这一小节时, 有提到到在注册 channel 的过程中, 会在 <strong>AbstractChannel#AbstractUnsafe.register</strong> 中调用 eventLoop.execute 方法, 在 EventLoop 中进行 Channel 注册代码的执行, AbstractChannel#AbstractUnsafe.register 部分代码如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">if (eventLoop.inEventLoop()) &#123;</span><br><span class="line">    register0(promise);</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    try &#123;</span><br><span class="line">        eventLoop.execute(new OneTimeTask() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void run() &#123;</span><br><span class="line">                register0(promise);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125; catch (Throwable t) &#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>很显然, 一路从 Bootstrap.bind 方法跟踪到 AbstractChannel#AbstractUnsafe.register 方法, 整个代码都是在主线程中运行的, 因此上面的 <strong>eventLoop.inEventLoop()</strong> 就为 false, 于是进入到 else 分支, 在这个分支中调用了 <strong>eventLoop.execute</strong>. eventLoop 是一个 NioEventLoop 的实例, 而 NioEventLoop 没有实现 execute 方法, 因此调用的是 <strong>SingleThreadEventExecutor.execute:</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public void execute(Runnable task) &#123;</span><br><span class="line">    ...</span><br><span class="line">    boolean inEventLoop = inEventLoop();</span><br><span class="line">    if (inEventLoop) &#123;</span><br><span class="line">        addTask(task);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        startThread();</span><br><span class="line">        addTask(task);</span><br><span class="line">        if (isShutdown() &amp;&amp; removeTask(task)) &#123;</span><br><span class="line">            reject();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (!addTaskWakesUp &amp;&amp; wakesUpForTask(task)) &#123;</span><br><span class="line">        wakeup(inEventLoop);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我们已经分析过了, <strong>inEventLoop == false</strong>, 因此执行到 else 分支, 在这里就调用了 <strong>startThread()</strong> 方法来启动 SingleThreadEventExecutor 内部关联的 Java 本地线程了.<br>总结一句话, 当 EventLoop.execute <strong>第一次被调用</strong>时, 就会触发 <strong>startThread()</strong> 的调用, 进而导致了 EventLoop 所对应的 Java 线程的启动.<br>我们将 <strong>EventLoop 与 Channel 的关联</strong> 小节中的时序图补全后, 就得到了 EventLoop 启动过程的时序图:<br><img src="./NioEventLoop 的启动过程.png" alt="Alt text"></p>
+<p><a href="https://github.com/yongshun/learn_netty_source_code/blob/master/Netty%20%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B9%8B%20%E4%B8%89%20%E6%88%91%E5%B0%B1%E6%98%AF%E5%A4%A7%E5%90%8D%E9%BC%8E%E9%BC%8E%E7%9A%84%20EventLoop/NioEventLoop%20%E7%9A%84%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B.png" target="_blank" rel="noopener">点此下载原图</a></p>
+<h2 id="Netty-的-IO-处理循环"><a href="#Netty-的-IO-处理循环" class="headerlink" title="Netty 的 IO 处理循环"></a>Netty 的 IO 处理循环</h2><p><code>在 Netty 中, 一个 EventLoop 需要负责两个工作, 第一个是作为 IO 线程, 负责相应的 IO 操作; 第二个是作为任务线程, 执行 taskQueue 中的任务.</code> 接下来我们先从 IO 操纵方面入手, 看一下 TCP 数据是如何从 Java NIO Socket 传递到我们的 handler 中的.</p>
+<p>Netty 是 Reactor 模型的一个实现, 并且是基于 Java NIO 的, 那么从 <strong>Java NIO 的前生今世 之四 NIO Selector 详解</strong> 中我们知道, Netty 中必然有一个 Selector 线程, 用于不断调用 Java NIO 的 Selector.select 方法, 查询当前是否有就绪的 IO 事件. 回顾一下在 Java NIO 中所讲述的 Selector 的使用流程:</p>
+<ol>
+<li>通过 Selector.open() 打开一个 Selector.</li>
+<li>将 Channel 注册到 Selector 中, 并设置需要监听的事件(interest set)</li>
+<li>不断重复:<ul>
+<li>调用 select() 方法</li>
+<li>调用 selector.selectedKeys() 获取 selected keys</li>
+<li>迭代每个 selected key:</li>
+<li>1) 从 selected key 中获取 对应的 Channel 和附加信息(如果有的话)</li>
+<li>2) 判断是哪些 IO 事件已经就绪了, 然后处理它们. <strong>如果是 OP_ACCEPT 事件, 则调用 “SocketChannel clientChannel = ((ServerSocketChannel) key.channel()).accept()” 获取 SocketChannel, 并将它设置为 非阻塞的, 然后将这个 Channel 注册到 Selector 中.</strong></li>
+<li>3) 根据需要更改 selected key 的监听事件.</li>
+<li>4) 将已经处理过的 key 从 selected keys 集合中删除.</li>
+</ul>
+</li>
+</ol>
+<p>上面的使用流程用代码来体现就是:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * @author xiongyongshun</span><br><span class="line"> * @Email yongshun1228@gmail.com</span><br><span class="line"> * @version 1.0</span><br><span class="line"> * @created 16/8/1 13:13</span><br><span class="line"> */</span><br><span class="line">public class NioEchoServer &#123;</span><br><span class="line">    private static final int BUF_SIZE = 256;</span><br><span class="line">    private static final int TIMEOUT = 3000;</span><br><span class="line"></span><br><span class="line">    public static void main(String args[]) throws Exception &#123;</span><br><span class="line">        // 打开服务端 Socket</span><br><span class="line">        ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();</span><br><span class="line"></span><br><span class="line">        // 打开 Selector</span><br><span class="line">        Selector selector = Selector.open();</span><br><span class="line"></span><br><span class="line">        // 服务端 Socket 监听8080端口, 并配置为非阻塞模式</span><br><span class="line">        serverSocketChannel.socket().bind(new InetSocketAddress(8080));</span><br><span class="line">        serverSocketChannel.configureBlocking(false);</span><br><span class="line"></span><br><span class="line">        // 将 channel 注册到 selector 中.</span><br><span class="line">        // 通常我们都是先注册一个 OP_ACCEPT 事件, 然后在 OP_ACCEPT 到来时, 再将这个 Channel 的 OP_READ</span><br><span class="line">        // 注册到 Selector 中.</span><br><span class="line">        serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);</span><br><span class="line"></span><br><span class="line">        while (true) &#123;</span><br><span class="line">            // 通过调用 select 方法, 阻塞地等待 channel I/O 可操作</span><br><span class="line">            if (selector.select(TIMEOUT) == 0) &#123;</span><br><span class="line">                System.out.print(&quot;.&quot;);</span><br><span class="line">                continue;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            // 获取 I/O 操作就绪的 SelectionKey, 通过 SelectionKey 可以知道哪些 Channel 的哪类 I/O 操作已经就绪.</span><br><span class="line">            Iterator&lt;SelectionKey&gt; keyIterator = selector.selectedKeys().iterator();</span><br><span class="line"></span><br><span class="line">            while (keyIterator.hasNext()) &#123;</span><br><span class="line"></span><br><span class="line">                // 当获取一个 SelectionKey 后, 就要将它删除, 表示我们已经对这个 IO 事件进行了处理.</span><br><span class="line">                keyIterator.remove();</span><br><span class="line"></span><br><span class="line">                SelectionKey key = keyIterator.next();</span><br><span class="line"></span><br><span class="line">                if (key.isAcceptable()) &#123;</span><br><span class="line">                    // 当 OP_ACCEPT 事件到来时, 我们就有从 ServerSocketChannel 中获取一个 SocketChannel,</span><br><span class="line">                    // 代表客户端的连接</span><br><span class="line">                    // 注意, 在 OP_ACCEPT 事件中, 从 key.channel() 返回的 Channel 是 ServerSocketChannel.</span><br><span class="line">                    // 而在 OP_WRITE 和 OP_READ 中, 从 key.channel() 返回的是 SocketChannel.</span><br><span class="line">                    SocketChannel clientChannel = ((ServerSocketChannel) key.channel()).accept();</span><br><span class="line">                    clientChannel.configureBlocking(false);</span><br><span class="line">                    //在 OP_ACCEPT 到来时, 再将这个 Channel 的 OP_READ 注册到 Selector 中.</span><br><span class="line">                    // 注意, 这里我们如果没有设置 OP_READ 的话, 即 interest set 仍然是 OP_CONNECT 的话, 那么 select 方法会一直直接返回.</span><br><span class="line">                    clientChannel.register(key.selector(), OP_READ, ByteBuffer.allocate(BUF_SIZE));</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                if (key.isReadable()) &#123;</span><br><span class="line">                    SocketChannel clientChannel = (SocketChannel) key.channel();</span><br><span class="line">                    ByteBuffer buf = (ByteBuffer) key.attachment();</span><br><span class="line">                    long bytesRead = clientChannel.read(buf);</span><br><span class="line">                    if (bytesRead == -1) &#123;</span><br><span class="line">                        clientChannel.close();</span><br><span class="line">                    &#125; else if (bytesRead &gt; 0) &#123;</span><br><span class="line">                        key.interestOps(OP_READ | SelectionKey.OP_WRITE);</span><br><span class="line">                        System.out.println(&quot;Get data length: &quot; + bytesRead);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                if (key.isValid() &amp;&amp; key.isWritable()) &#123;</span><br><span class="line">                    ByteBuffer buf = (ByteBuffer) key.attachment();</span><br><span class="line">                    buf.flip();</span><br><span class="line">                    SocketChannel clientChannel = (SocketChannel) key.channel();</span><br><span class="line"></span><br><span class="line">                    clientChannel.write(buf);</span><br><span class="line"></span><br><span class="line">                    if (!buf.hasRemaining()) &#123;</span><br><span class="line">                        key.interestOps(OP_READ);</span><br><span class="line">                    &#125;</span><br><span class="line">                    buf.compact();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>还记得不, 上面操作的第一步 <strong>通过 Selector.open() 打开一个 Selector</strong> 我们已经在第一章的 <strong>Channel 实例化</strong> 这一小节中已经提到了, Netty 中是通过调用 SelectorProvider.openSocketChannel() 来打开一个新的 Java NIO SocketChannel:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">private static SocketChannel newSocket(SelectorProvider provider) &#123;</span><br><span class="line">    ...</span><br><span class="line">    return provider.openSocketChannel();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>第二步 <strong>将 Channel 注册到 Selector 中, 并设置需要监听的事件(interest set)</strong> 的操作我们在第一章 <strong>channel 的注册过程</strong> 中也分析过了, 我们在来回顾一下, 在客户端的 Channel 注册过程中, 会有如下调用链:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Bootstrap.initAndRegister -&gt; </span><br><span class="line">	AbstractBootstrap.initAndRegister -&gt; </span><br><span class="line">		MultithreadEventLoopGroup.register -&gt; </span><br><span class="line">			SingleThreadEventLoop.register -&gt; </span><br><span class="line">				AbstractUnsafe.register -&gt;</span><br><span class="line">					AbstractUnsafe.register0 -&gt;</span><br><span class="line">						AbstractNioChannel.doRegister</span><br></pre></td></tr></table></figure></p>
+<p>在 AbstractUnsafe.register 方法中调用了 register0 方法:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public final void register(EventLoop eventLoop, final ChannelPromise promise) &#123;</span><br><span class="line">	// 省略条件判断和错误处理</span><br><span class="line">    AbstractChannel.this.eventLoop = eventLoop;</span><br><span class="line">    register0(promise);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>register0 方法代码如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">private void register0(ChannelPromise promise) &#123;</span><br><span class="line">    boolean firstRegistration = neverRegistered;</span><br><span class="line">    doRegister();</span><br><span class="line">    neverRegistered = false;</span><br><span class="line">    registered = true;</span><br><span class="line">    safeSetSuccess(promise);</span><br><span class="line">    pipeline.fireChannelRegistered();</span><br><span class="line">    // Only fire a channelActive if the channel has never been registered. This prevents firing</span><br><span class="line">    // multiple channel actives if the channel is deregistered and re-registered.</span><br><span class="line">    if (firstRegistration &amp;&amp; isActive()) &#123;</span><br><span class="line">        pipeline.fireChannelActive();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>register0 又调用了 AbstractNioChannel.doRegister:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">protected void doRegister() throws Exception &#123;</span><br><span class="line">	// 省略错误处理</span><br><span class="line">    selectionKey = javaChannel().register(eventLoop().selector, 0, this);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在这里 javaChannel() 返回的是一个  Java NIO SocketChannel 对象, 我们将此 SocketChannel 注册到前面第一步获取的 Selector 中.</p>
+<p>那么接下来的第三步的循环是在哪里实现的呢? 第三步的操作就是我们今天分析的关键, 下面我会一步一步向读者展示出来.</p>
+<h3 id="thread-的-run-循环"><a href="#thread-的-run-循环" class="headerlink" title="thread 的 run 循环"></a>thread 的 run 循环</h3><p>在 <strong>EventLoop 的启动</strong> 一小节中, 我们已经了解到了, 当 EventLoop.execute <strong>第一次被调用</strong>时, 就会触发 <strong>startThread()</strong> 的调用, 进而导致了 EventLoop 所对应的 Java 线程的启动. 接着我们来更深入一些, 来看一下此线程启动后都会做什么东东吧.<br>下面是此线程的 run() 方法, 我已经把一些异常处理和收尾工作的代码都去掉了. 这个 run 方法可以说是十分简单, 主要就是调用了 <strong>SingleThreadEventExecutor.this.run()</strong> 方法. 而 SingleThreadEventExecutor.run() 是一个抽象方法, 它的实现在 NioEventLoop 中.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">thread = threadFactory.newThread(new Runnable() &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public void run() &#123;</span><br><span class="line">            boolean success = false;</span><br><span class="line">            updateLastExecutionTime();</span><br><span class="line">            try &#123;</span><br><span class="line">                SingleThreadEventExecutor.this.run();</span><br><span class="line">                success = true;</span><br><span class="line">            &#125; catch (Throwable t) &#123;</span><br><span class="line">                logger.warn(&quot;Unexpected exception from an event executor: &quot;, t);</span><br><span class="line">            &#125; finally &#123;</span><br><span class="line">                ...</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure></p>
+<p>继续跟踪到 NioEventLoop.run() 方法, 其源码如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">protected void run() &#123;</span><br><span class="line">    for (;;) &#123;</span><br><span class="line">        boolean oldWakenUp = wakenUp.getAndSet(false);</span><br><span class="line">        try &#123;</span><br><span class="line">            if (hasTasks()) &#123;</span><br><span class="line">                selectNow();</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                select(oldWakenUp);</span><br><span class="line">                if (wakenUp.get()) &#123;</span><br><span class="line">                    selector.wakeup();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            cancelledKeys = 0;</span><br><span class="line">            needsToSelectAgain = false;</span><br><span class="line">            final int ioRatio = this.ioRatio;</span><br><span class="line">            if (ioRatio == 100) &#123;</span><br><span class="line">                processSelectedKeys();</span><br><span class="line">                runAllTasks();</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                final long ioStartTime = System.nanoTime();</span><br><span class="line"></span><br><span class="line">                processSelectedKeys();</span><br><span class="line"></span><br><span class="line">                final long ioTime = System.nanoTime() - ioStartTime;</span><br><span class="line">                runAllTasks(ioTime * (100 - ioRatio) / ioRatio);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            if (isShuttingDown()) &#123;</span><br><span class="line">                closeAll();</span><br><span class="line">                if (confirmShutdown()) &#123;</span><br><span class="line">                    break;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; catch (Throwable t) &#123;</span><br><span class="line">            ...</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>啊哈, 看到了上面代码的 <strong>for(;;)</strong> 所构成的死循环了没? 原来 NioEventLoop 事件循环的核心就是这里!<br>现在我们把上面所提到的 Selector 使用步骤的第三步的部分也找到了.<br>这个 run 方法可以说是 Netty NIO 的核心, 属于重中之重, 把它分析明白了, 那么对 Netty 的事件循环机制也就了解了大部分了. 让我们一鼓作气, 继续分析下去吧!</p>
+<h3 id="IO-事件的轮询"><a href="#IO-事件的轮询" class="headerlink" title="IO 事件的轮询"></a>IO 事件的轮询</h3><p>首先, 在 run 方法中, 第一步是调用 <strong>hasTasks()</strong> 方法来判断当前任务队列中是否有任务:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">protected boolean hasTasks() &#123;</span><br><span class="line">    assert inEventLoop();</span><br><span class="line">    return !taskQueue.isEmpty();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这个方法很简单, 仅仅是检查了一下 <strong>taskQueue</strong> 是否为空. 至于 taskQueue 是什么呢, 其实它就是存放一系列的需要由此 EventLoop 所执行的任务列表. 关于 taskQueue, 我们这里暂时不表, 等到后面再来详细分析它.<br>当 taskQueue 不为空时, 就执行到了 if 分支中的 selectNow() 方法. 然而当 taskQueue 为空时, 执行的是 select(oldWakenUp) 方法. 那么 <strong>selectNow()</strong> 和 <strong>select(oldWakenUp)</strong> 之间有什么区别呢? 来看一下, selectNow() 的源码如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">void selectNow() throws IOException &#123;</span><br><span class="line">    try &#123;</span><br><span class="line">        selector.selectNow();</span><br><span class="line">    &#125; finally &#123;</span><br><span class="line">        // restore wakup state if needed</span><br><span class="line">        if (wakenUp.get()) &#123;</span><br><span class="line">            selector.wakeup();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>首先调用了 <strong>selector.selectNow()</strong> 方法, 这里 selector 是什么大家还有印象不? 我们在第一章 <strong>Netty 源码分析之 一 揭开 Bootstrap 神秘的红盖头 (客户端)</strong> 时对它有过介绍, 这个 <strong>selector</strong> 字段正是 Java NIO 中的多路复用器 <strong>Selector</strong>. 那么这里 <strong>selector.selectNow()</strong> 就很好理解了, selectNow() 方法会检查当前是否有就绪的 IO 事件, 如果有, 则返回就绪 IO 事件的个数; 如果没有, 则返回0. <code>注意, selectNow() 是立即返回的, 不会阻塞当前线程.</code> 当 selectNow() 调用后, finally 语句块中会检查 wakenUp 变量是否为 true, 当为 true 时, 调用 selector.wakeup() 唤醒 select() 的阻塞调用.</p>
+<p>看了 if 分支的 selectNow 方法后, 我们再来看一下 else 分支的 <strong>select(oldWakenUp)</strong> 方法.<br>其实 else 分支的 <strong>select(oldWakenUp)</strong> 方法的处理逻辑比较复杂, 而我们这里的目的暂时不是分析这个方法调用的具体工作, 因此我这里长话短说, 只列出我们我们关注的内如:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">private void select(boolean oldWakenUp) throws IOException &#123;</span><br><span class="line">    Selector selector = this.selector;</span><br><span class="line">    try &#123;</span><br><span class="line">        ...</span><br><span class="line">        int selectedKeys = selector.select(timeoutMillis);</span><br><span class="line">        ...</span><br><span class="line">    &#125; catch (CancelledKeyException e) &#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在这个 select 方法中, 调用了 <strong>selector.select(timeoutMillis)</strong>, 而这个调用是会阻塞住当前线程的, timeoutMillis 是阻塞的超时时间.<br>到来这里, 我们可以看到, 当 <strong>hasTasks()</strong> 为真时, 调用的的 <strong>selectNow()</strong> 方法是不会阻塞当前线程的, 而当  <strong>hasTasks()</strong> 为假时, 调用的 <strong>select(oldWakenUp)</strong> 是会阻塞当前线程的.<br>这其实也很好理解: 当 taskQueue 中没有任务时, 那么 Netty 可以阻塞地等待 IO 就绪事件; 而当 taskQueue 中有任务时, 我们自然地希望所提交的任务可以尽快地执行, 因此 Netty 会调用非阻塞的 selectNow() 方法, 以保证 taskQueue 中的任务尽快可以执行.</p>
+<h3 id="IO-事件的处理"><a href="#IO-事件的处理" class="headerlink" title="IO 事件的处理"></a>IO 事件的处理</h3><p>在 NioEventLoop.run() 方法中, 第一步是通过 select/selectNow 调用查询当前是否有就绪的 IO 事件. 那么当有 IO 事件就绪时, 第二步自然就是处理这些 IO 事件啦.<br>首先让我们来看一下 NioEventLoop.run 中循环的剩余部分:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">final int ioRatio = this.ioRatio;</span><br><span class="line">if (ioRatio == 100) &#123;</span><br><span class="line">    processSelectedKeys();</span><br><span class="line">    runAllTasks();</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    final long ioStartTime = System.nanoTime();</span><br><span class="line"></span><br><span class="line">    processSelectedKeys();</span><br><span class="line"></span><br><span class="line">    final long ioTime = System.nanoTime() - ioStartTime;</span><br><span class="line">    runAllTasks(ioTime * (100 - ioRatio) / ioRatio);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>上面列出的代码中, 有两个关键的调用, 第一个是 <strong>processSelectedKeys()</strong> 调用, 根据字面意思, 我们可以猜出这个方法肯定是查询就绪的 IO 事件, 然后处理它; 第二个调用是 <strong>runAllTasks()</strong>, 这个方法我们也可以一眼就看出来它的功能就是运行 taskQueue 中的任务.<br>这里的代码还有一个十分有意思的地方, 即 <strong>ioRatio</strong>. 那什么是 <strong>ioRatio</strong>呢? 它表示的是此线程分配给 IO 操作所占的时间比(即运行 processSelectedKeys 耗时在整个循环中所占用的时间). 例如 ioRatio 默认是 50, 则表示 IO 操作和执行 task 的所占用的线程执行时间比是 1 : 1. 当知道了 IO 操作耗时和它所占用的时间比, 那么执行 task 的时间就可以很方便的计算出来了:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">设 IO 操作耗时为 ioTime, ioTime 占的时间比例为 ioRatio, 则:</span><br><span class="line">	ioTime / ioRatio = taskTime / taskRatio</span><br><span class="line">	taskRatio = 100 - ioRatio</span><br><span class="line">	=&gt; taskTime = ioTime * (100 - ioRatio) / ioRatio</span><br></pre></td></tr></table></figure></p>
+<p>根据上面的公式, 当我们设置 ioRate = 70 时, 则表示 IO 运行耗时占比为70%, 即假设某次循环一共耗时为 100ms, 那么根据公式, 我们知道 <strong>processSelectedKeys()</strong> 方法调用所耗时大概为70ms(即 IO 耗时), 而 <strong>runAllTasks()</strong> 耗时大概为 30ms(即执行 task 耗时).<br>当 ioRatio 为 100 时, Netty 就不考虑 IO 耗时的占比, 而是分别调用 <strong>processSelectedKeys()</strong>、<strong>runAllTasks()</strong>; 而当 ioRatio 不为 100时, 则执行到 else 分支, 在这个分支中, 首先记录下 <strong>processSelectedKeys()</strong> 所执行的时间(即 IO 操作的耗时), 然后根据公式, 计算出执行 task 所占用的时间, 然后以此为参数, 调用 <strong>runAllTasks()</strong>.</p>
+<p>我们这里先分析一下 <strong>processSelectedKeys()</strong> 方法调用, <strong>runAllTasks()</strong> 我们留到下一节再分析.<br><strong>processSelectedKeys()</strong> 方法的源码如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">private void processSelectedKeys() &#123;</span><br><span class="line">    if (selectedKeys != null) &#123;</span><br><span class="line">        processSelectedKeysOptimized(selectedKeys.flip());</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        processSelectedKeysPlain(selector.selectedKeys());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这个方法中, 会根据 <strong>selectedKeys</strong> 字段是否为空, 而分别调用 <strong>processSelectedKeysOptimized</strong> 或 <strong>processSelectedKeysPlain</strong>. <strong>selectedKeys</strong> 字段是在调用 openSelector() 方法时, 根据 JVM 平台的不同, 而有设置不同的值, 在我所调试这个值是不为 null 的. 其实 <strong>processSelectedKeysOptimized</strong> 方法 <strong>processSelectedKeysPlain</strong> 没有太大的区别, 为了简单起见, 我们以 <strong>processSelectedKeysOptimized</strong> 为例分析一下源码的工作流程吧.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">private void processSelectedKeysOptimized(SelectionKey[] selectedKeys) &#123;</span><br><span class="line">    for (int i = 0;; i ++) &#123;</span><br><span class="line">        final SelectionKey k = selectedKeys[i];</span><br><span class="line">        if (k == null) &#123;</span><br><span class="line">            break;</span><br><span class="line">        &#125;</span><br><span class="line">        selectedKeys[i] = null;</span><br><span class="line"></span><br><span class="line">        final Object a = k.attachment();</span><br><span class="line"></span><br><span class="line">        if (a instanceof AbstractNioChannel) &#123;</span><br><span class="line">            processSelectedKey(k, (AbstractNioChannel) a);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            @SuppressWarnings(&quot;unchecked&quot;)</span><br><span class="line">            NioTask&lt;SelectableChannel&gt; task = (NioTask&lt;SelectableChannel&gt;) a;</span><br><span class="line">            processSelectedKey(k, task);</span><br><span class="line">        &#125;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>其实你别看它代码挺多的, 但是关键的点就两个: 迭代 <strong>selectedKeys</strong> 获取就绪的 IO 事件, 然后为每个事件都调用 <strong>processSelectedKey</strong> 来处理它.<br>这里正好完美对应上了我们提到的 Selector 的使用流程中的第三步里操作.<br>还有一点需要注意的是, 我们可以调用 <strong>selectionKey.attach(object)</strong> 给一个 selectionKey 设置一个附加的字段, 然后可以通过 <strong>Object attachedObj = selectionKey.attachment()</strong> 获取它. 上面代代码正是通过了 <strong>k.attachment()</strong> 来获取一个附加在 selectionKey 中的对象, 那么这个对象是什么呢? 它又是在哪里设置的呢? 我们再来回忆一下 SocketChannel 是如何注册到 Selector 中的:<br>在客户端的 Channel 注册过程中, 会有如下调用链:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Bootstrap.initAndRegister -&gt; </span><br><span class="line">	AbstractBootstrap.initAndRegister -&gt; </span><br><span class="line">		MultithreadEventLoopGroup.register -&gt; </span><br><span class="line">			SingleThreadEventLoop.register -&gt; </span><br><span class="line">				AbstractUnsafe.register -&gt;</span><br><span class="line">					AbstractUnsafe.register0 -&gt;</span><br><span class="line">						AbstractNioChannel.doRegister</span><br></pre></td></tr></table></figure></p>
+<p>最后的 AbstractNioChannel.doRegister 方法会调用 <strong>SocketChannel.register</strong> 方法注册一个 SocketChannel 到指定的 Selector:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">protected void doRegister() throws Exception &#123;</span><br><span class="line">	// 省略错误处理</span><br><span class="line">    selectionKey = javaChannel().register(eventLoop().selector, 0, this);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>特别注意一下 <strong>register</strong> 的第三个参数, 这个参数是设置 selectionKey 的附加对象的, 和调用 <strong>selectionKey.attach(object)</strong> 的效果一样. 而调用 <strong>register</strong> 所传递的第三个参数是 <strong>this</strong>, 它其实就是一个 <code>NioSocketChannel</code> 的实例. 那么这里就很清楚了, 我们在将 SocketChannel 注册到 Selector 中时, 将 SocketChannel 所对应的 NioSocketChannel 以附加字段的方式添加到了selectionKey 中.<br>再回到 <strong>processSelectedKeysOptimized</strong> 方法中, 当我们获取到附加的对象后, 我们就调用 <strong>processSelectedKey</strong> 来处理这个 IO 事件:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">final Object a = k.attachment();</span><br><span class="line"></span><br><span class="line">if (a instanceof AbstractNioChannel) &#123;</span><br><span class="line">    processSelectedKey(k, (AbstractNioChannel) a);</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    @SuppressWarnings(&quot;unchecked&quot;)</span><br><span class="line">    NioTask&lt;SelectableChannel&gt; task = (NioTask&lt;SelectableChannel&gt;) a;</span><br><span class="line">    processSelectedKey(k, task);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>processSelectedKey</strong> 方法源码如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">private static void processSelectedKey(SelectionKey k, AbstractNioChannel ch) &#123;</span><br><span class="line">    final NioUnsafe unsafe = ch.unsafe();</span><br><span class="line">    ...</span><br><span class="line">    try &#123;</span><br><span class="line">        int readyOps = k.readyOps();</span><br><span class="line">        </span><br><span class="line">        // 可读事件</span><br><span class="line">        if ((readyOps &amp; (SelectionKey.OP_READ | SelectionKey.OP_ACCEPT)) != 0 || readyOps == 0) &#123;</span><br><span class="line">            unsafe.read();</span><br><span class="line">            if (!ch.isOpen()) &#123;</span><br><span class="line">                // Connection already closed - no need to handle write.</span><br><span class="line">                return;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">		</span><br><span class="line">		// 可写事件</span><br><span class="line">        if ((readyOps &amp; SelectionKey.OP_WRITE) != 0) &#123;</span><br><span class="line">            // Call forceFlush which will also take care of clear the OP_WRITE once there is nothing left to write</span><br><span class="line">            ch.unsafe().forceFlush();</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        // 连接建立事件</span><br><span class="line">        if ((readyOps &amp; SelectionKey.OP_CONNECT) != 0) &#123;</span><br><span class="line">            // remove OP_CONNECT as otherwise Selector.select(..) will always return without blocking</span><br><span class="line">            // See https://github.com/netty/netty/issues/924</span><br><span class="line">            int ops = k.interestOps();</span><br><span class="line">            ops &amp;= ~SelectionKey.OP_CONNECT;</span><br><span class="line">            k.interestOps(ops);</span><br><span class="line"></span><br><span class="line">            unsafe.finishConnect();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; catch (CancelledKeyException ignored) &#123;</span><br><span class="line">        unsafe.close(unsafe.voidPromise());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这个代码是不是很熟悉啊? 完全是 Java NIO 的 Selector 的那一套处理流程嘛!<br><strong>processSelectedKey</strong> 中处理了三个事件, 分别是:</p>
+<ul>
+<li>OP_READ, 可读事件, 即 Channel 中收到了新数据可供上层读取.</li>
+<li>OP_WRITE, 可写事件, 即上层可以向 Channel 写入数据.</li>
+<li>OP_CONNECT, 连接建立事件, 即 TCP 连接已经建立, Channel 处于 active 状态.</li>
+</ul>
+<p>下面我们分别根据这三个事件来看一下 Netty 是怎么处理的吧.</p>
+<h4 id="OP-READ-处理"><a href="#OP-READ-处理" class="headerlink" title="OP_READ 处理"></a>OP_READ 处理</h4><p>当就绪的 IO 事件是 <strong>OP_READ</strong>, 代码会调用 <strong>unsafe.read()</strong> 方法, 即:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 可读事件</span><br><span class="line">if ((readyOps &amp; (SelectionKey.OP_READ | SelectionKey.OP_ACCEPT)) != 0 || readyOps == 0) &#123;</span><br><span class="line">    unsafe.read();</span><br><span class="line">    if (!ch.isOpen()) &#123;</span><br><span class="line">        // Connection already closed - no need to handle write.</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>unsafe 这个字段, 我们已经和它打了太多的交道了, 在第一章 <strong>Netty 源码分析之 一 揭开 Bootstrap 神秘的红盖头 (客户端)</strong> 中我们已经对它进行过浓墨重彩地分析了, 最后我们确定了它是一个 <strong>NioSocketChannelUnsafe</strong> 实例, 负责的是 Channel 的底层 IO 操作.<br>我们可以利用 Intellij IDEA 提供的 <strong>Go To Implementations</strong> 功能, 寻找到这个方法的实现. 最后我们发现这个方法没有在 <strong>NioSocketChannelUnsafe</strong> 中实现, 而是在它的父类 <strong>AbstractNioByteChannel</strong> 实现的, 它的实现源码如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public final void read() &#123;</span><br><span class="line">    ...</span><br><span class="line">    ByteBuf byteBuf = null;</span><br><span class="line">    int messages = 0;</span><br><span class="line">    boolean close = false;</span><br><span class="line">    try &#123;</span><br><span class="line">        int totalReadAmount = 0;</span><br><span class="line">        boolean readPendingReset = false;</span><br><span class="line">        do &#123;</span><br><span class="line">            byteBuf = allocHandle.allocate(allocator);</span><br><span class="line">            int writable = byteBuf.writableBytes();</span><br><span class="line">            int localReadAmount = doReadBytes(byteBuf);</span><br><span class="line"></span><br><span class="line">            // 检查读取结果.</span><br><span class="line">            ...</span><br><span class="line"></span><br><span class="line">            pipeline.fireChannelRead(byteBuf);</span><br><span class="line">            byteBuf = null;</span><br><span class="line"></span><br><span class="line">            ...</span><br><span class="line"></span><br><span class="line">            totalReadAmount += localReadAmount;</span><br><span class="line">        </span><br><span class="line">            // 检查是否是配置了自动读取, 如果不是, 则立即退出循环.</span><br><span class="line">            ...</span><br><span class="line">        &#125; while (++ messages &lt; maxMessagesPerRead);</span><br><span class="line"></span><br><span class="line">        pipeline.fireChannelReadComplete();</span><br><span class="line">        allocHandle.record(totalReadAmount);</span><br><span class="line"></span><br><span class="line">        if (close) &#123;</span><br><span class="line">            closeOnRead(pipeline);</span><br><span class="line">            close = false;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; catch (Throwable t) &#123;</span><br><span class="line">        handleReadException(pipeline, byteBuf, t, close);</span><br><span class="line">    &#125; finally &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>read()</strong> 源码比较长, 我为了篇幅起见, 删除了部分代码, 只留下了主干. 不过我建议读者朋友们自己一定要看一下 <strong>read()</strong> 源码, 这对理解  Netty 的 EventLoop 十分有帮助.<br>上面 <strong>read</strong> 方法其实归纳起来, 可以认为做了如下工作:</p>
+<ol>
+<li>分配 ByteBuf</li>
+<li>从 SocketChannel 中读取数据</li>
+<li>调用 <strong>pipeline.fireChannelRead</strong> 发送一个 inbound 事件.</li>
+</ol>
+<p>前面两点没什么好说的, 第三点 <strong>pipeline.fireChannelRead</strong> 读者朋友们看到了有没有会心一笑地感觉呢? 反正我看到这里时是有的. <strong>pipeline.fireChannelRead</strong> 正好就是我们在第二章 <strong>Netty 源码分析之 二 贯穿Netty 的大动脉 ── ChannelPipeline (二)</strong> 中分析的 <strong>inbound</strong> 事件起点. 当调用了 <strong>pipeline.fireIN_EVT()</strong> 后, 那么就产生了一个 <strong>inbound</strong> 事件, 此事件会以 <strong>head -&gt; customContext -&gt; tail</strong> 的方向依次流经 ChannelPipeline 中的各个 handler.<br>调用了 <strong>pipeline.fireChannelRead</strong> 后, 就是 ChannelPipeline 中所需要做的工作了, 这些我们已经在第二章中有过详细讨论, 这里就展开了.</p>
+<h4 id="OP-WRITE-处理"><a href="#OP-WRITE-处理" class="headerlink" title="OP_WRITE 处理"></a>OP_WRITE 处理</h4><p><strong>OP_WRITE</strong> 可写事件代码如下. 这里代码比较简单, 没有详细分析的必要了.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if ((readyOps &amp; SelectionKey.OP_WRITE) != 0) &#123;</span><br><span class="line">    // Call forceFlush which will also take care of clear the OP_WRITE once there is nothing left to write</span><br><span class="line">    ch.unsafe().forceFlush();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="OP-CONNECT-处理"><a href="#OP-CONNECT-处理" class="headerlink" title="OP_CONNECT 处理"></a>OP_CONNECT 处理</h4><p>最后一个事件是 <strong>OP_CONNECT</strong>, 即 TCP 连接已建立事件.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">if ((readyOps &amp; SelectionKey.OP_CONNECT) != 0) &#123;</span><br><span class="line">    // remove OP_CONNECT as otherwise Selector.select(..) will always return without blocking</span><br><span class="line">    // See https://github.com/netty/netty/issues/924</span><br><span class="line">    int ops = k.interestOps();</span><br><span class="line">    ops &amp;= ~SelectionKey.OP_CONNECT;</span><br><span class="line">    k.interestOps(ops);</span><br><span class="line"></span><br><span class="line">    unsafe.finishConnect();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>OP_CONNECT</strong> 事件的处理中, 只做了两件事情:</p>
+<ol>
+<li>正如代码中的注释所言, 我们需要将 <strong>OP_CONNECT</strong> 从就绪事件集中清除, 不然会一直有 <strong>OP_CONNECT</strong> 事件.</li>
+<li>调用 unsafe.finishConnect() 通知上层连接已建立</li>
+</ol>
+<p>unsafe.finishConnect() 调用最后会调用到 <strong>pipeline().fireChannelActive()</strong>, 产生一个 <strong>inbound</strong> 事件, 通知 pipeline 中的各个 handler TCP 通道已建立(即 <strong>ChannelInboundHandler.channelActive</strong> 方法会被调用)</p>
+<p>到了这里, 我们整个 NioEventLoop 的 IO 操作部分已经了解完了, 接下来的一节我们要重点分析一下 <strong>Netty 的任务队列机制</strong>.</p>
+<h2 id="Netty-的任务队列机制"><a href="#Netty-的任务队列机制" class="headerlink" title="Netty 的任务队列机制"></a>Netty 的任务队列机制</h2><p>我们已经提到过, 在Netty 中, 一个 NioEventLoop 通常需要肩负起两种任务, 第一个是作为 IO 线程, 处理 IO 操作; 第二个就是作为任务线程, 处理 taskQueue 中的任务. 这一节的重点就是分析一下 NioEventLoop 的任务队列机制的.</p>
+<h3 id="Task-的添加"><a href="#Task-的添加" class="headerlink" title="Task 的添加"></a>Task 的添加</h3><h4 id="普通-Runnable-任务"><a href="#普通-Runnable-任务" class="headerlink" title="普通 Runnable 任务"></a>普通 Runnable 任务</h4><p>NioEventLoop 继承于 SingleThreadEventExecutor, 而 <code>SingleThreadEventExecutor</code> 中有一个 <strong>Queue<runnable> taskQueue</runnable></strong> 字段, 用于存放添加的 Task. 在 Netty 中, 每个 Task 都使用一个实现了 Runnable 接口的实例来表示.<br>例如当我们需要将一个 Runnable 添加到 taskQueue 中时, 我们可以进行如下操作:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">EventLoop eventLoop = channel.eventLoop();</span><br><span class="line">eventLoop.execute(new Runnable() &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void run() &#123;</span><br><span class="line">        System.out.println(&quot;Hello, Netty!&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>当调用 execute 后, 实际上是调用到了 SingleThreadEventExecutor.execute() 方法, 它的实现如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public void execute(Runnable task) &#123;</span><br><span class="line">    if (task == null) &#123;</span><br><span class="line">        throw new NullPointerException(&quot;task&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    boolean inEventLoop = inEventLoop();</span><br><span class="line">    if (inEventLoop) &#123;</span><br><span class="line">        addTask(task);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        startThread();</span><br><span class="line">        addTask(task);</span><br><span class="line">        if (isShutdown() &amp;&amp; removeTask(task)) &#123;</span><br><span class="line">            reject();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (!addTaskWakesUp &amp;&amp; wakesUpForTask(task)) &#123;</span><br><span class="line">        wakeup(inEventLoop);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>而添加任务的 <strong>addTask</strong> 方法的源码如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">protected void addTask(Runnable task) &#123;</span><br><span class="line">    if (task == null) &#123;</span><br><span class="line">        throw new NullPointerException(&quot;task&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    if (isShutdown()) &#123;</span><br><span class="line">        reject();</span><br><span class="line">    &#125;</span><br><span class="line">    taskQueue.add(task);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>因此实际上, <code>taskQueue</code> 是存放着待执行的任务的队列.</p>
+<h4 id="schedule-任务"><a href="#schedule-任务" class="headerlink" title="schedule 任务"></a>schedule 任务</h4><p>除了通过 execute 添加普通的 Runnable 任务外, 我们还可以通过调用 eventLoop.scheduleXXX 之类的方法来添加一个定时任务.<br> EventLoop 中实现任务队列的功能在超类 <code>SingleThreadEventExecutor</code> 实现的, 而 schedule 功能的实现是在 <code>SingleThreadEventExecutor</code> 的父类, 即 <code>AbstractScheduledEventExecutor</code> 中实现的.<br>在 <code>AbstractScheduledEventExecutor</code> 中, 有以 scheduledTaskQueue 字段:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Queue&lt;ScheduledFutureTask&lt;?&gt;&gt; scheduledTaskQueue;</span><br></pre></td></tr></table></figure></p>
+<p>scheduledTaskQueue 是一个队列(Queue), 其中存放的元素是 <strong>ScheduledFutureTask</strong>. 而 <strong>ScheduledFutureTask</strong> 我们很容易猜到, 它是对 Schedule 任务的一个抽象.<br>我们来看一下 <code>AbstractScheduledEventExecutor</code>  所实现的 <strong>schedule</strong> 方法吧:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public  ScheduledFuture&lt;?&gt; schedule(Runnable command, long delay, TimeUnit unit) &#123;</span><br><span class="line">    ObjectUtil.checkNotNull(command, &quot;command&quot;);</span><br><span class="line">    ObjectUtil.checkNotNull(unit, &quot;unit&quot;);</span><br><span class="line">    if (delay &lt; 0) &#123;</span><br><span class="line">        throw new IllegalArgumentException(</span><br><span class="line">                String.format(&quot;delay: %d (expected: &gt;= 0)&quot;, delay));</span><br><span class="line">    &#125;</span><br><span class="line">    return schedule(new ScheduledFutureTask&lt;Void&gt;(</span><br><span class="line">            this, command, null, ScheduledFutureTask.deadlineNanos(unit.toNanos(delay))));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这是其中一个重载的 schedule, 当一个 Runnable 传递进来后, 会被封装为一个 <strong>ScheduledFutureTask</strong> 对象, 这个对象会记录下这个 Runnable 在何时运行、已何种频率运行等信息.<br>当构建了 <strong>ScheduledFutureTask</strong> 后, 会继续调用 另一个重载的 schedule 方法:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;V&gt; ScheduledFuture&lt;V&gt; schedule(final ScheduledFutureTask&lt;V&gt; task) &#123;</span><br><span class="line">    if (inEventLoop()) &#123;</span><br><span class="line">        scheduledTaskQueue().add(task);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        execute(new OneTimeTask() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void run() &#123;</span><br><span class="line">                scheduledTaskQueue().add(task);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return task;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在这个方法中, ScheduledFutureTask 对象就会被添加到 <strong>scheduledTaskQueue</strong> 中了.</p>
+<h3 id="任务的执行"><a href="#任务的执行" class="headerlink" title="任务的执行"></a>任务的执行</h3><p>当一个任务被添加到 taskQueue 后, 它是怎么被 EventLoop 执行的呢?<br>让我们回到 NioEventLoop.run() 方法中, 在这个方法里, 会分别调用 <strong>processSelectedKeys()</strong> 和 <strong>runAllTasks()</strong> 方法, 来进行 IO 事件的处理和 task 的处理. <strong>processSelectedKeys()</strong> 方法我们已经分析过了, 下面我们来看一下 <strong>runAllTasks()</strong> 中到底有什么名堂吧.<br>runAllTasks 方法有两个重载的方法, 一个是无参数的, 另一个有一个参数的. 首先来看一下无参数的 runAllTasks:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">protected boolean runAllTasks() &#123;</span><br><span class="line">    fetchFromScheduledTaskQueue();</span><br><span class="line">    Runnable task = pollTask();</span><br><span class="line">    if (task == null) &#123;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    for (;;) &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            task.run();</span><br><span class="line">        &#125; catch (Throwable t) &#123;</span><br><span class="line">            logger.warn(&quot;A task raised an exception.&quot;, t);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        task = pollTask();</span><br><span class="line">        if (task == null) &#123;</span><br><span class="line">            lastExecutionTime = ScheduledFutureTask.nanoTime();</span><br><span class="line">            return true;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我们前面已经提到过, EventLoop 可以通过调用 <strong>EventLoop.execute</strong> 来将一个 Runnable 提交到 taskQueue 中, 也可以通过调用 <strong>EventLoop.schedule</strong> 来提交一个 schedule 任务到 <strong>scheduledTaskQueue</strong> 中. 在此方法的一开始调用的 <strong>fetchFromScheduledTaskQueue()</strong> 其实就是将 <strong>scheduledTaskQueue</strong> 中已经可以执行的(即定时时间已到的 schedule 任务) 拿出来并添加到 taskQueue 中, 作为可执行的 task 等待被调度执行.<br>它的源码如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">private void fetchFromScheduledTaskQueue() &#123;</span><br><span class="line">    if (hasScheduledTasks()) &#123;</span><br><span class="line">        long nanoTime = AbstractScheduledEventExecutor.nanoTime();</span><br><span class="line">        for (;;) &#123;</span><br><span class="line">            Runnable scheduledTask = pollScheduledTask(nanoTime);</span><br><span class="line">            if (scheduledTask == null) &#123;</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">            taskQueue.add(scheduledTask);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>接下来 <strong>runAllTasks()</strong> 方法就会不断调用 <strong>task = pollTask()</strong> 从 <strong>taskQueue</strong> 中获取一个可执行的 task, 然后调用它的 <strong>run()</strong> 方法来运行此 task.</p>
+<blockquote>
+<p><code>注意</code>, 因为 EventLoop 既需要执行 IO 操作, 又需要执行 task, 因此我们在调用 EventLoop.execute 方法提交任务时, 不要提交耗时任务, 更不能提交一些会造成阻塞的任务, 不然会导致我们的 IO 线程得不到调度, 影响整个程序的并发量.</p>
+</blockquote>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/redis/Redis的缓存过期策略/" rel="next" title="Redis的缓存过期策略">
+                <i class="fa fa-chevron-left"></i> Redis的缓存过期策略
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/mysql/MySQL事务隔离级别/" rel="prev" title="MySQL事务隔离级别">
+                MySQL事务隔离级别 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">joyo</p>
+              <p class="site-description motion-element" itemprop="description">一入java深似海，从此娱乐是路人。</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">58</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">27</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://yakirchen.com/" title="yakir's notes" target="_blank">yakir's notes</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Netty-源码分析之-三-我就是大名鼎鼎的-EventLoop"><span class="nav-number">1.</span> <span class="nav-text">Netty 源码分析之 三 我就是大名鼎鼎的 EventLoop</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简述"><span class="nav-number">1.1.</span> <span class="nav-text">简述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NioEventLoopGroup"><span class="nav-number">1.2.</span> <span class="nav-text">NioEventLoopGroup</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#关于-Reactor-的线程模型"><span class="nav-number">1.2.1.</span> <span class="nav-text">关于 Reactor 的线程模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NioEventLoopGroup-与-Reactor-线程模型的对应"><span class="nav-number">1.2.2.</span> <span class="nav-text">NioEventLoopGroup 与 Reactor 线程模型的对应</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#单线程模型"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">单线程模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多线程模型"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">多线程模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#主从多线程模型"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">主从多线程模型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NioEventLoopGroup-类层次结构"><span class="nav-number">1.2.3.</span> <span class="nav-text">NioEventLoopGroup 类层次结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NioEventLoopGroup-实例化过程"><span class="nav-number">1.2.4.</span> <span class="nav-text">NioEventLoopGroup 实例化过程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NioEventLoop"><span class="nav-number">1.3.</span> <span class="nav-text">NioEventLoop</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#NioEventLoop-类层次结构"><span class="nav-number">1.3.1.</span> <span class="nav-text">NioEventLoop 类层次结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NioEventLoop-的实例化过程"><span class="nav-number">1.3.2.</span> <span class="nav-text">NioEventLoop 的实例化过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EventLoop-与-Channel-的关联"><span class="nav-number">1.3.3.</span> <span class="nav-text">EventLoop 与 Channel 的关联</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EventLoop-的启动"><span class="nav-number">1.3.4.</span> <span class="nav-text">EventLoop 的启动</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Netty-的-IO-处理循环"><span class="nav-number">1.4.</span> <span class="nav-text">Netty 的 IO 处理循环</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#thread-的-run-循环"><span class="nav-number">1.4.1.</span> <span class="nav-text">thread 的 run 循环</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IO-事件的轮询"><span class="nav-number">1.4.2.</span> <span class="nav-text">IO 事件的轮询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IO-事件的处理"><span class="nav-number">1.4.3.</span> <span class="nav-text">IO 事件的处理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#OP-READ-处理"><span class="nav-number">1.4.3.1.</span> <span class="nav-text">OP_READ 处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#OP-WRITE-处理"><span class="nav-number">1.4.3.2.</span> <span class="nav-text">OP_WRITE 处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#OP-CONNECT-处理"><span class="nav-number">1.4.3.3.</span> <span class="nav-text">OP_CONNECT 处理</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Netty-的任务队列机制"><span class="nav-number">1.5.</span> <span class="nav-text">Netty 的任务队列机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Task-的添加"><span class="nav-number">1.5.1.</span> <span class="nav-text">Task 的添加</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#普通-Runnable-任务"><span class="nav-number">1.5.1.1.</span> <span class="nav-text">普通 Runnable 任务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#schedule-任务"><span class="nav-number">1.5.1.2.</span> <span class="nav-text">schedule 任务</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#任务的执行"><span class="nav-number">1.5.2.</span> <span class="nav-text">任务的执行</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">joyo</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Mist</a> v6.1.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.1.0"></script>
+
+
+
+  
+
+  
+    <script id="dsq-count-scr" src="https://zj23qq.disqus.com/count.js" async></script>
+  
+
+  
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'http://www.iforfee.com/eventloop/';
+        this.page.identifier = 'eventloop/';
+        this.page.title = 'eventloop';
+      };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://zj23qq.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+      
+        loadComments();
+      
+    </script>
+  
+
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -109,7 +109,7 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://www.iforfee.com/images/java/jvm/class.png">
 <meta property="og:image" content="http://www.iforfee.com/images/java/jvm/calssloader.png">
-<meta property="og:updated_time" content="2018-04-27T08:44:09.000Z">
+<meta property="og:updated_time" content="2018-04-27T14:06:58.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="类加载机制">
 <meta name="twitter:description" content="主要关注点：  什么是类的加载 类的生命周期 类加载器 双亲委派模型  什么是类的加载类的加载指的是将类的.class文件中的二进制数据读入到内存中，将其放在运行时数据区的方法区内，然后在堆区创建一个java.lang.Class对象，用来封装类在方法区内的数据结构。类的加载的最终产品是位于堆区中的Class对象，Class对象封装了类在方法区内的数据结构，并且向Java程序员提供了访问方法区内的">
@@ -462,7 +462,7 @@
 </ol>
 <h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><p>准备阶段是正式为类变量分配内存并设置类变量的初始值阶段，即在方法区中分配这些变量所使用的内存空间。注意这里所说的初始值概念，比如一个类变量定义为：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> v = <span class="number">8080</span>;</span><br></pre></td></tr></table></figure>
-<p>实际上变量v在准备阶段过后的初始值为0而不是8080，将v赋值为8080的putstatic指令是程序被编译后，存放于类构造器<clinit>方法之中，这里我们后面会解释。<br>但是注意如果声明为：</clinit></p>
+<p>实际上变量v在准备阶段过后的初始值为0而不是8080，将v赋值为8080的putstatic指令是程序被编译后，存放于类构造器&lt;clinit&gt;方法之中，这里我们后面会解释。<br>但是注意如果声明为：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> v = <span class="number">8080</span>;</span><br></pre></td></tr></table></figure>
 <p>在编译阶段会为v生成ConstantValue属性，在准备阶段虚拟机会根据ConstantValue属性将v赋值为8080。</p>
 <h2 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h2><p>解析阶段是指虚拟机将常量池中的符号引用替换为直接引用的过程。符号引用就是class文件中的：</p>
@@ -480,10 +480,8 @@
 <h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><p>何时开始初始化：</p>
 <p><strong>Java并没有规定什么时候开始第一个阶段：加载，但是Java虚拟机规范规定有且只有5种情况必须立即对类进行初始化（而加载、验证、准备自然需要在此之前开始）</strong><br>1）遇到new、getstatic、putstatic或invokestatic这4条字节码指令时，如果类没有进行过初始化，则需要先触发其初始化。生成这4条指令的最常见的Java代码场景是：使用new关键字实例化对象的时候、读取或设置一个类的静态字段（被final修饰、已在编译器把结果放入常量池的静态字段除外）的时候，以及调用一个类的静态方法的时候。<br>2）使用java.lang.reflect包的方法对类进行反射调用的时候，如果类没有进行过初始化，则需要先触发其初始化。<br>3）当初始化一个类的时候，如果发现其父类还没有进行过初始化，则需要先触发其父类初始化。<br>4）当虚拟机启动时，用户需要指定一个要执行的主类（包含main方法的），虚拟机会优先初始化这个主类。<br>5）当使用JDK1.7的动态语言支持时，如果一个java.lang.invoke.MethodHandle实例最后的解析结果REF_getStatic等时， 这个方法的类还没有进行过初始化，则需要先触发其初始化。</p>
 <p>初始化阶段是类加载最后一个阶段，前面的类加载阶段之后，除了在加载阶段可以自定义类加载器以外，其它操作都由JVM主导。到了初始阶段，才开始真正执行类中定义的Java程序代码。</p>
-<p>初始化阶段是执行类构造器<clinit>方法的过程。<clinit>方法是由编译器自动收集类中的类变量的赋值操作和静态语句块中的语句合并而成的。<clinit>方法不需要显式调用父类的构造器，虚拟机会保证<clinit>方法执行之前，父类的<clinit>方法已经执行完毕。p.s: 如果一个类中没有对静态变量赋值也没有静态语句块，那么编译器可以不为这个类生成<clinit>()方法。</clinit></clinit></clinit></clinit></clinit></clinit></p>
-<p>最后看一下接口的初始化过程与类初始化过程的不同。</p>
-<p> 接口也有初始化过程，上面的代码中我们都是用静态语句块来输出初始化信息的，而在接口中不能使用“static{}”语句块，但编译器仍然会为接口生成<clinit>类构造器，用于初始化接口中定义的成员变量（实际上是static final修饰的全局常量）。</clinit></p>
-<p>二者在初始化时最主要的区别是：当一个类在初始化时，要求其父类全部已经初始化过了，但是一个接口在初始化时，并不要求其父接口全部都完成了初始化，只有在真正使用到父接口的时候（如引用接口中定义的常量），才会初始化该父接口。这点也与类初始化的情况很不同，调用类中的static final常量时并不会 触发该类的初始化，但是调用接口中的static final常量时便会触发该接口的初始化。</p>
+<p>初始化阶段是执行类构造器&lt;clinit&gt;方法的过程。&lt;clinit&gt;方法是由编译器自动收集类中的类变量的赋值操作和静态语句块中的语句合并而成的。&lt;clinit&gt;方法不需要显式调用父类的构造器，虚拟机会保证&lt;clinit&gt;方法执行之前，父类的&lt;clinit&gt;方法已经执行完毕。p.s: 如果一个类中没有对静态变量赋值也没有静态语句块，那么编译器可以不为这个类生成&lt;clinit&gt;()方法。</p>
+<p><strong>最后看一下接口的初始化过程与类初始化过程的不同。</strong><br>接口也有初始化过程，上面的代码中我们都是用静态语句块来输出初始化信息的，而在接口中不能使用“static{}”语句块，但编译器仍然会为接口生成&lt;clinit&gt;类构造器，用于初始化接口中定义的成员变量（实际上是static final修饰的全局常量）。<br>二者在初始化时最主要的区别是：当一个类在初始化时，要求其父类全部已经初始化过了，但是一个接口在初始化时，并不要求其父接口全部都完成了初始化，只有在真正使用到父接口的时候（如引用接口中定义的常量），才会初始化该父接口。这点也与类初始化的情况很不同，调用类中的static final常量时并不会 触发该类的初始化，但是调用接口中的static final常量时便会触发该接口的初始化。</p>
 <p>注意以下几种情况不会执行类初始化：</p>
 <ul>
 <li>通过子类引用父类的静态字段，只会触发父类的初始化，而不会触发子类的初始化。</li>
@@ -497,25 +495,24 @@
 <p><em>几个小问题？</em><br><em>1、JVM初始化步骤 ？ 2、类初始化时机 ？3、哪几种情况下，Java虚拟机将结束生命周期？</em><br><em>答案参考这篇文章</em><a href="http://www.importnew.com/?p=23742" target="_blank" rel="noopener">JVM（1）：Java 类的加载机制</a></p>
 </blockquote>
 <h1 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h1><p><img src="/images/java/jvm/calssloader.png" alt="img"></p>
-<ul>
+<h2 id="种类"><a href="#种类" class="headerlink" title="种类"></a>种类</h2><ul>
 <li>启动类加载器：Bootstrap ClassLoader，负责加载存放在JDK\jre\lib(JDK代表JDK的安装目录，下同)下，或被-Xbootclasspath参数指定的路径中的，并且能被虚拟机识别的类库</li>
 <li>扩展类加载器：Extension ClassLoader，该加载器由sun.misc.Launcher$ExtClassLoader实现，它负责加载DK\jre\lib\ext目录中，或者由java.ext.dirs系统变量指定的路径中的所有类库（如javax.*开头的类），开发者可以直接使用扩展类加载器。</li>
 <li>应用程序类加载器：Application ClassLoader，该类加载器由sun.misc.Launcher$AppClassLoader来实现，它负责加载用户类路径（ClassPath）所指定的类，开发者可以直接使用该类加载器</li>
 </ul>
-<p>类加载机制</p>
-<ul>
+<h2 id="类加载机制"><a href="#类加载机制" class="headerlink" title="类加载机制"></a>类加载机制</h2><ul>
 <li>全盘负责，当一个类加载器负责加载某个Class时，该Class所依赖的和引用的其他Class也将由该类加载器负责载入，除非显示使用另外一个类加载器来载入</li>
 <li>父类委托，先让父类加载器试图加载该类，只有在父类加载器无法加载该类时才尝试从自己的类路径中加载该类</li>
 <li>缓存机制，缓存机制将会保证所有加载过的Class都会被缓存，当程序中需要使用某个Class时，类加载器先从缓存区寻找该Class，只有缓存区不存在，系统才会读取该类对应的二进制数据，并将其转换成Class对象，存入缓存区。这就是为什么修改了Class后，必须重启JVM，程序的修改才会生效</li>
 </ul>
 <p>好处：</p>
 <p>解决基础类的统一问题。比如位于rt.jar包中的类java.lang.Object，无论哪个加载器加载这个类，最终都是委托给顶层的启动类加载器进行加载，确保了Object类在各种加载器环境中都是同一个类。</p>
-<p>双亲委托模型打破：</p>
-<ol>
+<h2 id="双亲委托模型打破"><a href="#双亲委托模型打破" class="headerlink" title="双亲委托模型打破"></a>双亲委托模型打破</h2><ol>
 <li><a href="https://blog.csdn.net/yangcheng33/article/details/52631940" target="_blank" rel="noopener">线程上下文类加载器（Thread Context Classloader）</a></li>
 <li>OSGI</li>
 </ol>
-<p><a href="https://blog.csdn.net/briblue/article/details/54973413" target="_blank" rel="noopener">https://blog.csdn.net/briblue/article/details/54973413</a></p>
+<p><a href="http://www.cnblogs.com/lanxuezaipiao/p/4138511.html" target="_blank" rel="noopener">http://www.cnblogs.com/lanxuezaipiao/p/4138511.html</a><br><a href="/java/SPI和DriverManager/">SPI和DriverManager</a></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://blog.csdn.net/briblue/article/details/54973413" target="_blank" rel="noopener">https://blog.csdn.net/briblue/article/details/54973413</a></p>
 
       
     </div>
@@ -558,6 +555,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/java/jvm/jvm参数/" rel="prev" title="jvm参数">
+                jvm参数 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -641,7 +642,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">50</span>
+                    <span class="site-state-item-count">58</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -684,7 +685,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">14</span>
+                      
+                    
+                    <span class="site-state-item-count">16</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -747,7 +750,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">25</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">27</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -804,7 +811,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#什么是类的加载"><span class="nav-number">1.</span> <span class="nav-text">什么是类的加载</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#类的生命周期"><span class="nav-number">2.</span> <span class="nav-text">类的生命周期</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#加载"><span class="nav-number">2.1.</span> <span class="nav-text">加载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#验证"><span class="nav-number">2.2.</span> <span class="nav-text">验证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#准备"><span class="nav-number">2.3.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解析"><span class="nav-number">2.4.</span> <span class="nav-text">解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#初始化"><span class="nav-number">2.5.</span> <span class="nav-text">初始化</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#类加载器"><span class="nav-number">3.</span> <span class="nav-text">类加载器</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#什么是类的加载"><span class="nav-number">1.</span> <span class="nav-text">什么是类的加载</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#类的生命周期"><span class="nav-number">2.</span> <span class="nav-text">类的生命周期</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#加载"><span class="nav-number">2.1.</span> <span class="nav-text">加载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#验证"><span class="nav-number">2.2.</span> <span class="nav-text">验证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#准备"><span class="nav-number">2.3.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解析"><span class="nav-number">2.4.</span> <span class="nav-text">解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#初始化"><span class="nav-number">2.5.</span> <span class="nav-text">初始化</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#类加载器"><span class="nav-number">3.</span> <span class="nav-text">类加载器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#种类"><span class="nav-number">3.1.</span> <span class="nav-text">种类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类加载机制"><span class="nav-number">3.2.</span> <span class="nav-text">类加载机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#双亲委托模型打破"><span class="nav-number">3.3.</span> <span class="nav-text">双亲委托模型打破</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>
