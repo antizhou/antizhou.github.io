@@ -1,9 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[cassandra]]></title>
+    <url>%2Fcassandra%2F</url>
+    <content type="text"><![CDATA[深入理解Cassandra中的数据建模]]></content>
+  </entry>
+  <entry>
+    <title><![CDATA[es合集]]></title>
+    <url>%2Fes%2F</url>
+    <content type="text"><![CDATA[分布式 ES 操作流程解析Elasticsearch 权威指南（中文版）]]></content>
+      <categories>
+        <category>es</category>
+      </categories>
+  </entry>
+  <entry>
+    <title><![CDATA[Lucene]]></title>
+    <url>%2FLucene%2F</url>
+    <content type="text"><![CDATA[Lucene底层原理和优化经验分享(1)-Lucene简介和索引原理跳跃表SkipList跳表基本原理跳跃表 复杂度分析]]></content>
+  </entry>
+  <entry>
+    <title><![CDATA[storm]]></title>
+    <url>%2Fstorm%2F</url>
+    <content type="text"><![CDATA[Storm介绍及原理storm源码之理解Storm中Worker、Executor、Task关系]]></content>
+  </entry>
+  <entry>
+    <title><![CDATA[时序数据库]]></title>
+    <url>%2F%E6%97%B6%E5%BA%8F%E6%95%B0%E6%8D%AE%E5%BA%93%2F</url>
+    <content type="text"><![CDATA[时序数据库深入浅出之存储篇]]></content>
+  </entry>
+  <entry>
     <title><![CDATA[分布式事务以及解决方案]]></title>
     <url>%2F%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E4%BB%A5%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%2F</url>
-    <content type="text"><![CDATA[聊聊分布式事务，再说说解决方案分布式系统的事务处理分布式系统事务一致性解决方案分布式开放消息系统(RocketMQ)的原理与实践]]></content>
+    <content type="text"><![CDATA[聊聊分布式事务，再说说解决方案分布式系统的事务处理分布式系统事务一致性解决方案分布式开放消息系统(RocketMQ)的原h理与实践]]></content>
       <categories>
         <category>分布式</category>
       </categories>
@@ -553,7 +581,7 @@
   <entry>
     <title><![CDATA[hadoop shuffle]]></title>
     <url>%2Fhadoop%20shuffle%2F</url>
-    <content type="text"><![CDATA[提交的任务，经过map后（形成key/value对，还包括partition，partition表示为map片段分配对应的reducer）存入内存缓冲区，并做了一些预排序。 当缓存大小超过限制（默认：分配的内存的80%），开始进行spill spill会进行sort，会在partitions之间进行排序以及对相同的partition里面的元素进行排序。 spill时，默认将元素组成&lt;key, value-list&gt;的形式（简单的将values放到一起），如果定义了conbiner的话，会对values进行操作，如何在word count中，会将value相加。 map阶段结束时，会将所有的spills， merge为一个，并通知jobtracker。 reducer通过联系jobstracker，知道某个map的任务完成了，进而将map结果复制过来。相同的key的map，会传到同一个reducer。 将不同的map结果，进行merge，如果有conbiner也会执行。 将合并后的结果，作为输入传给reducer。]]></content>
+    <content type="text"><![CDATA[提交的任务，经过map后（形成key/value对，还包括partition，partition表示为map片段分配对应的reducer）存入内存缓冲区，并做了一些预排序。 当缓存大小超过限制（默认：分配的内存的80%），开始进行spill spill会进行sort，会在partitions之间进行排序以及对相同的partition里面的元素进行排序。 spill时，默认将元素组成&lt;key, value-list&gt;的形式（简单的将values放到一起），如果定义了conbiner的话，会对values进行操作，如何在word count中，会将value相加。 map阶段结束时，会将所有的spills， merge为一个，并通知jobtracker。 reducer通过联系jobstracker，知道某个map的任务完成了，进而将map结果复制过来。相同的key的map，会传到同一个reducer。 将不同的map结果，进行merge，如果有conbiner也会执行。 将合并后的结果，作为输入传给reducer。 参考http://zheming.wang/blog/2015/05/19/3AFF5BE8-593C-4F76-A72A-6A40FB140D4D/]]></content>
       <categories>
         <category>大数据</category>
       </categories>

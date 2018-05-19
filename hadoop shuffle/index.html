@@ -110,7 +110,7 @@
 <meta property="og:image" content="http://www.iforfee.com/images/shuffle2.png">
 <meta property="og:image" content="http://www.iforfee.com/images/shuffle1.png">
 <meta property="og:image" content="http://www.iforfee.com/images/shuffle3.png">
-<meta property="og:updated_time" content="2018-03-13T13:55:09.000Z">
+<meta property="og:updated_time" content="2018-05-16T06:59:16.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="hadoop shuffle">
 <meta name="twitter:description" content="提交的任务，经过map后（形成key/value对，还包括partition，partition表示为map片段分配对应的reducer）存入内存缓冲区，并做了一些预排序。 当缓存大小超过限制（默认：分配的内存的80%），开始进行spill spill会进行sort，会在partitions之间进行排序以及对相同的partition里面的元素进行排序。 spill时，默认将元素组成&amp;lt;ke">
@@ -441,6 +441,7 @@
 <li>将不同的map结果，进行merge，如果有conbiner也会执行。</li>
 <li>将合并后的结果，作为输入传给reducer。</li>
 </ol>
+<p>参考<br><a href="http://zheming.wang/blog/2015/05/19/3AFF5BE8-593C-4F76-A72A-6A40FB140D4D/" target="_blank" rel="noopener">http://zheming.wang/blog/2015/05/19/3AFF5BE8-593C-4F76-A72A-6A40FB140D4D/</a></p>
 
       
     </div>
@@ -561,7 +562,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">60</span>
+                    <span class="site-state-item-count">65</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -610,7 +611,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">18</span>
+                      
+                    
+                    <span class="site-state-item-count">19</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
