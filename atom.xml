@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.iforfee.com/"/>
-  <updated>2018-06-08T06:27:51.000Z</updated>
+  <updated>2018-06-29T08:58:38.000Z</updated>
   <id>http://www.iforfee.com/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>构建应用服务的监控报警系统</title>
+    <link href="http://www.iforfee.com/alarm/%E6%9E%84%E5%BB%BA%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1%E7%9A%84%E7%9B%91%E6%8E%A7%E6%8A%A5%E8%AD%A6%E7%B3%BB%E7%BB%9F/"/>
+    <id>http://www.iforfee.com/alarm/构建应用服务的监控报警系统/</id>
+    <published>2018-06-29T08:41:25.000Z</published>
+    <updated>2018-06-29T08:58:38.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>昨晚做了个技术分享, 今天整理一下发上来.</p><h2 id="Be-unknown-hard-to-survive"><a href="#Be-unknown-hard-to-survive" class="headerlink" title="Be unknown, hard to survive"></a>Be unknown, hard to survive</h2><p>对于我们应用开发团队来说, 上层应用开发每天要面对最多的就是业务逻辑.<br>而我们都知道, 业务逻辑的最大特点就是 <strong>量大,复杂,多变</strong>.<br>三天两头变动的需求以及突发的任务都会很大程度的影响业务逻辑, 导致它们状态很难控制.</p><p>也正因如此, 特别是创业团队, 在开发之初往往着重于功能的实现上, 很可能就降低了对代码质量, 算法性能以及架构设计的要求.<br>这种情况下对某些环节的监控基本上就被遗漏了, 于是导致潜在的问题不易发现, 突发问题不易排查.<br>所以最开始产出的代码质量很难保证, 即便是上线了后能否稳定运行心里也不敢打保票.</p><h3 id="当线上服务出现问题时…"><a href="#当线上服务出现问题时…" class="headerlink" title="当线上服务出现问题时…"></a>当线上服务出现问题时…</h3><p>当有人告诉你服务挂了时, 怎么办呢, 你可能会很淡定的先去服务器上查查日志来看看他究竟怎么了:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tail -n500 /.../service/output.log | grep ...</span><br><span class="line">tail -n500 /.../service/error.log | grep ...</span><br><span class="line">...</span><br></pre></td></tr></table></figure><p>然后呢, 你发现那个错误并不能按照以往的经验来准确判断, 或者 errorlog 里啥都没有,<br>再有可能 error log 里面一大堆, 你慢慢找吧.</p><p>好吧, 那就再等等, 看看他能不能重现:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tail -F ...</span><br></pre></td></tr></table></figure><p>然后再看看 Kibana 的 dashboard. 然而折腾半天之前的问题就是没出现…</p><p>有的人说: 那个错误至今没有复现, 应该不算啥大的问题吧..?<br>也有人说: 是不是发生遵循什么规律但我们没发现..?</p><p>不过眼前还有其他好多要紧的任务呢, 这个问题反正不常出现, 日后再说..</p><p>好吧, 那就日后再说… 直到某一天, “卧槽, 怎么又莫名其妙的出现了 ?!”</p><p>开发有点慌了, 这时候才真正开始重视这个问题…</p><p>他在想, “要是能尽早的得知问题就好了”, “要是突发问题有提醒就好了, 不用自己盯着日志一行行看…”</p><h2 id="别担心-交给自动化工具完成"><a href="#别担心-交给自动化工具完成" class="headerlink" title="别担心, 交给自动化工具完成"></a>别担心, 交给自动化工具完成</h2><p>其实不用慌, 看来他只是缺少一个自动化的工具嘛~</p><p>那么这个自动化工具是做什么的? 其实就是解决上面两个问题的:</p><ul><li>在真正更严重的问题出现之前预防它.</li><li>当出现了未知问题时及时得知.</li></ul><h3 id="什么值得去监控和报警"><a href="#什么值得去监控和报警" class="headerlink" title="什么值得去监控和报警?"></a>什么值得去监控和报警?</h3><p>那么, 怎么做? 换句话说, 什么 <strong>值得</strong> 我们去监控和报警?<br>要回答这个问题, 首先我们要明确一点:<br>公司中的每个技术团队都有其存在的价值与意义, 他们的工作作用于不同层面,<br>对于我们应用开发来说, 没必要越疱代俎去重复底层运维的任务.</p><p>我们要做什么呢? 我们面对的是大量复杂的 <strong>业务逻辑</strong>, 这才是关注的重点.<br>就我们的团队而言, 比如说:</p><ul><li>哪些接口的平均/瞬时访问量比较大?</li><li>一个微服务架构的调用链中, 哪些环节的耗时比较长? 各自对应了哪些业务?</li><li>一个服务/接口的可用性有多少?</li><li>哪些接口的吞吐率较低?</li><li>…</li></ul><p>好了, 基于以上分析, 我们就可以明确到底要监测哪些指标, 也能够清楚每个监测指标的报警条件了.<br>接下来, 就谈谈我们的报警系统的构架.</p><h2 id="Alarm-System"><a href="#Alarm-System" class="headerlink" title="Alarm System"></a>Alarm System</h2><p>我们把整个系统分为四大环节:</p><ol><li>指标数据的 <strong>采集</strong></li><li><strong>传输</strong> &amp; 处理</li><li><strong>分析</strong>计算</li><li>(有问题的话) <strong>通知</strong></li></ol><h3 id="收集代理"><a href="#收集代理" class="headerlink" title="收集代理"></a>收集代理</h3><h4 id="数据源"><a href="#数据源" class="headerlink" title="数据源"></a>数据源</h4><p>首先来看一下采集环, 这是所有工作的第一个环节.<br>最基本的数据来源无非是以下三个:</p><ul><li>代码埋点</li><li>日志</li><li>数据库</li></ul><p>因为数据源特点的不同, 我们在采集时也面临一些问题.</p><p>有些项目可能由于历史原因, 对其代码中插入埋点十分不便, 并且容易牵连到很多其他组件.<br>数据库如 elasticsearch 并没有(也不可能)提供 changefeed 能力, 此外 elasticsearch 侧重于读优化而不是快速写入,<br>也就是说通过它采集数据的方式可能并不适合某些对实时性要求严格的分析过程.<br>而日志呢, 它们的收集以及格式处理又需要额外的工具(比如 logstash).</p><p>为了解决数据来源的不确定性, 统一数据格式, 我们在采集这个环节中增加了一个 collect agent: Portal.<br>它除了用于收集实时的指标, 还用于数据的广播, 解耦系统以及快速持久化.</p><p>现在, 待检测的指标都可以发送到 Portal 了.</p><h4 id="传输"><a href="#传输" class="headerlink" title="传输"></a>传输</h4><p>那么从数据源到 portal 这段过程, 指标是以什么形式传输的? 使用了什么协议?<br>这部分就讲一下从 <strong>日志/埋点</strong> 收集的指标数据的传输处理过程.</p><h5 id="我们收集的数据是什么"><a href="#我们收集的数据是什么" class="headerlink" title="我们收集的数据是什么?"></a>我们收集的数据是什么?</h5><p>这是在设计前要考虑的问题, 与其说是什么, 不如说是什么性质的.<br>既然是用于检测的指标, 那么它应该与业务数据隔离开, 也就是说它们是非业务数据,<br>属于样本性质, 那么也就容忍了部分丢失的可能.</p><h5 id="最佳选择"><a href="#最佳选择" class="headerlink" title="最佳选择"></a>最佳选择</h5><p>既然这样, 那么我们的选择显而易见: UDP 数据报.<br>它的特点大家都清楚: 速度快, 不用维护连接开销.</p><h5 id="设计原则"><a href="#设计原则" class="headerlink" title="设计原则"></a>设计原则</h5><p>理论上来说, 应该是直接从数据源发送到分析系统, 这是最快捷的方式,<br>但是现在中间多了一层 agent,<br>为了把效率的影响降低到最小, 必须要求数据的传输足够快, 转发上消耗的时间足够少.<br>因此, 我们的设计遵循了 KISS 原则:</p><ul><li>格式简单容易解析</li><li>无分片</li></ul><p>为了在 MTU 不确定的链路环境下尽量不产生分片, 我们将 UDP 数据报的大小限制在 508 byte 之内.</p><blockquote><p>min MTU (576 byte) - max IP Header (60 byte) - UDP Header (8<br>byte)</p></blockquote><p>在这种限制下, 数据报的格式是这样的:</p><p><img src="/images/70722656-b314-11e6-87f5-43d3376421ad-20180629161442930.png" alt="2016-11-25 12 12 28"></p><p>虽然保证了效率, 但这一做法严格限制了数据的使用, 这就要求指标只携带那些绝对有价值的信息.</p><p>Portal 架构如下:</p><p><img src="/images/9998d65c-c858-11e6-8cd1-8d8e2ba2b1c8-20180629161446018.png" alt="archangel architecture - new page"></p><h3 id="规则引擎"><a href="#规则引擎" class="headerlink" title="规则引擎"></a>规则引擎</h3><p>当 portal 拿到指标之后, 下一步就通过一个 TCP 长连接将数据交给整个系统的核心组件进行处理了.<br>在设计部分组件之前, 我考虑的问题一直是如何让它更容易使用.<br>因为规则引擎是这个系统与使用者(维护者)交互的唯一入口: 由使用者配置报警规则.<br>如何 <strong>对开发者友好</strong>?<br>我觉得用简单的描述性语言写一个配置文件, 然后告诉系统你想要配置的报警规则是再简单不过了.</p><p>比如说… 一个 YAML 语法的配置:</p><p><img src="/images/a162535c-b315-11e6-9a68-e755b0fa6a9e-20180629161559038.png" alt="2016-11-25 12 19 32"></p><p>受到 Ansible 的启发, 我就选择了 YAML 描述语言作为规则的基础语法.</p><p>下面介绍一下研发的这个规则引擎 Luna. 它是由三部分构成:</p><ul><li>翻译引擎(YAML 语法)</li><li>异常分析</li><li>报警器</li></ul><p>其工作原理就是: 将规则语法翻译成一个上下文对象 (你可以理解为 SDT 语法制导翻译的过程),<br>异常分析通过这个上下文对象初始化一个探测器, 并作用于符合条件的监控指标,<br>一旦检测到异常, 那么就调用报警器生成一个警报对象, 并将其格式化后发送给通知系统.</p><p>Luna 架构如下:</p><p><img src="/images/d6d4fe1e-c859-11e6-9778-21b765fc5979-20180629161607890.png" alt="fff - new page"></p><h4 id="检测指标类型"><a href="#检测指标类型" class="headerlink" title="检测指标类型"></a>检测指标类型</h4><p>对于异常分析来说, 他要做的就是对所有指标做分析, 计算, 观察他们是否符合既定的报警条件.<br>那么这些指标都有什么意义呢? 或者说那些维度可以衡量?</p><p>早在 2008 年, flicker 的工程师在一片技术博客里提到了 counting &amp; timing 的计量思路, 就是计数和计时.</p><p>Luna 为了提供更多的便捷分析途径, 在此基础上衍生出了更多的测量维度:</p><ul><li>count</li><li>time</li><li>value (例如: 满足值为 xx 的指标)</li><li>rate (例如: 成功率)</li><li>binary (只要拿到这个指标就满足条件)</li><li>complex condition</li></ul><h4 id="周期分析-or-实时计算"><a href="#周期分析-or-实时计算" class="headerlink" title="周期分析 or 实时计算?"></a>周期分析 or 实时计算?</h4><p>就拿 count 计量维度来讲, 数量肯定说的是一个时间区间内的, 这就产生了一个问题: 时间区间怎么定,<br>是滑动窗口还是跃迁窗口?</p><p>那为什么要划分实时和周期计量呢? 要回答这个问题, 得清楚几点:</p><ul><li>不同类型(测量维度)指标的获取方式可能不同.</li><li>同类(维度)指标的获取方式也可能不同.</li><li>指标的监视粒度粗细不同.</li></ul><p>因此两种方案都有意义, 并且 Luna 都提供了, 但应用哪种取决于很多因素.<br>Luna 中由以下因素决定使用哪种时间窗口:</p><ul><li>数据源类型(elasticsearch, stream)</li><li>时间区间标识(in, each)</li><li>指标维度</li></ul><p>通常, 从 elasticsearch 取出的数据应该使用 in 作为时间区间, 这种就属于周期性计算.<br>而来自实时流 stream 中的数据应该使用 each 作为时间区间, 这种情况则是实时计算.<br>另外, binary, value, time 只能用于实时计算, 而 count, rate 以及复杂规则既能用于实时又能进行周期计算.</p><p> 使用案例</p><p>这里拿出几个应用开发中常见需求, 整理几个常用的报警规则示例:</p><ol><li>从实时流中获取接口 a 的耗时指标, 如果耗时超过 200ms, 那么触发 warn 等级警报.<br><img src="/images/861d2b54-b314-11e6-9859-9fbe921ce4e8-20180629161741481.png" alt="2016-11-25 12 46 19"></li><li>从 elasticsearch 里获取接口 a 的访问计数指标, 如果每分钟的访问量低于 10 或高于 10_000, 触发 warn 等级警报.<br><img src="/images/8e8bec94-b314-11e6-8150-e0b0cbbe54b9.png" alt="2016-11-25 12 48 04"></li><li>从 elasticsearch 里获取接口 a 的可用性指标, 如果每分钟访问成功率(指标携带的数据中包含 state 字段为 200 的比率)低于 60%, 报 crash 警报.<br><img src="/images/97cb9f20-b314-11e6-9fc0-257294732950.png" alt="2016-11-25 12 48 52"></li><li>从实时流中获取项目 A 的错误日志, 一旦有, 则触发 error 警报.<br><img src="/images/a520853c-b314-11e6-863c-33d29f71bbf0.png" alt="2016-11-25 12 49 44"></li></ol><h4 id="SMMR"><a href="#SMMR" class="headerlink" title="SMMR"></a>SMMR</h4><p>上面演示的四个例子中, 每个都只是对单个测量指标数据应用了单个规则, 那么若果我想要施加多份规则呢?<br>没关系, Luna 提供了 S(ingle)M(easure)M(utiple)R(rules), 你可以这么写:</p><p><img src="/images/ed620a00-b314-11e6-8fcf-904b6d764b10.png" alt="2016-11-25 12 53 27"></p><h4 id="更灵活的规则设置"><a href="#更灵活的规则设置" class="headerlink" title="更灵活的规则设置"></a>更灵活的规则设置</h4><p>但是尽管可以 SMMR, 上面的规则都太简单了, 如果我的需求很古怪, 很复杂怎么办?<br>在设计之初就考虑到了这点, 在基本规则不够使用时, 允许你根据自己的需求灵活的定义规则.</p><p>这就要提到另外的两个计量维度: fit/bulk.</p><p>分别表示: 对每个实时指标的自定义处理, 对一个时间窗口内的数据集合自定义处理.</p><p>当指定 <code>for</code> 指令为 <code>fit</code> 或 <code>bulk</code> 时, Luna 就启用了规则自定义:</p><p><img src="/images/f764b6ba-b314-11e6-9625-8ea558157f66.png" alt="2016-11-25 12 58 15"></p><p>那么我要如何生成自己的规则检测逻辑呢? 这里要使用一个新的指令: <code>handle</code>,<br>你可以通过在 handle 中编写 Ruby 代码来自定义数据处理过程:</p><p><img src="/images/002c20f8-b315-11e6-9bd5-e2a175762fed.png" alt="2016-11-25 13 00 04"></p><p>其中 handle 里可以使用两个重要变量: data, vars.</p><p>data 依据 <code>for</code> 的不同可能是一个实时数据或者是一个时间区间内的数据集.<br>vars 是通过 <code>vars</code> 指令设置的预定义变量列表.</p><p>那么何时报警呢?</p><p>在自定义过程中, Luna 默认不会触发任何警报, 除非 handle 的代码中返回一个 Hash,<br>其中可以包含 <code>:reason</code> (报警理由), <code>:timestamp</code> 等字段.</p><h3 id="通知系统"><a href="#通知系统" class="headerlink" title="通知系统"></a>通知系统</h3><p>当 Luna 得出了产生异常的结论, 就可以告知通知系统去通知相关人员了.<br>这一环节我们基于 GitHub 的开源项目 Hubot 完成.</p><p>Hubot 算是一种 ChatOps 思想的产物(交互式 DevOps), 我们团队中好多管理工作都交给 Hubot 完成,<br>当然报警系统也不例外.</p><p>通过与 Slack 的高度整合, 可以很容易的完成按项目分群组通知的功能. 数据流见下图:</p><p><img src="/images/08d4ad7e-b315-11e6-8b4e-b97fdd098667.png" alt="2016-11-25 13 09 11"></p><p>即由 Hubot 决定是发送邮件给对应项目成员还是广播到 Slack 相应的 channel.</p><p><img src="/images/14817300-b315-11e6-9ac6-b610ddea942b.png" alt="2016-11-25 13 10 25"></p><h3 id="扩展性"><a href="#扩展性" class="headerlink" title="扩展性"></a>扩展性</h3><p>接下来谈谈系统的扩展能力.<br>我们知道, 当应用规模/数据规模达到一定程度时, 单一节点的处理能力是远远不够的, 这时候需要横向扩展.<br>那么 Luna 能否水平扩展? 很幸运, 这非常简单, 因为 Luna 本身是一个无状态系统.</p><p>扩展方案有很多, 给出两个最简单的场景:</p><ol><li>人工将测量指标划分成槽, 每个 Luna 实例负责一个槽的计算.</li><li>借助 Portal 的分布式特性完成自动化负载均衡.</li></ol><p>这样便可以达到分散单一节点的计算压力以及降低资源开销的目的了.</p><h3 id="What-and-Not"><a href="#What-and-Not" class="headerlink" title="What and Not"></a>What and Not</h3><p>因为有些问题并不是单单从错误就能看出来的,<br>所以我们这个报警系统的目的只是 <strong>尽早的自动化告知可能存在的隐患</strong>.<br>所以它并不是为了取缔目前的监控工具链存在, 像 ELK 全家桶之类的工具依然在后续的分析过程中扮演了重要角色.</p><h3 id="未来发展"><a href="#未来发展" class="headerlink" title="未来发展"></a>未来发展</h3><p>最后谈谈今后的计划, 首先会从以下几点完善整个系统:</p><ul><li>适配更多数据源. 目前仅仅支持两个, 未来可能会加入 <code>script</code> 源, 允许更灵活的配置.</li><li>支持更丰富的规则语法. 比如现在 <code>which</code> 指令只允许写入固定值, 无法模糊匹配.</li><li>提供智能化异常检测(动态范围阈值). 因为当前的规则设定都需要人为写死的, 某些场景可能需要大量历史数据来判断当前区域内是否有异常出现, 这个目前最简单的方案就是用统计学中的 3-sigma 标准来判断, 或者使用更高级的手段如 Airbnb 内部使用的快速傅里叶变换等数学方法.</li><li>持久化报警事件. 比如可以根据报警事件的产生频率做进一步的统计分析.</li><li>规则热加载(开发中). 现在 Luna 只支持冷加载, 启动时将所有规则文件读入内存解析, 要想更新或加入其它规则文件必须要重启.</li><li>命令行管理工具(开发中). 每次都去修改规则文件可能并不合适, 提供一个轻便的配置工具以 RPC 形式控制 Luna 应该会更方便.</li></ul><h3 id="更多内容"><a href="#更多内容" class="headerlink" title="更多内容"></a>更多内容</h3><p>关于 Luna 的规则语法以及使用方案还有很多, 但目前只在内部使用阶段, 未来会考虑开源相关项目同时开放详细文档.</p><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://github.com/abbshr/abbshr.github.io/issues/59" target="_blank" rel="noopener">https://github.com/abbshr/abbshr.github.io/issues/59</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;昨晚做了个技术分享, 今天整理一下发上来.&lt;/p&gt;
+&lt;h2 id=&quot;Be-unknown-hard-to-survive&quot;&gt;&lt;a href=&quot;#Be-unknown-hard-to-survive&quot; class=&quot;headerlink&quot; title=&quot;Be unknown,
+      
+    
+    </summary>
+    
+    
+  </entry>
   
   <entry>
     <title>秒级监控</title>
@@ -455,31 +477,6 @@
     
     
       <category term="索引" scheme="http://www.iforfee.com/tags/%E7%B4%A2%E5%BC%95/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>jvm参数</title>
-    <link href="http://www.iforfee.com/java/jvm/jvm%E5%8F%82%E6%95%B0/"/>
-    <id>http://www.iforfee.com/java/jvm/jvm参数/</id>
-    <published>2018-04-27T14:15:08.000Z</published>
-    <updated>2018-04-27T14:18:48.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>-Xms10m 设置堆的最小空间大小。</p><p>-Xmx10m 设置堆的最大空间大小。</p><p>-Xmn10m  设置年轻代大小</p><p>-XX:NewSize=256m 设置新生代最小空间大小。</p><p>-XX:MaxNewSize=256m 设置新生代最大空间大小。</p><p>-XX:PermSize=256m 设置永久代最小空间大小。</p><p>-XX:MaxPermSize=256m 设置永久代最大空间大小。</p><p>-Xss128k 设置每个线程的堆栈大小。</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;-Xms10m 设置堆的最小空间大小。&lt;/p&gt;
-&lt;p&gt;-Xmx10m 设置堆的最大空间大小。&lt;/p&gt;
-&lt;p&gt;-Xmn10m  设置年轻代大小&lt;/p&gt;
-&lt;p&gt;-XX:NewSize=256m 设置新生代最小空间大小。&lt;/p&gt;
-&lt;p&gt;-XX:MaxNewSize=256m 设置
-      
-    
-    </summary>
-    
     
   </entry>
   
