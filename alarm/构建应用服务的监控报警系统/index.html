@@ -102,28 +102,28 @@
   <meta name="description" content="昨晚做了个技术分享, 今天整理一下发上来. Be unknown, hard to survive对于我们应用开发团队来说, 上层应用开发每天要面对最多的就是业务逻辑.而我们都知道, 业务逻辑的最大特点就是 量大,复杂,多变.三天两头变动的需求以及突发的任务都会很大程度的影响业务逻辑, 导致它们状态很难控制. 也正因如此, 特别是创业团队, 在开发之初往往着重于功能的实现上, 很可能就降低了对代码">
 <meta property="og:type" content="article">
 <meta property="og:title" content="构建应用服务的监控报警系统">
-<meta property="og:url" content="http://www.iforfee.com/alarm/构建应用服务的监控报警系统/index.html">
+<meta property="og:url" content="http://www.antizhou.com/alarm/构建应用服务的监控报警系统/index.html">
 <meta property="og:site_name" content="joyo&#39;s world">
 <meta property="og:description" content="昨晚做了个技术分享, 今天整理一下发上来. Be unknown, hard to survive对于我们应用开发团队来说, 上层应用开发每天要面对最多的就是业务逻辑.而我们都知道, 业务逻辑的最大特点就是 量大,复杂,多变.三天两头变动的需求以及突发的任务都会很大程度的影响业务逻辑, 导致它们状态很难控制. 也正因如此, 特别是创业团队, 在开发之初往往着重于功能的实现上, 很可能就降低了对代码">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://www.iforfee.com/images/70722656-b314-11e6-87f5-43d3376421ad-20180629161442930.png">
-<meta property="og:image" content="http://www.iforfee.com/images/9998d65c-c858-11e6-8cd1-8d8e2ba2b1c8-20180629161446018.png">
-<meta property="og:image" content="http://www.iforfee.com/images/a162535c-b315-11e6-9a68-e755b0fa6a9e-20180629161559038.png">
-<meta property="og:image" content="http://www.iforfee.com/images/d6d4fe1e-c859-11e6-9778-21b765fc5979-20180629161607890.png">
-<meta property="og:image" content="http://www.iforfee.com/images/861d2b54-b314-11e6-9859-9fbe921ce4e8-20180629161741481.png">
-<meta property="og:image" content="http://www.iforfee.com/images/8e8bec94-b314-11e6-8150-e0b0cbbe54b9.png">
-<meta property="og:image" content="http://www.iforfee.com/images/97cb9f20-b314-11e6-9fc0-257294732950.png">
-<meta property="og:image" content="http://www.iforfee.com/images/a520853c-b314-11e6-863c-33d29f71bbf0.png">
-<meta property="og:image" content="http://www.iforfee.com/images/ed620a00-b314-11e6-8fcf-904b6d764b10.png">
-<meta property="og:image" content="http://www.iforfee.com/images/f764b6ba-b314-11e6-9625-8ea558157f66.png">
-<meta property="og:image" content="http://www.iforfee.com/images/002c20f8-b315-11e6-9bd5-e2a175762fed.png">
-<meta property="og:image" content="http://www.iforfee.com/images/08d4ad7e-b315-11e6-8b4e-b97fdd098667.png">
-<meta property="og:image" content="http://www.iforfee.com/images/14817300-b315-11e6-9ac6-b610ddea942b.png">
+<meta property="og:image" content="http://www.antizhou.com/images/70722656-b314-11e6-87f5-43d3376421ad-20180629161442930.png">
+<meta property="og:image" content="http://www.antizhou.com/images/9998d65c-c858-11e6-8cd1-8d8e2ba2b1c8-20180629161446018.png">
+<meta property="og:image" content="http://www.antizhou.com/images/a162535c-b315-11e6-9a68-e755b0fa6a9e-20180629161559038.png">
+<meta property="og:image" content="http://www.antizhou.com/images/d6d4fe1e-c859-11e6-9778-21b765fc5979-20180629161607890.png">
+<meta property="og:image" content="http://www.antizhou.com/images/861d2b54-b314-11e6-9859-9fbe921ce4e8-20180629161741481.png">
+<meta property="og:image" content="http://www.antizhou.com/images/8e8bec94-b314-11e6-8150-e0b0cbbe54b9.png">
+<meta property="og:image" content="http://www.antizhou.com/images/97cb9f20-b314-11e6-9fc0-257294732950.png">
+<meta property="og:image" content="http://www.antizhou.com/images/a520853c-b314-11e6-863c-33d29f71bbf0.png">
+<meta property="og:image" content="http://www.antizhou.com/images/ed620a00-b314-11e6-8fcf-904b6d764b10.png">
+<meta property="og:image" content="http://www.antizhou.com/images/f764b6ba-b314-11e6-9625-8ea558157f66.png">
+<meta property="og:image" content="http://www.antizhou.com/images/002c20f8-b315-11e6-9bd5-e2a175762fed.png">
+<meta property="og:image" content="http://www.antizhou.com/images/08d4ad7e-b315-11e6-8b4e-b97fdd098667.png">
+<meta property="og:image" content="http://www.antizhou.com/images/14817300-b315-11e6-9ac6-b610ddea942b.png">
 <meta property="og:updated_time" content="2018-06-29T08:58:38.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="构建应用服务的监控报警系统">
 <meta name="twitter:description" content="昨晚做了个技术分享, 今天整理一下发上来. Be unknown, hard to survive对于我们应用开发团队来说, 上层应用开发每天要面对最多的就是业务逻辑.而我们都知道, 业务逻辑的最大特点就是 量大,复杂,多变.三天两头变动的需求以及突发的任务都会很大程度的影响业务逻辑, 导致它们状态很难控制. 也正因如此, 特别是创业团队, 在开发之初往往着重于功能的实现上, 很可能就降低了对代码">
-<meta name="twitter:image" content="http://www.iforfee.com/images/70722656-b314-11e6-87f5-43d3376421ad-20180629161442930.png">
+<meta name="twitter:image" content="http://www.antizhou.com/images/70722656-b314-11e6-87f5-43d3376421ad-20180629161442930.png">
 
 
 
@@ -132,7 +132,7 @@
 
 
 
-  <link rel="canonical" href="http://www.iforfee.com/alarm/构建应用服务的监控报警系统/"/>
+  <link rel="canonical" href="http://www.antizhou.com/alarm/构建应用服务的监控报警系统/"/>
 
 
 
@@ -337,7 +337,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.iforfee.com/alarm/构建应用服务的监控报警系统/">
+    <link itemprop="mainEntityOfPage" href="http://www.antizhou.com/alarm/构建应用服务的监控报警系统/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="joyo">
@@ -1019,7 +1019,7 @@
   
     <script type="text/javascript">
       var disqus_config = function () {
-        this.page.url = 'http://www.iforfee.com/alarm/构建应用服务的监控报警系统/';
+        this.page.url = 'http://www.antizhou.com/alarm/构建应用服务的监控报警系统/';
         this.page.identifier = 'alarm/构建应用服务的监控报警系统/';
         this.page.title = '构建应用服务的监控报警系统';
       };

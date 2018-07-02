@@ -102,24 +102,24 @@
   <meta name="description" content="Netty 源码分析之 三 我就是大名鼎鼎的 EventLoop@(Netty)[Netty, 源码分析] [TOC]  简述这一章是 Netty 源码分析 的第三章, 我将在这一章中大家一起探究一下 Netty 的 EventLoop 的底层原理, 让大家对 Netty 的线程模型有更加深入的了解. NioEventLoopGroup在 Netty 源码分析之 一 揭开 Bootstrap 神秘">
 <meta property="og:type" content="article">
 <meta property="og:title" content="eventloop">
-<meta property="og:url" content="http://www.iforfee.com/eventloop/index.html">
+<meta property="og:url" content="http://www.antizhou.com/eventloop/index.html">
 <meta property="og:site_name" content="joyo&#39;s world">
 <meta property="og:description" content="Netty 源码分析之 三 我就是大名鼎鼎的 EventLoop@(Netty)[Netty, 源码分析] [TOC]  简述这一章是 Netty 源码分析 的第三章, 我将在这一章中大家一起探究一下 Netty 的 EventLoop 的底层原理, 让大家对 Netty 的线程模型有更加深入的了解. NioEventLoopGroup在 Netty 源码分析之 一 揭开 Bootstrap 神秘">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://www.iforfee.com/eventloop/Reactor%20单线程模型.png">
-<meta property="og:image" content="http://www.iforfee.com/eventloop/Reactor%20多线程模型.png">
-<meta property="og:image" content="http://www.iforfee.com/eventloop/Reactor%20主从多线程模型.png">
-<meta property="og:image" content="http://www.iforfee.com/eventloop/NioEventLoopGroup.png">
-<meta property="og:image" content="http://www.iforfee.com/eventloop/NioEventLoopGroup%20初始化顺序图.png">
-<meta property="og:image" content="http://www.iforfee.com/eventloop/NioEventLoop.png">
-<meta property="og:image" content="http://www.iforfee.com/eventloop/NioEventLoop%20实例化顺序图.png">
-<meta property="og:image" content="http://www.iforfee.com/eventloop/NioEventLoop%20与%20Channel%20的关联过程.png">
-<meta property="og:image" content="http://www.iforfee.com/eventloop/NioEventLoop%20的启动过程.png">
+<meta property="og:image" content="http://www.antizhou.com/eventloop/Reactor%20单线程模型.png">
+<meta property="og:image" content="http://www.antizhou.com/eventloop/Reactor%20多线程模型.png">
+<meta property="og:image" content="http://www.antizhou.com/eventloop/Reactor%20主从多线程模型.png">
+<meta property="og:image" content="http://www.antizhou.com/eventloop/NioEventLoopGroup.png">
+<meta property="og:image" content="http://www.antizhou.com/eventloop/NioEventLoopGroup%20初始化顺序图.png">
+<meta property="og:image" content="http://www.antizhou.com/eventloop/NioEventLoop.png">
+<meta property="og:image" content="http://www.antizhou.com/eventloop/NioEventLoop%20实例化顺序图.png">
+<meta property="og:image" content="http://www.antizhou.com/eventloop/NioEventLoop%20与%20Channel%20的关联过程.png">
+<meta property="og:image" content="http://www.antizhou.com/eventloop/NioEventLoop%20的启动过程.png">
 <meta property="og:updated_time" content="2018-05-08T07:05:05.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="eventloop">
 <meta name="twitter:description" content="Netty 源码分析之 三 我就是大名鼎鼎的 EventLoop@(Netty)[Netty, 源码分析] [TOC]  简述这一章是 Netty 源码分析 的第三章, 我将在这一章中大家一起探究一下 Netty 的 EventLoop 的底层原理, 让大家对 Netty 的线程模型有更加深入的了解. NioEventLoopGroup在 Netty 源码分析之 一 揭开 Bootstrap 神秘">
-<meta name="twitter:image" content="http://www.iforfee.com/eventloop/Reactor%20单线程模型.png">
+<meta name="twitter:image" content="http://www.antizhou.com/eventloop/Reactor%20单线程模型.png">
 
 
 
@@ -128,7 +128,7 @@
 
 
 
-  <link rel="canonical" href="http://www.iforfee.com/eventloop/"/>
+  <link rel="canonical" href="http://www.antizhou.com/eventloop/"/>
 
 
 
@@ -333,7 +333,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.iforfee.com/eventloop/">
+    <link itemprop="mainEntityOfPage" href="http://www.antizhou.com/eventloop/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="joyo">
@@ -1019,7 +1019,7 @@
   
     <script type="text/javascript">
       var disqus_config = function () {
-        this.page.url = 'http://www.iforfee.com/eventloop/';
+        this.page.url = 'http://www.antizhou.com/eventloop/';
         this.page.identifier = 'eventloop/';
         this.page.title = 'eventloop';
       };
