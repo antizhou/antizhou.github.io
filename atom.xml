@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.antizhou.com/"/>
-  <updated>2018-07-03T12:55:13.000Z</updated>
+  <updated>2018-07-03T13:04:34.000Z</updated>
   <id>http://www.antizhou.com/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>binlog</title>
+    <link href="http://www.antizhou.com/binlog/"/>
+    <id>http://www.antizhou.com/binlog/</id>
+    <published>2018-07-03T13:03:57.000Z</published>
+    <updated>2018-07-03T13:04:34.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>操作binglog</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">查看是否启用了日志</span><br><span class="line">mysql&gt; show variables like &apos;log_%&apos;; </span><br><span class="line"></span><br><span class="line">查看所有binlog日志列表</span><br><span class="line">mysql&gt; show master logs;</span><br><span class="line"></span><br><span class="line">查看master状态，即最后(最新)一个binlog日志的编号名称，及其最后一个操作事件pos结束点(Position)值</span><br><span class="line">mysql&gt; show master status;</span><br><span class="line"></span><br><span class="line">刷新log日志，自此刻开始产生一个新编号的binlog日志文件</span><br><span class="line">mysql&gt; flush logs;</span><br><span class="line"></span><br><span class="line">重置(清空)所有binlog日志</span><br><span class="line">mysql&gt; reset master;</span><br></pre></td></tr></table></figure><p>MySQLbinlog模式</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">查看MySQLbinlog模式</span><br><span class="line">show global variables like &quot;binlog%&quot;;</span><br><span class="line"></span><br><span class="line">MySQL中设置binlog模式</span><br><span class="line">set global binlog_format=&apos;ROW&apos;;</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;操作binglog&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/spa
+      
+    
+    </summary>
+    
+      <category term="mysql" scheme="http://www.antizhou.com/categories/mysql/"/>
+    
+    
+      <category term="binlog" scheme="http://www.antizhou.com/tags/binlog/"/>
+    
+      <category term="mysql" scheme="http://www.antizhou.com/tags/mysql/"/>
+    
+  </entry>
   
   <entry>
     <title>homebrew 安装 mysql 以及配置</title>
@@ -461,28 +489,6 @@
     
     
       <category term="lock" scheme="http://www.antizhou.com/tags/lock/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>网络协议</title>
-    <link href="http://www.antizhou.com/protocols/"/>
-    <id>http://www.antizhou.com/protocols/</id>
-    <published>2018-05-07T01:38:12.000Z</published>
-    <updated>2018-05-07T02:07:01.000Z</updated>
-    
-    <content type="html"><![CDATA[<p><a href="http://lib.csdn.net/article/computernetworks/20534" target="_blank" rel="noopener">TCP/IP、Http、Socket的区别</a></p><p><a href="https://github.com/jawil/blog/issues/14" target="_blank" rel="noopener">通俗大白话来理解TCP协议的三次握手和四次分手</a></p><p><a href="https://www.dozer.cc/2014/12/netty-long-connection.html" target="_blank" rel="noopener">Netty 长连接服务</a></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;&lt;a href=&quot;http://lib.csdn.net/article/computernetworks/20534&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;TCP/IP、Http、Socket的区别&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;htt
-      
-    
-    </summary>
-    
     
   </entry>
   

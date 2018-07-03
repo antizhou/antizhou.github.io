@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[binlog]]></title>
+    <url>%2Fbinlog%2F</url>
+    <content type="text"><![CDATA[操作binglog 1234567891011121314查看是否启用了日志mysql&gt; show variables like &apos;log_%&apos;; 查看所有binlog日志列表mysql&gt; show master logs;查看master状态，即最后(最新)一个binlog日志的编号名称，及其最后一个操作事件pos结束点(Position)值mysql&gt; show master status;刷新log日志，自此刻开始产生一个新编号的binlog日志文件mysql&gt; flush logs;重置(清空)所有binlog日志mysql&gt; reset master; MySQLbinlog模式 12345查看MySQLbinlog模式show global variables like &quot;binlog%&quot;;MySQL中设置binlog模式set global binlog_format=&apos;ROW&apos;;]]></content>
+      <categories>
+        <category>mysql</category>
+      </categories>
+      <tags>
+        <tag>binlog</tag>
+        <tag>mysql</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[homebrew 安装 mysql 以及配置]]></title>
     <url>%2Fmysqlinstall%2F</url>
     <content type="text"><![CDATA[brew install mysql (安装) 添加修改mysql配置 mysqld --help --verbose | more (查看帮助, 按空格下翻) 你会看到开始的这一行(表示配置文件默认读取顺序) Default options are read from the following files in the given order:/etc/my.cnf /etc/mysql/my.cnf /usr/local/etc/my.cnf ~/.my.cnf 通常这些位置是没有配置文件的, 所以要自己建一个 ls $(brew --prefix mysql)/support-files/my-* (用这个可以找到样例.cnf) cp /usr/local/opt/mysql/support-files/my-default.cnf /etc/my.cnf (拷贝到第一个默认读取目录) 按需修改my.cnf brew services start mysql (启动) brew services stop mysql (停止) https://segmentfault.com/q/1010000000475470]]></content>
