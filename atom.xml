@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.antizhou.com/"/>
-  <updated>2018-07-05T07:52:26.000Z</updated>
+  <updated>2018-07-05T08:05:41.000Z</updated>
   <id>http://www.antizhou.com/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>字符串操作</title>
+    <link href="http://www.antizhou.com/%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%93%8D%E4%BD%9C/"/>
+    <id>http://www.antizhou.com/字符串操作/</id>
+    <published>2018-07-05T08:04:41.000Z</published>
+    <updated>2018-07-05T08:05:41.000Z</updated>
+    
+    <content type="html"><![CDATA[<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s := <span class="string">"123123"</span></span><br><span class="line">s = s[<span class="number">0</span>:<span class="built_in">len</span>(s)<span class="number">-1</span>]</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;figure class=&quot;highlight go&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td
+      
+    
+    </summary>
+    
+      <category term="golang" scheme="http://www.antizhou.com/categories/golang/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>goalng类型转换</title>
@@ -455,29 +478,6 @@
       
     
     </summary>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>Redis的缓存过期策略</title>
-    <link href="http://www.antizhou.com/redis/Redis%E7%9A%84%E7%BC%93%E5%AD%98%E8%BF%87%E6%9C%9F%E7%AD%96%E7%95%A5/"/>
-    <id>http://www.antizhou.com/redis/Redis的缓存过期策略/</id>
-    <published>2018-05-07T07:30:23.000Z</published>
-    <updated>2018-05-07T07:38:18.000Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="过期策略"><a href="#过期策略" class="headerlink" title="过期策略"></a>过期策略</h1><h2 id="定时清除"><a href="#定时清除" class="headerlink" title="定时清除"></a>定时清除</h2><p>含义：在设置key的过期时间的同时，为该key创建一个定时器，让定时器在key的过期时间来临时，对key进行删除</p><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul><li>保证内存被尽快释放</li></ul><h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul><li>若过期key很多，删除这些key会占用很多的CPU时间，在CPU时间紧张的情况下，CPU不能把所有的时间用来做要紧的事儿，还需要去花时间删除这些key</li><li>定时器的创建耗时，若为每一个设置过期时间的key创建一个定时器（将会有大量的定时器产生），性能影响严重</li></ul><h2 id="懒汉式删除"><a href="#懒汉式删除" class="headerlink" title="懒汉式删除"></a>懒汉式删除</h2><p>含义：key过期的时候不删除，每次通过key获取值的时候去检查是否过期，若过期，则删除，返回null。</p><h3 id="优点-1"><a href="#优点-1" class="headerlink" title="优点"></a>优点</h3><ul><li>删除操作只发生在通过key取值的时候发生，而且只删除当前key，所以对CPU时间的占用是比较少的，而且此时的删除是已经到了非做不可的地步（如果此时还不删除的话，我们就会获取到了已经过期的key了）</li></ul><h3 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h3><ul><li>若大量的key在超出超时时间后，很久一段时间内，都没有被获取过，那么可能发生内存泄露（无用的垃圾占用了大量的内存）</li></ul><h2 id="定期删除"><a href="#定期删除" class="headerlink" title="定期删除"></a>定期删除</h2><p>含义：每隔一段时间执行一次删除过期key操作</p><h3 id="优点-2"><a href="#优点-2" class="headerlink" title="优点"></a>优点</h3><ul><li>通过限制删除操作的时长和频率，来减少删除操作对CPU时间的占用–处理”定时删除”的缺点</li><li>定期删除过期key–处理”懒汉式删除”的缺点</li></ul><h3 id="缺点-2"><a href="#缺点-2" class="headerlink" title="缺点"></a>缺点</h3><ul><li>在内存友好方面，不如”定时删除”（会造成一定的内存占用，但是没有懒汉式那么占用内存）</li><li>在CPU时间友好方面，不如”懒汉式删除”（会定期的去进行比较和删除操作，cpu方面不如懒汉式，但是比定时好）</li></ul><h1 id="Redis采用的过期策略"><a href="#Redis采用的过期策略" class="headerlink" title="Redis采用的过期策略"></a>Redis采用的过期策略</h1><p>懒汉式删除+定期删除</p><p>懒汉式删除流程：</p><ul><li>在进行get或setnx等操作时，先检查key是否过期；</li><li>若过期，删除key，然后执行相应操作；</li><li>若没过期，直接执行相应操作；</li></ul><p>定期删除流程（简单而言，对指定个数个库的每一个库随机删除小于等于指定个数个过期key）：</p><ul><li>遍历每个数据库（就是redis.conf中配置的”database”数量，默认为16）</li><li>检查当前库中的指定个数个key（默认是每个库检查20个key，注意相当于该循环执行20次，循环体是下边的描述）<ul><li>如果当前库中没有一个key设置了过期时间，直接执行下一个库的遍历</li><li>随机获取一个设置了过期时间的key，检查该key是否过期，如果过期，删除key</li><li>判断定期删除操作是否已经达到指定时长，若已经达到，直接退出定期删除。</li></ul></li></ul><h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://blog.csdn.net/xiangnan129/article/details/54928672" target="_blank" rel="noopener">https://blog.csdn.net/xiangnan129/article/details/54928672</a></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h1 id=&quot;过期策略&quot;&gt;&lt;a href=&quot;#过期策略&quot; class=&quot;headerlink&quot; title=&quot;过期策略&quot;&gt;&lt;/a&gt;过期策略&lt;/h1&gt;&lt;h2 id=&quot;定时清除&quot;&gt;&lt;a href=&quot;#定时清除&quot; class=&quot;headerlink&quot; title=&quot;定时清除&quot;&gt;&lt;/a
-      
-    
-    </summary>
-    
-      <category term="redis" scheme="http://www.antizhou.com/categories/redis/"/>
     
     
   </entry>
