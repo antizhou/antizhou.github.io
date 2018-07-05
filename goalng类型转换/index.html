@@ -106,7 +106,7 @@
 <meta property="og:site_name" content="World of Anti Zhou">
 <meta property="og:description" content="int 转 string123456789101112131415161718192021package main import (	&quot;fmt&quot;	&quot;strconv&quot;) var i int = 10 func main() &amp;#123;	// 通过Itoa方法转换	str1 := strconv.Itoa(i) 	// 通过Sprintf方法转换	str2 := fmt.Sprintf(&quot;%d&quot;,">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-07-05T08:06:24.000Z">
+<meta property="og:updated_time" content="2018-07-05T08:53:21.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="goalng类型转换">
 <meta name="twitter:description" content="int 转 string123456789101112131415161718192021package main import (	&quot;fmt&quot;	&quot;strconv&quot;) var i int = 10 func main() &amp;#123;	// 通过Itoa方法转换	str1 := strconv.Itoa(i) 	// 通过Sprintf方法转换	str2 := fmt.Sprintf(&quot;%d&quot;,">
@@ -426,6 +426,7 @@
 
       
         <h1 id="int-转-string"><a href="#int-转-string" class="headerlink" title="int 转 string"></a>int 转 string</h1><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"> </span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"strconv"</span></span><br><span class="line">)</span><br><span class="line"> </span><br><span class="line"><span class="keyword">var</span> i <span class="keyword">int</span> = <span class="number">10</span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// 通过Itoa方法转换</span></span><br><span class="line">	str1 := strconv.Itoa(i)</span><br><span class="line"> </span><br><span class="line">	<span class="comment">// 通过Sprintf方法转换</span></span><br><span class="line">	str2 := fmt.Sprintf(<span class="string">"%d"</span>, i)</span><br><span class="line"> </span><br><span class="line">	<span class="comment">// 打印str1</span></span><br><span class="line">	fmt.Println(str1)</span><br><span class="line">	<span class="comment">// 打印str2</span></span><br><span class="line">	fmt.Println(str2)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="T-转-interface"><a href="#T-转-interface" class="headerlink" title="[]T 转 []interface{}"></a>[]T 转 []interface{}</h1><p>Can I convert a []T to an []interface{}?<br>Not directly, because they do not have the same representation in memory. It is necessary to copy the elements individually to the destination slice. This example converts a slice of int to a slice of interface{}:<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">t := []<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;</span><br><span class="line">s := <span class="built_in">make</span>([]<span class="keyword">interface</span>&#123;&#125;, <span class="built_in">len</span>(t))</span><br><span class="line"><span class="keyword">for</span> i, v := <span class="keyword">range</span> t &#123;</span><br><span class="line">    s[i] = v</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -734,7 +735,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#int-转-string"><span class="nav-number">1.</span> <span class="nav-text">int 转 string</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#int-转-string"><span class="nav-number">1.</span> <span class="nav-text">int 转 string</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#T-转-interface"><span class="nav-number">2.</span> <span class="nav-text">[]T 转 []interface{}</span></a></li></ol></div>
             
 
           </div>

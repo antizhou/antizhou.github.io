@@ -11,7 +11,7 @@
   <entry>
     <title><![CDATA[goalng类型转换]]></title>
     <url>%2Fgoalng%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%2F</url>
-    <content type="text"><![CDATA[int 转 string123456789101112131415161718192021package main import ( "fmt" "strconv") var i int = 10 func main() &#123; // 通过Itoa方法转换 str1 := strconv.Itoa(i) // 通过Sprintf方法转换 str2 := fmt.Sprintf("%d", i) // 打印str1 fmt.Println(str1) // 打印str2 fmt.Println(str2)&#125;]]></content>
+    <content type="text"><![CDATA[int 转 string123456789101112131415161718192021package main import ( "fmt" "strconv") var i int = 10 func main() &#123; // 通过Itoa方法转换 str1 := strconv.Itoa(i) // 通过Sprintf方法转换 str2 := fmt.Sprintf("%d", i) // 打印str1 fmt.Println(str1) // 打印str2 fmt.Println(str2)&#125; []T 转 []interface{}Can I convert a []T to an []interface{}?Not directly, because they do not have the same representation in memory. It is necessary to copy the elements individually to the destination slice. This example converts a slice of int to a slice of interface{}:12345t := []int&#123;1, 2, 3, 4&#125;s := make([]interface&#123;&#125;, len(t))for i, v := range t &#123; s[i] = v&#125;]]></content>
       <categories>
         <category>golang</category>
       </categories>
