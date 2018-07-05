@@ -101,14 +101,14 @@
 
   <meta name="description" content="1234567891011121314151617181920212223242526package mainimport &quot;fmt&quot;func main() &amp;#123;    add(1, 2)    add(int16(1), int16(2))    add(float32(1.1), float32(2.2))    add(float64(1.1), float64(2.2))    a">
 <meta property="og:type" content="article">
-<meta property="og:title" content="typeassertion">
+<meta property="og:title" content="golang类型断言(Type Assertion)的应用">
 <meta property="og:url" content="http://www.antizhou.com/typeassertion/index.html">
 <meta property="og:site_name" content="World of Anti Zhou">
 <meta property="og:description" content="1234567891011121314151617181920212223242526package mainimport &quot;fmt&quot;func main() &amp;#123;    add(1, 2)    add(int16(1), int16(2))    add(float32(1.1), float32(2.2))    add(float64(1.1), float64(2.2))    a">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-07-05T07:49:48.000Z">
+<meta property="og:updated_time" content="2018-07-05T07:50:17.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="typeassertion">
+<meta name="twitter:title" content="golang类型断言(Type Assertion)的应用">
 <meta name="twitter:description" content="1234567891011121314151617181920212223242526package mainimport &quot;fmt&quot;func main() &amp;#123;    add(1, 2)    add(int16(1), int16(2))    add(float32(1.1), float32(2.2))    add(float64(1.1), float64(2.2))    a">
 
 
@@ -128,7 +128,7 @@
   };
 </script>
 
-  <title>typeassertion | World of Anti Zhou</title>
+  <title>golang类型断言(Type Assertion)的应用 | World of Anti Zhou</title>
   
 
 
@@ -340,7 +340,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">typeassertion
+          <h1 class="post-title" itemprop="name headline">golang类型断言(Type Assertion)的应用
               
             
           </h1>
@@ -433,6 +433,7 @@
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    a := <span class="keyword">int16</span>(<span class="number">2</span>)</span><br><span class="line">    b := <span class="keyword">int32</span>(<span class="number">3</span>)</span><br><span class="line">    add(a, b)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">add</span><span class="params">(a, b <span class="keyword">interface</span>&#123;&#125;)</span></span> &#123;</span><br><span class="line">    _, ok := a.(<span class="keyword">int32</span>)</span><br><span class="line">    <span class="keyword">if</span> !ok &#123;</span><br><span class="line">        fmt.Println(<span class="string">"error type assertion!"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    b = b</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>运行结果：<br>error type assertion!<br>2.用于转换结构体的interface{}类型字段<br>例如，我们写handler去接收消息，不可能每个发来的消息都写个函数去handle。利用空接口和类型断言的特性，就可以将业务抽象出来:<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line">    <span class="keyword">import</span> <span class="string">"time"</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">type</span> NetMsg <span class="keyword">struct</span> &#123;</span><br><span class="line">        MsgID <span class="keyword">int16</span></span><br><span class="line">        Data  <span class="keyword">interface</span>&#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">type</span> Cat <span class="keyword">struct</span> &#123;</span><br><span class="line">        name <span class="keyword">string</span></span><br><span class="line">        age  <span class="keyword">int16</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">type</span> Dog <span class="keyword">struct</span> &#123;</span><br><span class="line">        name <span class="keyword">string</span></span><br><span class="line">        age  <span class="keyword">int32</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">type</span> human <span class="keyword">struct</span> &#123;</span><br><span class="line">        name <span class="keyword">string</span></span><br><span class="line">        age  <span class="keyword">int64</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">        msg1 := NetMsg&#123;<span class="number">1</span>, Cat&#123;<span class="string">"Qian"</span>, <span class="number">1</span>&#125;&#125;</span><br><span class="line">        msg2 := NetMsg&#123;<span class="number">2</span>, Dog&#123;<span class="string">"doge"</span>, <span class="number">8</span>&#125;&#125;</span><br><span class="line">        msg3 := NetMsg&#123;<span class="number">3</span>, Dog&#123;<span class="string">"allu"</span>, <span class="number">18</span>&#125;&#125;</span><br><span class="line">        msg_handler(msg1)</span><br><span class="line">        time.Sleep(<span class="number">2000</span> * time.Millisecond)</span><br><span class="line">        msg_handler(msg2)</span><br><span class="line">        time.Sleep(<span class="number">2000</span> * time.Millisecond)</span><br><span class="line">        msg_handler(msg3)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">msg_handler</span><span class="params">(msg NetMsg)</span></span> &#123;</span><br><span class="line">        <span class="keyword">switch</span> msg.MsgID &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">            cat := msg.Data.(Cat)</span><br><span class="line">            fmt.Printf(<span class="string">"Do Something with Msg 1 %v \n"</span>, cat)</span><br><span class="line">        <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">            dog := msg.Data.(Dog)</span><br><span class="line">            fmt.Printf(<span class="string">"Do Something with Msg 2 %v \n"</span>, dog)</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            fmt.Printf(<span class="string">"Error MsgID [%d] \n"</span>, msg.MsgID)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
 <p>运行结果:<br>Do Something with Msg 1 {Qian 1}<br>Do Something with Msg 2 {doge 8}<br>Error MsgID [3]</p>
+<p><a href="https://segmentfault.com/a/1190000012495480" target="_blank" rel="noopener">https://segmentfault.com/a/1190000012495480</a></p>
 
       
     </div>
@@ -868,7 +869,7 @@
       var disqus_config = function () {
         this.page.url = 'http://www.antizhou.com/typeassertion/';
         this.page.identifier = 'typeassertion/';
-        this.page.title = 'typeassertion';
+        this.page.title = 'golang类型断言(Type Assertion)的应用';
       };
       function loadComments () {
         var d = document, s = d.createElement('script');
