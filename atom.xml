@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.antizhou.com/"/>
-  <updated>2018-07-05T08:05:41.000Z</updated>
+  <updated>2018-07-05T08:06:24.000Z</updated>
   <id>http://www.antizhou.com/</id>
   
   <author>
@@ -17,11 +17,11 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>字符串操作</title>
-    <link href="http://www.antizhou.com/%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%93%8D%E4%BD%9C/"/>
-    <id>http://www.antizhou.com/字符串操作/</id>
+    <title>golang字符串</title>
+    <link href="http://www.antizhou.com/golang%E5%AD%97%E7%AC%A6%E4%B8%B2/"/>
+    <id>http://www.antizhou.com/golang字符串/</id>
     <published>2018-07-05T08:04:41.000Z</published>
-    <updated>2018-07-05T08:05:41.000Z</updated>
+    <updated>2018-07-05T08:06:24.000Z</updated>
     
     <content type="html"><![CDATA[<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s := <span class="string">"123123"</span></span><br><span class="line">s = s[<span class="number">0</span>:<span class="built_in">len</span>(s)<span class="number">-1</span>]</span><br></pre></td></tr></table></figure>]]></content>
     
@@ -44,7 +44,7 @@
     <link href="http://www.antizhou.com/goalng%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/"/>
     <id>http://www.antizhou.com/goalng类型转换/</id>
     <published>2018-07-05T07:50:58.000Z</published>
-    <updated>2018-07-05T07:52:26.000Z</updated>
+    <updated>2018-07-05T08:06:24.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="int-转-string"><a href="#int-转-string" class="headerlink" title="int 转 string"></a>int 转 string</h1><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"> </span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line"><span class="string">"fmt"</span></span><br><span class="line"><span class="string">"strconv"</span></span><br><span class="line">)</span><br><span class="line"> </span><br><span class="line"><span class="keyword">var</span> i <span class="keyword">int</span> = <span class="number">10</span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line"><span class="comment">// 通过Itoa方法转换</span></span><br><span class="line">str1 := strconv.Itoa(i)</span><br><span class="line"> </span><br><span class="line"><span class="comment">// 通过Sprintf方法转换</span></span><br><span class="line">str2 := fmt.Sprintf(<span class="string">"%d"</span>, i)</span><br><span class="line"> </span><br><span class="line"><span class="comment">// 打印str1</span></span><br><span class="line">fmt.Println(str1)</span><br><span class="line"><span class="comment">// 打印str2</span></span><br><span class="line">fmt.Println(str2)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
     
@@ -56,6 +56,8 @@
       
     
     </summary>
+    
+      <category term="golang" scheme="http://www.antizhou.com/categories/golang/"/>
     
     
   </entry>

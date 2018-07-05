@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title><![CDATA[字符串操作]]></title>
-    <url>%2F%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%93%8D%E4%BD%9C%2F</url>
+    <title><![CDATA[golang字符串]]></title>
+    <url>%2Fgolang%E5%AD%97%E7%AC%A6%E4%B8%B2%2F</url>
     <content type="text"><![CDATA[12s := "123123"s = s[0:len(s)-1]]]></content>
       <categories>
         <category>golang</category>
@@ -12,6 +12,9 @@
     <title><![CDATA[goalng类型转换]]></title>
     <url>%2Fgoalng%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%2F</url>
     <content type="text"><![CDATA[int 转 string123456789101112131415161718192021package main import ( "fmt" "strconv") var i int = 10 func main() &#123; // 通过Itoa方法转换 str1 := strconv.Itoa(i) // 通过Sprintf方法转换 str2 := fmt.Sprintf("%d", i) // 打印str1 fmt.Println(str1) // 打印str2 fmt.Println(str2)&#125;]]></content>
+      <categories>
+        <category>golang</category>
+      </categories>
   </entry>
   <entry>
     <title><![CDATA[golang类型断言(Type Assertion)的应用]]></title>
