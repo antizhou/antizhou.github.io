@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[select]]></title>
+    <url>%2Fgolang%2Fselect%2F</url>
+    <content type="text"><![CDATA[123456789101112131415161718192021222324252627282930var a []intvar c, c1, c2, c3, c4 chan intvar i1, i2 intselect &#123;case i1 = &lt;-c1: print("received ", i1, " from c1\n")case c2 &lt;- i2: print("sent ", i2, " to c2\n")case i3, ok := (&lt;-c3): // same as: i3, ok := &lt;-c3 if ok &#123; print("received ", i3, " from c3\n") &#125; else &#123; print("c3 is closed\n") &#125;case a[f()] = &lt;-c4: // same as: // case t := &lt;-c4 // a[f()] = tdefault: print("no communication\n")&#125;for &#123; // 向 channel c 发送随机 bit 串 select &#123; case c &lt;- 0: // note: no statement, no fallthrough, no folding of cases case c &lt;- 1: &#125;&#125;select &#123;&#125; // 永久阻塞]]></content>
+  </entry>
+  <entry>
+    <title><![CDATA[import详解]]></title>
+    <url>%2Fgolang%2Fimport%2F</url>
+    <content type="text"><![CDATA[语法：12ImportDeclaration = "import" ImportSpecImportSpec = [ "." | "_" | Identifier ] ImportPath 12345678910111213import . "fmt"import _ "io"import log "github.com/sirupsen/logrus"import m "math"import "io"import "bufio"import ( "io" "bufio")]]></content>
+  </entry>
+  <entry>
     <title><![CDATA[golang字符串]]></title>
-    <url>%2Fgolang%E5%AD%97%E7%AC%A6%E4%B8%B2%2F</url>
+    <url>%2Fgolang%2Fgolang%E5%AD%97%E7%AC%A6%E4%B8%B2%2F</url>
     <content type="text"><![CDATA[12s := "123123"s = s[0:len(s)-1]]]></content>
       <categories>
         <category>golang</category>
@@ -10,7 +20,7 @@
   </entry>
   <entry>
     <title><![CDATA[goalng类型转换]]></title>
-    <url>%2Fgoalng%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%2F</url>
+    <url>%2Fgolang%2Fgoalng%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%2F</url>
     <content type="text"><![CDATA[int 转 string123456789101112131415161718192021package main import ( "fmt" "strconv") var i int = 10 func main() &#123; // 通过Itoa方法转换 str1 := strconv.Itoa(i) // 通过Sprintf方法转换 str2 := fmt.Sprintf("%d", i) // 打印str1 fmt.Println(str1) // 打印str2 fmt.Println(str2)&#125; []T 转 []interface{}Can I convert a []T to an []interface{}?Not directly, because they do not have the same representation in memory. It is necessary to copy the elements individually to the destination slice. This example converts a slice of int to a slice of interface{}:12345t := []int&#123;1, 2, 3, 4&#125;s := make([]interface&#123;&#125;, len(t))for i, v := range t &#123; s[i] = v&#125;]]></content>
       <categories>
         <category>golang</category>
@@ -624,7 +634,7 @@
   <entry>
     <title><![CDATA[git基本操作]]></title>
     <url>%2Fgit%2F</url>
-    <content type="text"><![CDATA[创建一个叫做“feature_x”的分支，并切换过去：1git checkout -b feature_x，(git checkout -b feature_x origin/master 在远程origin/master的分支基础上，创建feature_x分支) 切换回主分支：1git checkout master 再把新建的分支删掉：1git branch -d feature_x 除非你将分支推送到远端仓库，不然该分支就是 不为他人所见的：1git push origin &lt;branch&gt; 替换本地改动12git checkout -- &lt;filename&gt;此命令会使用 HEAD 中的最新内容替换掉你的工作目录中的文件。已添加到缓存区的改动，以及新文件，都不受影响。 丢弃本地改动和提交12git fetch origingit reset --hard origin/master]]></content>
+    <content type="text"><![CDATA[创建一个叫做“feature_x”的分支，并切换过去：1git checkout -b feature_x，(git checkout -b feature_x origin/master 在远程origin/master的分支基础上，创建feature_x分支) 切换回主分支：1git checkout master 再把新建的分支删掉：1git branch -d feature_x 除非你将分支推送到远端仓库，不然该分支就是 不为他人所见的：1git push origin &lt;branch&gt; 替换本地改动12git checkout -- &lt;filename&gt;此命令会使用 HEAD 中的最新内容替换掉你的工作目录中的文件。已添加到缓存区的改动，以及新文件，都不受影响。 丢弃本地改动和提交12git fetch origingit reset --hard origin/master 拉取创建所有分支123git branch -r | grep -v &apos;\-&gt;&apos; | while read remote; do git branch --track &quot;$&#123;remote#origin/&#125;&quot; &quot;$remote&quot;; donegit fetch --allgit pull --all]]></content>
       <categories>
         <category>git</category>
       </categories>
