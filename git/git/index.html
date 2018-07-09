@@ -103,13 +103,13 @@
 <meta name="keywords" content="git">
 <meta property="og:type" content="article">
 <meta property="og:title" content="git基本操作">
-<meta property="og:url" content="http://www.antizhou.com/git/index.html">
+<meta property="og:url" content="http://www.antizhou.com/git/git/index.html">
 <meta property="og:site_name" content="World of Anti Zhou">
 <meta property="og:description" content="创建一个叫做“feature_x”的分支，并切换过去：1git checkout -b feature_x，(git checkout -b feature_x origin/master 在远程origin/master的分支基础上，创建feature_x分支) 切换回主分支：1git checkout master 再把新建的分支删掉：1git branch -d feature_x 除非你">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://www.antizhou.com/images/git1.jpg">
 <meta property="og:image" content="http://www.antizhou.com/images/git2.jpg">
-<meta property="og:updated_time" content="2018-07-09T03:11:59.000Z">
+<meta property="og:updated_time" content="2018-07-09T05:59:41.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="git基本操作">
 <meta name="twitter:description" content="创建一个叫做“feature_x”的分支，并切换过去：1git checkout -b feature_x，(git checkout -b feature_x origin/master 在远程origin/master的分支基础上，创建feature_x分支) 切换回主分支：1git checkout master 再把新建的分支删掉：1git branch -d feature_x 除非你">
@@ -122,7 +122,7 @@
 
 
 
-  <link rel="canonical" href="http://www.antizhou.com/git/"/>
+  <link rel="canonical" href="http://www.antizhou.com/git/git/"/>
 
 
 
@@ -327,7 +327,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.antizhou.com/git/">
+    <link itemprop="mainEntityOfPage" href="http://www.antizhou.com/git/git/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Anti Zhou">
@@ -399,9 +399,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/git/#comments" itemprop="discussionUrl">
+                <a href="/git/git/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="git/" itemprop="commentCount"></span>
+                        data-disqus-identifier="git/git/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -436,8 +436,8 @@
 <p>除非你将分支推送到远端仓库，不然该分支就是 不为他人所见的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin &lt;branch&gt;</span><br></pre></td></tr></table></figure></p>
 <p>替换本地改动<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git checkout -- &lt;filename&gt;</span><br><span class="line">此命令会使用 HEAD 中的最新内容替换掉你的工作目录中的文件。已添加到缓存区的改动，以及新文件，都不受影响。</span><br></pre></td></tr></table></figure></p>
 <p>丢弃本地改动和提交<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git fetch origin</span><br><span class="line">git reset --hard origin/master</span><br></pre></td></tr></table></figure></p>
-<p>拉取创建所有分支<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git branch -r | grep -v &apos;\-&gt;&apos; | while read remote; do git branch --track &quot;$&#123;remote#origin/&#125;&quot; &quot;$remote&quot;; done</span><br><span class="line">git fetch --all</span><br><span class="line">git pull --all</span><br></pre></td></tr></table></figure></p>
-
+<h2 id="拉取创建所有分支"><a href="#拉取创建所有分支" class="headerlink" title="拉取创建所有分支"></a>拉取创建所有分支</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git branch -r | grep -v &apos;\-&gt;&apos; | while read remote; do git branch --track &quot;$&#123;remote#origin/&#125;&quot; &quot;$remote&quot;; done</span><br><span class="line">git fetch --all</span><br><span class="line">git pull --all</span><br></pre></td></tr></table></figure>
+<h2 id="删除远程分支"><a href="#删除远程分支" class="headerlink" title="删除远程分支"></a>删除远程分支</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin :branch_name</span><br></pre></td></tr></table></figure>
       
     </div>
 
@@ -541,8 +541,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -733,6 +742,22 @@
       </section>
 
       
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#拉取创建所有分支"><span class="nav-number">1.</span> <span class="nav-text">拉取创建所有分支</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除远程分支"><span class="nav-number">2.</span> <span class="nav-text">删除远程分支</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
 
       
 
@@ -880,8 +905,8 @@
   
     <script type="text/javascript">
       var disqus_config = function () {
-        this.page.url = 'http://www.antizhou.com/git/';
-        this.page.identifier = 'git/';
+        this.page.url = 'http://www.antizhou.com/git/git/';
+        this.page.identifier = 'git/git/';
         this.page.title = 'git基本操作';
       };
       function loadComments () {

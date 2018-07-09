@@ -633,8 +633,8 @@
   </entry>
   <entry>
     <title><![CDATA[git基本操作]]></title>
-    <url>%2Fgit%2F</url>
-    <content type="text"><![CDATA[创建一个叫做“feature_x”的分支，并切换过去：1git checkout -b feature_x，(git checkout -b feature_x origin/master 在远程origin/master的分支基础上，创建feature_x分支) 切换回主分支：1git checkout master 再把新建的分支删掉：1git branch -d feature_x 除非你将分支推送到远端仓库，不然该分支就是 不为他人所见的：1git push origin &lt;branch&gt; 替换本地改动12git checkout -- &lt;filename&gt;此命令会使用 HEAD 中的最新内容替换掉你的工作目录中的文件。已添加到缓存区的改动，以及新文件，都不受影响。 丢弃本地改动和提交12git fetch origingit reset --hard origin/master 拉取创建所有分支123git branch -r | grep -v &apos;\-&gt;&apos; | while read remote; do git branch --track &quot;$&#123;remote#origin/&#125;&quot; &quot;$remote&quot;; donegit fetch --allgit pull --all]]></content>
+    <url>%2Fgit%2Fgit%2F</url>
+    <content type="text"><![CDATA[创建一个叫做“feature_x”的分支，并切换过去：1git checkout -b feature_x，(git checkout -b feature_x origin/master 在远程origin/master的分支基础上，创建feature_x分支) 切换回主分支：1git checkout master 再把新建的分支删掉：1git branch -d feature_x 除非你将分支推送到远端仓库，不然该分支就是 不为他人所见的：1git push origin &lt;branch&gt; 替换本地改动12git checkout -- &lt;filename&gt;此命令会使用 HEAD 中的最新内容替换掉你的工作目录中的文件。已添加到缓存区的改动，以及新文件，都不受影响。 丢弃本地改动和提交12git fetch origingit reset --hard origin/master 拉取创建所有分支123git branch -r | grep -v &apos;\-&gt;&apos; | while read remote; do git branch --track &quot;$&#123;remote#origin/&#125;&quot; &quot;$remote&quot;; donegit fetch --allgit pull --all 删除远程分支1git push origin :branch_name]]></content>
       <categories>
         <category>git</category>
       </categories>
