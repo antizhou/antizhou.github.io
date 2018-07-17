@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[报警规则类型]]></title>
+    <url>%2Falarm%2F%E6%8A%A5%E8%AD%A6%E8%A7%84%E5%88%99%E7%B1%BB%E5%9E%8B%2F</url>
+    <content type="text"><![CDATA[单数据源简单规则。简单规则通过对每次最新的监控数据进行阈值比较，来获得报警，比如： 上下限阈值比较。这种是最简单的，定义好上限和下限，就可以发现异常值 数据存活性比较。当发现某一监控项的数据存在（或消失）时，即报警，用来检查错误指标（或存活指标） 单数据源组合规则。简单规则产生的报警有可能非常多，我们可以通过对简单规则产生的结果进行进一步的处理，来减少报警量，比如： 多次报警。当简单规则触发的内部报警在一段时间内超过一定的次数时，才进行真正的报警。 报警cooldown。当同一报警不停出现时，此规则会进行相应的抑制。 断崖式报警。当监控数据出现断崖式特征时，才进行报警。 多数据源组合规则。有时候，单一的数据源还不够，需要对多个数据源进行计算后获得，比如： 同环比报警。对同一监控项可以拉取不同时间段的两条数据，就可以进行相应的报警。 组合运算报警。比如说nginx 2xx状态比例的监控，可以通过对2xx次数和总访问次数的计算来获取。]]></content>
+  </entry>
+  <entry>
     <title><![CDATA[select]]></title>
     <url>%2Fgolang%2Fselect%2F</url>
     <content type="text"><![CDATA[123456789101112131415161718192021222324252627282930var a []intvar c, c1, c2, c3, c4 chan intvar i1, i2 intselect &#123;case i1 = &lt;-c1: print("received ", i1, " from c1\n")case c2 &lt;- i2: print("sent ", i2, " to c2\n")case i3, ok := (&lt;-c3): // same as: i3, ok := &lt;-c3 if ok &#123; print("received ", i3, " from c3\n") &#125; else &#123; print("c3 is closed\n") &#125;case a[f()] = &lt;-c4: // same as: // case t := &lt;-c4 // a[f()] = tdefault: print("no communication\n")&#125;for &#123; // 向 channel c 发送随机 bit 串 select &#123; case c &lt;- 0: // note: no statement, no fallthrough, no folding of cases case c &lt;- 1: &#125;&#125;select &#123;&#125; // 永久阻塞]]></content>
