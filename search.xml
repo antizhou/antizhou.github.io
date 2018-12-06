@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[meigu]]></title>
+    <url>%2Fmeigu%2F</url>
+    <content type="text"><![CDATA[要知道，2007年时，标普500的估值也并不高，但因为2008年出现次贷危机，上市公司盈利大幅下滑，这导致2008年股市暴跌后，股市的估值反而大幅上升。下图是最近30年，标普500市盈率的走势图。]]></content>
+  </entry>
+  <entry>
     <title><![CDATA[债券收益率倒挂]]></title>
     <url>%2Finvest%2F%E5%80%BA%E5%88%B8%E6%94%B6%E7%9B%8A%E7%8E%87%E5%80%92%E6%8C%82%2F</url>
     <content type="text"><![CDATA[暗示美国经济将出现减速甚至衰退风险的指标包括连续不佳的汽车销售和新屋销售数据，也包括近日不断缩小的不同期限的国债利差，后者往往预示着经济衰退的到来。 十年期美债收益率近日连续下跌至2.91%附近，这意味着投资者正在涌入债券市场，相对地抛售股市。这样做的背后逻辑，是投资者认为债市提供了更为安全可靠的收益，而股市正在变得越来越有风险。 此外，短期国债收益率正在快速逼近长期国债收益率。五年期甚至和两年期的美债收益率已经出现了倒挂（Inverted），前者目前为2.791%，后者为2.799%。一两年期和十年期的美债收益率利差，也已经缩小至2007年金融危机以来的最小水平。从历史统计来看，这往往是经济减速甚至衰退和危机的先兆。 科普小常识：为什么债券收益率倒挂会引起市场高度紧张？ 通常来讲，期限越长的债券应该具有更高的收益率，因为有时间成本的溢价。就像存款利率，五年期比一年期要高，一样的道理。如果市场交易中，出现了短期限的债券收益率超过长期限的，则称之为倒挂，例如当下美债五年期国债的收益率反而比两年期的要低。 倒挂意味着，人们预期期限更长的债券反而会提供更低的收益率，因为届时基础利率可能下调，或者投资者会因为避险加大债券的配置从而导致债券价格上涨债券收益率下跌，这又进一步意味着投资者对经济的未来不看好。 至于美股到底有没有见顶，美国经济有没有进入最后的景气阶段甚至已经开始出现衰退，市场目前给出的答案是非常纠结的，这从股市波动率加大的特征中可以看出。 总体来说，我个人的展望偏悲观，主要逻辑是加息效应的逐渐凸显和减税效应的逐渐消退，叠加劳动力市场已经充分就业。尽管公司层面的盈利尚未恶化，但股市往往会提前反应，按照人心的走向进行交易。 回到A股，我此前的观点一直偏空。经历了最近一段时间的政策“纠偏”和贸易冲突的缓和，我认为下跌动能大幅减弱，但还不至于完全消除。 未来A股的趋势，将更取决于中国国内宏观经济基本面的走势。短期来看，跌破前低的可能性不大，即便跟随美股下跌。但要期望反弹多高甚至反转，概率似乎更小。 来回拉扯，底部震荡，可能是未来一段时间A股走势概率最大的可能，直到我们看到经济基本面出现新的方向性的冲击，可能向上，也可能向下。]]></content>
@@ -671,7 +676,7 @@
   <entry>
     <title><![CDATA[git基本操作]]></title>
     <url>%2Fgit%2Fgit%2F</url>
-    <content type="text"><![CDATA[创建一个叫做“feature_x”的分支，并切换过去：1git checkout -b feature_x，(git checkout -b feature_x origin/master 在远程origin/master的分支基础上，创建feature_x分支) 切换回主分支：1git checkout master 再把新建的分支删掉：1git branch -d feature_x 除非你将分支推送到远端仓库，不然该分支就是 不为他人所见的：1git push origin &lt;branch&gt; 替换本地改动12git checkout -- &lt;filename&gt;此命令会使用 HEAD 中的最新内容替换掉你的工作目录中的文件。已添加到缓存区的改动，以及新文件，都不受影响。 丢弃本地改动和提交12git fetch origingit reset --hard origin/master 拉取创建所有分支123git branch -r | grep -v &apos;\-&gt;&apos; | while read remote; do git branch --track &quot;$&#123;remote#origin/&#125;&quot; &quot;$remote&quot;; donegit fetch --allgit pull --all 删除远程分支1git push origin :branch_name]]></content>
+    <content type="text"><![CDATA[创建一个叫做“feature_x”的分支，并切换过去：1git checkout -b feature_x，(git checkout -b feature_x origin/master 在远程origin/master的分支基础上，创建feature_x分支) 切换回主分支：1git checkout master 再把新建的分支删掉：1git branch -d feature_x 除非你将分支推送到远端仓库，不然该分支就是 不为他人所见的：1git push origin &lt;branch&gt; 替换本地改动12git checkout -- &lt;filename&gt;此命令会使用 HEAD 中的最新内容替换掉你的工作目录中的文件。已添加到缓存区的改动，以及新文件，都不受影响。 丢弃本地改动和提交12git fetch origingit reset --hard origin/master 拉取创建所有分支123git branch -r | grep -v &apos;\-&gt;&apos; | while read remote; do git branch --track &quot;$&#123;remote#origin/&#125;&quot; &quot;$remote&quot;; donegit fetch --allgit pull --all 删除远程分支1git push origin :branch_name git rm当我们需要删除暂存区或分支上的文件, 同时工作区也不需要这个文件了, 可以使用 1231 git rm file_path2 git commit -m &apos;delete somefile&apos;3 git push 当我们需要删除暂存区或分支上的文件, 但本地又需要使用, 只是不希望这个文件被版本控制, 可以使用123git rm --cached file_pathgit commit -m &apos;delete remote somefile&apos;git push]]></content>
       <categories>
         <category>git</category>
       </categories>

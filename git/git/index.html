@@ -109,7 +109,7 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://www.antizhou.com/images/git1.jpg">
 <meta property="og:image" content="http://www.antizhou.com/images/git2.jpg">
-<meta property="og:updated_time" content="2018-07-09T05:59:41.000Z">
+<meta property="og:updated_time" content="2018-12-06T01:42:32.021Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="git基本操作">
 <meta name="twitter:description" content="创建一个叫做“feature_x”的分支，并切换过去：1git checkout -b feature_x，(git checkout -b feature_x origin/master 在远程origin/master的分支基础上，创建feature_x分支) 切换回主分支：1git checkout master 再把新建的分支删掉：1git branch -d feature_x 除非你">
@@ -438,6 +438,10 @@
 <p>丢弃本地改动和提交<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git fetch origin</span><br><span class="line">git reset --hard origin/master</span><br></pre></td></tr></table></figure></p>
 <h2 id="拉取创建所有分支"><a href="#拉取创建所有分支" class="headerlink" title="拉取创建所有分支"></a>拉取创建所有分支</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git branch -r | grep -v &apos;\-&gt;&apos; | while read remote; do git branch --track &quot;$&#123;remote#origin/&#125;&quot; &quot;$remote&quot;; done</span><br><span class="line">git fetch --all</span><br><span class="line">git pull --all</span><br></pre></td></tr></table></figure>
 <h2 id="删除远程分支"><a href="#删除远程分支" class="headerlink" title="删除远程分支"></a>删除远程分支</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin :branch_name</span><br></pre></td></tr></table></figure>
+<h2 id="git-rm"><a href="#git-rm" class="headerlink" title="git rm"></a>git rm</h2><p>当我们需要删除暂存区或分支上的文件, 同时工作区也不需要这个文件了, 可以使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1 git rm file_path</span><br><span class="line">2 git commit -m &apos;delete somefile&apos;</span><br><span class="line">3 git push</span><br></pre></td></tr></table></figure>
+<p>当我们需要删除暂存区或分支上的文件, 但本地又需要使用, 只是不希望这个文件被版本控制, 可以使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git rm --cached file_path</span><br><span class="line">git commit -m &apos;delete remote somefile&apos;</span><br><span class="line">git push</span><br></pre></td></tr></table></figure></p>
+
       
     </div>
 
@@ -566,7 +570,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">81</span>
+                    <span class="site-state-item-count">82</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -759,7 +763,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#拉取创建所有分支"><span class="nav-number">1.</span> <span class="nav-text">拉取创建所有分支</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除远程分支"><span class="nav-number">2.</span> <span class="nav-text">删除远程分支</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#拉取创建所有分支"><span class="nav-number">1.</span> <span class="nav-text">拉取创建所有分支</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除远程分支"><span class="nav-number">2.</span> <span class="nav-text">删除远程分支</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-rm"><span class="nav-number">3.</span> <span class="nav-text">git rm</span></a></li></ol></div>
             
 
           </div>
