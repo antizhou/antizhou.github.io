@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.antizhou.com/"/>
-  <updated>2018-12-04T16:10:41.910Z</updated>
+  <updated>2018-12-06T01:31:51.760Z</updated>
   <id>http://www.antizhou.com/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>债券收益率倒挂</title>
+    <link href="http://www.antizhou.com/invest/%E5%80%BA%E5%88%B8%E6%94%B6%E7%9B%8A%E7%8E%87%E5%80%92%E6%8C%82/"/>
+    <id>http://www.antizhou.com/invest/债券收益率倒挂/</id>
+    <published>2018-12-06T01:30:37.000Z</published>
+    <updated>2018-12-06T01:31:51.760Z</updated>
+    
+    <content type="html"><![CDATA[<p>暗示美国经济将出现减速甚至衰退风险的指标包括连续不佳的汽车销售和新屋销售数据，也包括近日不断缩小的不同期限的国债利差，后者往往预示着经济衰退的到来。</p><p>十年期美债收益率近日连续下跌至2.91%附近，这意味着投资者正在涌入债券市场，相对地抛售股市。这样做的背后逻辑，是投资者认为债市提供了更为安全可靠的收益，而股市正在变得越来越有风险。</p><p>此外，短期国债收益率正在快速逼近长期国债收益率。五年期甚至和两年期的美债收益率已经出现了倒挂（Inverted），前者目前为2.791%，后者为2.799%。一两年期和十年期的美债收益率利差，也已经缩小至2007年金融危机以来的最小水平。从历史统计来看，这往往是经济减速甚至衰退和危机的先兆。</p><blockquote><p>科普小常识：为什么债券收益率倒挂会引起市场高度紧张？</p><p>通常来讲，期限越长的债券应该具有更高的收益率，因为有时间成本的溢价。就像存款利率，五年期比一年期要高，一样的道理。如果市场交易中，出现了短期限的债券收益率超过长期限的，则称之为倒挂，例如当下美债五年期国债的收益率反而比两年期的要低。</p><p>倒挂意味着，人们预期期限更长的债券反而会提供更低的收益率，因为届时基础利率可能下调，或者投资者会因为避险加大债券的配置从而导致债券价格上涨债券收益率下跌，这又进一步意味着投资者对经济的未来不看好。</p><p>至于美股到底有没有见顶，美国经济有没有进入最后的景气阶段甚至已经开始出现衰退，市场目前给出的答案是非常纠结的，这从股市波动率加大的特征中可以看出。</p><p>总体来说，我个人的展望偏悲观，主要逻辑是加息效应的逐渐凸显和减税效应的逐渐消退，叠加劳动力市场已经充分就业。尽管公司层面的盈利尚未恶化，但股市往往会提前反应，按照人心的走向进行交易。</p><p>回到A股，我此前的观点一直偏空。经历了最近一段时间的政策“纠偏”和贸易冲突的缓和，我认为下跌动能大幅减弱，但还不至于完全消除。</p><p>未来A股的趋势，将更取决于中国国内宏观经济基本面的走势。短期来看，跌破前低的可能性不大，即便跟随美股下跌。但要期望反弹多高甚至反转，概率似乎更小。</p><p>来回拉扯，底部震荡，可能是未来一段时间A股走势概率最大的可能，直到我们看到经济基本面出现新的方向性的冲击，可能向上，也可能向下。</p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;暗示美国经济将出现减速甚至衰退风险的指标包括连续不佳的汽车销售和新屋销售数据，也包括近日不断缩小的不同期限的国债利差，后者往往预示着经济衰退的到来。&lt;/p&gt;
+&lt;p&gt;十年期美债收益率近日连续下跌至2.91%附近，这意味着投资者正在涌入债券市场，相对地抛售股市。这样做的背后逻辑
+      
+    
+    </summary>
+    
+    
+      <category term="债券" scheme="http://www.antizhou.com/tags/%E5%80%BA%E5%88%B8/"/>
+    
+  </entry>
   
   <entry>
     <title>ES6的7个实用技巧</title>
@@ -455,27 +479,6 @@
       
       
         &lt;p&gt;&lt;a href=&quot;https://cloud.tencent.com/developer/article/1120796&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Storm介绍及原理&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;https://www.cnblo
-      
-    
-    </summary>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>时序数据库</title>
-    <link href="http://www.antizhou.com/%E6%97%B6%E5%BA%8F%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
-    <id>http://www.antizhou.com/时序数据库/</id>
-    <published>2018-05-16T07:29:48.000Z</published>
-    <updated>2018-05-25T16:33:19.000Z</updated>
-    
-    <content type="html"><![CDATA[<p><a href="http://www.infoq.com/cn/articles/storage-in-sequential-databases" target="_blank" rel="noopener">时序数据库深入浅出之存储篇</a><br><a href="https://www.jianshu.com/p/f5282f39317f" target="_blank" rel="noopener">Cassandra预聚合方案设计</a><br><a href="https://elasticsearch.cn/uploads/slides/20180206/b4148b335c18ce65ca1f82d56ba4bccd" target="_blank" rel="noopener">基于ES的时序数据库服务 - Elastic中文社区</a><br><a href="https://www.jianshu.com/p/9ad69141b67a" target="_blank" rel="noopener">时间序列数据的存储和计算 - 开源时序数据库解析</a><br><a href="https://kairosdb.github.io/docs/build/html/CassandraSchema.html" target="_blank" rel="noopener">KairosDB Cassandra Schema</a></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;&lt;a href=&quot;http://www.infoq.com/cn/articles/storage-in-sequential-databases&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;时序数据库深入浅出之存储篇&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;h
       
     
     </summary>
