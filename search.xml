@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[url "+" 转换]]></title>
+    <url>%2Furl%20encode%2F</url>
+    <content type="text"><![CDATA[提供两种解决思路： 1.前端在传值时，将地址中的参数中含有的加号使用%2B替换掉（一定是大写的B），这样传到java后台时就能正确显示为+号了； 2.当前端不愿意转换时，后台自行在拦截器或请求URL中对其进行截取，将空格replace成+号，一样可以解决问题。 解决Java获取前端URL中加号（+）被转换成空格的问题]]></content>
+      <tags>
+        <tag>url</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[meigu]]></title>
     <url>%2Fmeigu%2F</url>
     <content type="text"><![CDATA[要知道，2007年时，标普500的估值也并不高，但因为2008年出现次贷危机，上市公司盈利大幅下滑，这导致2008年股市暴跌后，股市的估值反而大幅上升。下图是最近30年，标普500市盈率的走势图。]]></content>

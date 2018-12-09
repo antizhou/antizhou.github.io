@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.antizhou.com/"/>
-  <updated>2018-12-06T01:40:33.340Z</updated>
+  <updated>2018-12-09T05:32:50.445Z</updated>
   <id>http://www.antizhou.com/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>url &quot;+&quot; 转换</title>
+    <link href="http://www.antizhou.com/url%20encode/"/>
+    <id>http://www.antizhou.com/url encode/</id>
+    <published>2018-12-09T05:30:59.000Z</published>
+    <updated>2018-12-09T05:32:50.445Z</updated>
+    
+    <content type="html"><![CDATA[<p>提供两种解决思路：</p><p>1.前端在传值时，将地址中的参数中含有的加号使用%2B替换掉（一定是大写的B），这样传到java后台时就能正确显示为+号了；</p><p>2.当前端不愿意转换时，后台自行在拦截器或请求URL中对其进行截取，将空格replace成+号，一样可以解决问题。</p><p><a href="https://blog.csdn.net/yy339452689/article/details/80662094" target="_blank" rel="noopener">解决Java获取前端URL中加号（+）被转换成空格的问题</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;提供两种解决思路：&lt;/p&gt;
+&lt;p&gt;1.前端在传值时，将地址中的参数中含有的加号使用%2B替换掉（一定是大写的B），这样传到java后台时就能正确显示为+号了；&lt;/p&gt;
+&lt;p&gt;2.当前端不愿意转换时，后台自行在拦截器或请求URL中对其进行截取，将空格replace成+号，一样
+      
+    
+    </summary>
+    
+    
+      <category term="url" scheme="http://www.antizhou.com/tags/url/"/>
+    
+  </entry>
   
   <entry>
     <title>meigu</title>
@@ -462,27 +487,6 @@
     </summary>
     
       <category term="es" scheme="http://www.antizhou.com/categories/es/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>Lucene</title>
-    <link href="http://www.antizhou.com/Lucene/"/>
-    <id>http://www.antizhou.com/Lucene/</id>
-    <published>2018-05-17T15:40:15.000Z</published>
-    <updated>2018-05-18T01:10:42.000Z</updated>
-    
-    <content type="html"><![CDATA[<p><a href="https://blog.csdn.net/njpjsoftdev/article/details/54015485" target="_blank" rel="noopener">Lucene底层原理和优化经验分享(1)-Lucene简介和索引原理</a><br><a href="https://www.cnblogs.com/acfox/p/3688607.html" target="_blank" rel="noopener">跳跃表</a><br><a href="https://www.cnblogs.com/a8457013/p/8251967.html" target="_blank" rel="noopener">SkipList跳表基本原理</a><br><a href="http://blog.sina.com.cn/s/blog_68f6d5370102uykh.html" target="_blank" rel="noopener">跳跃表 复杂度分析</a></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;&lt;a href=&quot;https://blog.csdn.net/njpjsoftdev/article/details/54015485&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Lucene底层原理和优化经验分享(1)-Lucene简介和索引原理&lt;/a
-      
-    
-    </summary>
     
     
   </entry>
