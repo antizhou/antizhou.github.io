@@ -100,6 +100,7 @@
 
 
   <meta name="description" content="面试官：我看你简历提到xxx项目使用了redis 小弱鸡：嗯，因为xxxx的性能问题，经过排查之后，发现性能瓶颈在数据库上面，所以引入了redis 面试官：行，那你了解redis的过期策略吗？ 小弱鸡：有了解过，因为redis是基于内存来进行高性能、高并发的读写操作的，既然是内存，那肯定有空间的限制，如果只有10g内存，一直往里面写数据，那肯定不行，所以采用一些过期策略把不需要的数据删除、或者是淘">
+<meta name="keywords" content="redis">
 <meta property="og:type" content="article">
 <meta property="og:title" content="redis的过期策略如何实现">
 <meta property="og:url" content="http://www.antizhou.com/redis/redis的过期策略如何实现/index.html">
@@ -107,7 +108,7 @@
 <meta property="og:description" content="面试官：我看你简历提到xxx项目使用了redis 小弱鸡：嗯，因为xxxx的性能问题，经过排查之后，发现性能瓶颈在数据库上面，所以引入了redis 面试官：行，那你了解redis的过期策略吗？ 小弱鸡：有了解过，因为redis是基于内存来进行高性能、高并发的读写操作的，既然是内存，那肯定有空间的限制，如果只有10g内存，一直往里面写数据，那肯定不行，所以采用一些过期策略把不需要的数据删除、或者是淘">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://raw.githubusercontent.com/antizhou/material/master/images/image-20190515204727553.png">
-<meta property="og:updated_time" content="2019-05-15T12:49:07.983Z">
+<meta property="og:updated_time" content="2019-06-15T07:05:14.059Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis的过期策略如何实现">
 <meta name="twitter:description" content="面试官：我看你简历提到xxx项目使用了redis 小弱鸡：嗯，因为xxxx的性能问题，经过排查之后，发现性能瓶颈在数据库上面，所以引入了redis 面试官：行，那你了解redis的过期策略吗？ 小弱鸡：有了解过，因为redis是基于内存来进行高性能、高并发的读写操作的，既然是内存，那肯定有空间的限制，如果只有10g内存，一直往里面写数据，那肯定不行，所以采用一些过期策略把不需要的数据删除、或者是淘">
@@ -446,6 +447,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/redis/" rel="tag"># redis</a>
+          
+        </div>
+      
 
       
       
@@ -542,7 +549,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">102</span>
+                    <span class="site-state-item-count">103</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -706,7 +713,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">44</span>
+                      
+                    
+                    <span class="site-state-item-count">45</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

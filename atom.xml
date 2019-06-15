@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.antizhou.com/"/>
-  <updated>2019-05-21T12:57:14.985Z</updated>
+  <updated>2019-06-15T07:07:25.083Z</updated>
   <id>http://www.antizhou.com/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>bloomfilter</title>
+    <link href="http://www.antizhou.com/redis/bloomfilter/"/>
+    <id>http://www.antizhou.com/redis/bloomfilter/</id>
+    <published>2019-06-15T07:06:56.000Z</published>
+    <updated>2019-06-15T07:07:25.083Z</updated>
+    
+    <content type="html"><![CDATA[<p><a href="https://zhuanlan.zhihu.com/p/43263751" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/43263751</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;&lt;a href=&quot;https://zhuanlan.zhihu.com/p/43263751&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://zhuanlan.zhihu.com/p/43263751&lt;/a&gt;&lt;/p&gt;
+
+      
+    
+    </summary>
+    
+      <category term="redis" scheme="http://www.antizhou.com/categories/redis/"/>
+    
+    
+      <category term="bloomfilter" scheme="http://www.antizhou.com/tags/bloomfilter/"/>
+    
+  </entry>
   
   <entry>
     <title></title>
@@ -42,7 +68,7 @@
     <link href="http://www.antizhou.com/%E6%97%B6%E5%BA%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AF%B9%E6%AF%94/"/>
     <id>http://www.antizhou.com/时序数据库对比/</id>
     <published>2019-05-19T06:10:51.000Z</published>
-    <updated>2019-05-19T06:40:30.157Z</updated>
+    <updated>2019-06-15T05:59:54.068Z</updated>
     
     <content type="html"><![CDATA[<p>时序数据库技术体系中一个非常重要的技术点是时序数据模型设计，不同的时序系统有不同的设计模式，而不同的设计模式对时序数据的读写性能、数据压缩效率等各个方面都有非常重要的影响。这篇文章笔者将会分别针对OpenTSDB、Druid、InfluxDB以及Beringei这四个时序系统中的时序数据模型设计进行介绍。</p><p>在详细介绍时序数据模型之前，还是有必要简单回顾一下时序数据的几个基本概念，如下图所示：<br><img src="https://raw.githubusercontent.com/antizhou/material/master/images/v2-b734d776ef3c1dcd62788c6098c31ee9_hd.jpg" alt="image"></p><p>上图是一个典型的时序数据示意图，由图中可以看出，时序数据由两个维度坐标来表示，横坐标表示时间轴，随着时间的不断流逝，数据也会源源不断地吐出来；和横坐标不同，纵坐标由两种元素构成，分别是数据源和metric，数据源由一系列的标签（tag，也称为维度）唯一表示，图中数据源是一个广告数据源，这个数据源由publisher、advertiser、gender以及country四个维度值唯一表示，metric表示待收集的数据源指标。一个数据源通常会采集很多指标（metric），上图中广告数据源就采集了impressions、clicks以及revenue这三种指标，分别表示广告浏览量、广告点击率以及广告收入。</p><p>看到这里，相信大家对时序数据已经有了一个初步的了解，可以简单的概括为：一个时序数据点（point）由datasource(tags)+metric+timestamp这三部分唯一确定。然而，这只是逻辑上的概念理解，那具体的时序数据库到底是如何将这样一系列时序数据点进行存储的呢？下文笔者针对OpenTSDB、Druid、InfluxDB以及Beringei四种系统进行介绍。</p><h2 id="OpenTSDB-HBase-时序数据存储模型"><a href="#OpenTSDB-HBase-时序数据存储模型" class="headerlink" title="OpenTSDB(HBase)时序数据存储模型"></a>OpenTSDB(HBase)时序数据存储模型</h2><p>OpenTSDB基于HBase存储时序数据，在HBase层面设计RowKey规则为：metric+timestamp+datasource(tags)。HBase是一个KV数据库，一个时序数据(point)如果以KV的形式表示，那么其中的V必然是point的具体数值，而K就自然而然是唯一确定point数值的datasource+metric+timestamp。这种规律不仅适用于HBase，还适用于其他KV数据库，比如Kudu。</p><p>既然HBase中K是由datasource、metric以及timestamp三者构成，现在我们可以简单认为rowkey就为这三者的组合，那问题来了：这三者的组合顺序是怎么样的呢？</p><p>首先来看哪个应该排在首位。因为HBase中一张表的数据组织方式是按照rowkey的字典序顺序排列的，为了将同一种指标的所有数据集中放在一起，HBase将将metric放在了rowkey的最前面。假如将timestamp放在最前面，同一时刻的数据必然会写入同一个数据分片，无法起到散列的效果；而如果将datasource（即tags）放在最前面的话，这里有个更大的问题，就是datasource本身由多个标签组成，如果用户指定其中部分标签查找，而且不是前缀标签的话，在HBase里面将会变成大范围的扫描过滤查询，查询效率非常之低。举个上面的例子，如果将datasource放在最前面，那rowkey就可以表示为publisher=ultrarimfast.com&amp;advertiser:google.com&amp;gender:Male&amp;country:USA_impressions_20110101000000，此时用户想查找20110101000000这个时间点所有发布在USA的所有广告的浏览量，即只根据country=USA这样一个维度信息查找指定时间点的某个指标，而且这个维度不是前缀维度，就会扫描大量的记录进行过滤。</p><p>确定了metric放在最前面之后，再来看看接下来应该将datasource放在中间呢还是应该将timestamp放在中间？将metric放在前面已经可以解决请求均匀分布（散列）的要求，因此HBase将timestamp放在中间，将datasource放在最后。试想，如果将datasource放在中间，也会遇到上文中说到的后缀维度查找的问题。</p><p>因此，OpenTSDB中rowkey的设计为：metric+timestamp+datasource，好了，那HBase就可以只设置一个columnfamily和一个column。那问题来了，OpenTSDB的这种设计有什么问题？在了解设计问题之前需要简单看看HBase在文件中存储KV的方式，即一系列时序数据在文件、内存中的存储方式，如下图所示：</p><p><img src="https://raw.githubusercontent.com/antizhou/material/master/images/v2-f5949de041cae2639dd7db6d1ca8dc29_hd.jpg" alt="image"></p><p>上图是HBase中一个存储KeyValue(KV)数据的数据块结构，一个数据块由多个KeyValue数据组成，在我们的事例中KeyValue就是一个时序数据点（point）。其中Value结构很简单，就是一个数值。而Key就比较复杂了，由rowkey+columnfamily+column+timestamp+keytype组成，其中rowkey等于metric+timestamp+datasource。</p><p>问题一：存在很多无用的字段。一个KeyValue中只有rowkey是有用的，其他字段诸如columnfamily、column、timestamp以及keytype从理论上来讲都没有任何实际意义，但在HBase的存储体系里都必须存在，因而耗费了很大的存储成本。</p><p>问题二：数据源和采集指标冗余。KeyValue中rowkey等于metric+timestamp+datasource，试想同一个数据源的同一个采集指标，随着时间的流逝不断吐出采集数据，这些数据理论上共用同一个数据源(datasource)和采集指标(metric)，但在HBase的这套存储体系下，共用是无法体现的，因此存在大量的数据冗余，主要是数据源冗余以及采集指标冗余。</p><p>问题三：无法有效的压缩。HBase提供了块级别的压缩算法－snappy、gzip等，这些通用压缩算法并没有针对时序数据进行设置，压缩效率比较低。HBase同样提供了一些编码算法，比如FastDiff等等，可以起到一定的压缩效果，但是效果并不佳。效果不佳的主要原因是HBase没有数据类型的概念，没有schema的概念，不能针对特定数据类型进行特定编码，只能选择通用的编码，效果可想而知。</p><p>问题四：不能完全保证多维查询能力。HBase本身没有schema，目前没有实现倒排索引机制，所有查询必须指定metric、timestamp以及完整的tags或者前缀tags进行查询，对于后缀维度查询也勉为其难。</p><p>虽说有这样那样的问题，但是OpenTSDB还是针对存储模型做了两个方面的优化：</p><p>优化一：timestamp并不是想象中细粒度到秒级或毫秒级，而是精确到小时级别，然后将小时中每一秒设置到列上。这样一行就会有3600列，每一列表示一小时的一秒。这样设置据说可以有效的取出一小时整的数据。</p><p>优化二：所有metrics以及所有标签信息（tags）都使用了全局编码将标签值编码成更短的bit，减少rowkey的存储数据量。上文分析HBase这种存储方式的弊端是说道会存在大量的数据源(tags)冗余以及指标(metric)冗余，有冗余是吧，那我就搞个编码，将string编码成bit，尽最大努力减少冗余。虽说这样的全局编码可以有效降低数据的存储量，但是因为全局编码字典需要存储在内存中，因此在很多时候（海量标签值），字典所需内存都会非常之大。</p><p>上述两个优化可以参考OpenTSDB这张经典的示意图：<br><img src="https://raw.githubusercontent.com/antizhou/material/master/images/v2-1e76d8c875d96b6f7b1331997542c44f_hd.jpg" alt="image"></p><h2 id="Druid时序数据存储模型设计"><a href="#Druid时序数据存储模型设计" class="headerlink" title="Druid时序数据存储模型设计"></a>Druid时序数据存储模型设计</h2><p>和HBase和Kudu这类KV数据库不同，Druid是另一种玩法。Druid是一个不折不扣的列式存储系统，没有HBase的主键。上述时序数据在Druid中表示是下面这个样子的：<br><img src="https://raw.githubusercontent.com/antizhou/material/master/images/v2-4d2485ed6aeed4d6edff95c6c313e438_r.jpg" alt="image"></p><p>Druid是一个列式数据库，所以每一列都会独立存储，比如Timestamp列会存储在一起形成一个文件，publish列会存储在一起形成一个文件，以此类推。细心的童鞋就会说了，这样存储，依然会有数据源（tags）大量冗余的问题。针对冗余这个问题，Druid和HBase的处理方式一样，都是采用编码字典对标签值进行编码，将string类型的标签值编码成int值。但和HBase不一样的是，Druid编码是局部编码，Druid和HBase都采用LSM结构，数据先写入内存再flush到数据文件，Druid编码是文件级别的，局部编码可以有效减小对内存的巨大压力。除此之外，Druid的这种列式存储模式还有如下好处：</p><ol><li>数据存储压缩率高。每列独立存储，可以针对每列进行压缩，而且可以为每列设置对应的压缩策略，比如时间列、int、fload、double、string都可以分别进行压缩，压缩效果更好。</li><li>支持多维查找。Druid为datasource的每个列分别设置了Bitmap索引，利用Bitmap索引可以有效实现多维查找，比如用户想查找20110101T00:00:00这个时间点所有发布在USA的所有广告的浏览量，可以根据country=USA在Bitmap索引中找到要找的行号，再根据行号定位待查的metrics。</li></ol><p>然而，这样的存储模型也有一些问题：</p><ol><li>数据依然存在冗余。和OpenTSDB一样，tags存在大量的冗余。</li><li>指定数据源的范围查找并没有OpenTSDB高效。这是因为Druid会将数据源拆开成多个标签，每个标签都走Bitmap索引，再最后使用与操作找到满足条件的行号，这个过程需要一定的开销。而OpenTSDB中直接可以根据数据源拼成rowkey，查找走B+树索引，效率必然会更高。</li></ol><h2 id="InfluxDB时序数据存储模型设计"><a href="#InfluxDB时序数据存储模型设计" class="headerlink" title="InfluxDB时序数据存储模型设计"></a>InfluxDB时序数据存储模型设计</h2><p>相比OpenTSDB以及Druid，可能很多童鞋对InfluxDB并不特别熟悉，然而在时序数据库排行榜单上InfluxDB却是遥遥领先。InfluxDB是一款专业的时序数据库，只存储时序数据，因此在数据模型的存储上可以针对时序数据做非常多的优化工作。</p><p>为了保证写入的高效，InfluxDB也采用LSM结构，数据先写入内存，当内存容量达到一定阈值之后flush到文件。InfluxDB在时序数据模型设计方面提出了一个非常重要的概念：seriesKey，seriesKey实际上就是measurement+datasource(tags)。需要特别注意的是，measurement和上文中提到的measurement并不是一回事，上文中measurement和metric意义相同，表示采集指标，而InfluxDB中measurement更像是表的概念，InfluxDB中使用fields表示指标，如下图所示：<br><img src="https://raw.githubusercontent.com/antizhou/material/master/images/td9.png" alt="image"></p><p>时序数据写入内存之后按照seriesKey进行组织：<br><img src="https://raw.githubusercontent.com/antizhou/material/master/images/td10.png" alt="image"></p><p>内存中实际上就是一个Map：&lt;SeriesKey+fieldKey, List&lt;Timestamp|Value&gt;&gt;，Map中一个SeriesKey+fieldKey对应一个List，List中存储时间线数据。数据进来之后根据measurement+datasource(tags)拼成SeriesKey，加上fieldKey，再将Timestamp|Value组合值写入时间线数据List中。内存中的数据flush的文件后，同样会将同一个SeriesKey中的时间线数据写入同一个Block块内，即一个Block块内的数据都属于同一个数据源下的同一个field。</p><p>这种设计我们认为是将时间序列数据按照时间线挑了出来。先来看看这样设计的好处：</p><p>好处一：同一数据源的tags不再冗余存储。一个Block内的数据都共用一个SeriesKey，只需要将这个SeriesKey写入这个Block的Trailer部分就可以。大大降低了时序数据的存储量。</p><p>好处二：时间序列和value可以在同一个Block内分开独立存储，独立存储就可以对时间列以及数值列分别进行压缩。InfluxDB对时间列的存储借鉴了Beringei的压缩方式，使用delta-delta压缩方式极大的提高了压缩效率。而对Value的压缩可以针对不同的数据类型采用相同的压缩效率。</p><p>好处三：对于给定数据源以及时间范围的数据查找，可以非常高效的进行查找。这一点和OpenTSDB一样。</p><p>细心的同学可能会问了，将datasource(tags)和metric拼成SeriesKey，不是也不能实现多维查找。确实是这样，不过InfluxDB内部实现了倒排索引机制，即实现了tag到SeriesKey的映射关系，如果用户想根据某个tag查找的话，首先根据tag在倒排索引中找到对应的SeriesKey，再根据SeriesKey定位具体的时间线数据。InfluxDB的这种存储引擎称为TSM，全称为Timestamp-Structure Merge Tree，基本原理类似于LSM。后期笔者将会对InfluxDB的数据写入、文件格式、倒排索引以及数据读取进行专题介绍。</p><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://www.zhihu.com/question/50194483" target="_blank" rel="noopener">https://www.zhihu.com/question/50194483</a><br><a href="http://hbasefly.com/2017/11/19/timeseries-database-2/?bcvkrm=rgmdr1" target="_blank" rel="noopener">http://hbasefly.com/2017/11/19/timeseries-database-2/?bcvkrm=rgmdr1</a></p>]]></content>
     
@@ -84,7 +110,7 @@
     <link href="http://www.antizhou.com/redis/redis%E7%9A%84%E8%BF%87%E6%9C%9F%E7%AD%96%E7%95%A5%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0/"/>
     <id>http://www.antizhou.com/redis/redis的过期策略如何实现/</id>
     <published>2019-05-15T12:45:17.000Z</published>
-    <updated>2019-05-15T12:49:07.983Z</updated>
+    <updated>2019-06-15T07:05:14.059Z</updated>
     
     <content type="html"><![CDATA[<p>面试官：我看你简历提到xxx项目使用了redis</p><p>小弱鸡：嗯，因为xxxx的性能问题，经过排查之后，发现性能瓶颈在数据库上面，所以引入了redis</p><p>面试官：行，那你了解redis的过期策略吗？</p><p>小弱鸡：有了解过，因为redis是基于内存来进行高性能、高并发的读写操作的，既然是内存，那肯定有空间的限制，如果只有10g内存，一直往里面写数据，那肯定不行，所以采用一些过期策略把不需要的数据删除、或者是淘汰掉。</p><p>面试官：那都有哪些过期策略？</p><p>小弱鸡：我了解的有 定期删除、惰性删除两种</p><p>面试官：你先讲讲定期删除怎么实现？</p><p>小弱鸡好像有点兴奋：所谓定期删除，指的是 redis 默认是每隔 100ms 就随机抽取一些设置了过期时间的 key，检查其是否过期，如果过期就删除。</p><p>面试官：为什么是随机抽取？</p><p>小弱鸡：假如在redis 里插入10w个key，并且都设置了过期时间，如果每次都检查所有key，那cpu基本上都消耗在过期key的检查上了，redis对外的性能也会大大降低，简直就是一场灾难。</p><p>面试官：随机检查会存在什么问题？</p><p>小弱鸡：可能导致本已经过期的key没有被扫描到，而继续留在内存中，并占用空间，等待被删除。</p><p>面试官：这种情况怎么解决？</p><p>小弱鸡又兴奋了：这时候就需要第二种过期策略了，惰性删除，就是在获取某个 key 的时候，redis 会检查一下 ，如果这个 key 设置了过期时间，并且已经过期了，那么就直接删除，返回空。</p><p>面试官面带一丝笑意：嗯，那再考虑一种情况，如果大量的key没有被扫描到，且已过期，也没有被再次访问，即没有走惰性删除，这些大量过期 key 堆积在内存里，导致 redis 内存块耗尽了，这种情况下，怎么办？</p><p>小菜鸡想了会，抓了抓脑袋：redis内部提供了内存淘汰机制，应该有好几种策略，但我只知道LRU算法。</p><p>面试官：嗯，那你手写一个LRU算法？</p><p>小菜鸡*花一紧，这不是给自己挖坑么！！！ 如果从头开始写一个完整的LRU算法，那会要了命，幸好小菜鸡还记得 LinkedHashMap，可以基于 LinkedHashMap实现一个简单版本的LRU算法。</p><p><img src="https://raw.githubusercontent.com/antizhou/material/master/images/image-20190515204727553.png" alt="image-20190515204727553"></p>]]></content>
     
@@ -100,6 +126,8 @@
     
     </summary>
     
+    
+      <category term="redis" scheme="http://www.antizhou.com/tags/redis/"/>
     
   </entry>
   
@@ -472,29 +500,6 @@
     
     
       <category term="url" scheme="http://www.antizhou.com/tags/url/"/>
-    
-  </entry>
-  
-  <entry>
-    <title></title>
-    <link href="http://www.antizhou.com/%E4%BB%8A%E6%97%A5%E6%91%98%E8%A6%81/"/>
-    <id>http://www.antizhou.com/今日摘要/</id>
-    <published>2018-12-07T05:31:46.287Z</published>
-    <updated>2018-12-10T04:46:26.303Z</updated>
-    
-    <content type="html"><![CDATA[<p>相比市面上把资金面（回复<strong>820</strong>）说成大单流入流出和龙虎榜行情，我更关注真正的大庄大股东的行为。</p><p>相比市面上成天炒各种有的没的，真的假的内幕消息，我只关注公告当中关于并购、定增和激励这些实质性改变公司前景的重大消息。</p><p>随着股市参与者的资金增加，学历提升，盯着一根K线炒股的日子过去了。</p><p>如果自己投资股票，不看公告，我劝你还是退出。</p><p>如果自己投资股票，分不清动态静态LTM市盈率，不知道净利润不正常的时候要看市净率（PB），我劝你也别玩了。</p><p>如果自己投资股票，对宏观政策的理解还是停留在货币战争的阴谋论，我劝你不如买他们站台的P2P。</p><p>如果自己投资股票，自认为是价值投资派，却总想着选中两三支股票，放在那儿两三年，期间什么都不用管，什么都不用愁，回来后还要翻两三倍，我劝你还是换余额宝 - 什么都不用管，什么都不用愁每年的收益就是2-3%。</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;相比市面上把资金面（回复&lt;strong&gt;820&lt;/strong&gt;）说成大单流入流出和龙虎榜行情，我更关注真正的大庄大股东的行为。&lt;/p&gt;
-&lt;p&gt;相比市面上成天炒各种有的没的，真的假的内幕消息，我只关注公告当中关于并购、定增和激励这些实质性改变公司前景的重大消息。&lt;/p&gt;
-&lt;
-      
-    
-    </summary>
-    
     
   </entry>
   

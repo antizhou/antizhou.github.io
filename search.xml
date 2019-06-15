@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[bloomfilter]]></title>
+    <url>%2Fredis%2Fbloomfilter%2F</url>
+    <content type="text"><![CDATA[https://zhuanlan.zhihu.com/p/43263751]]></content>
+      <categories>
+        <category>redis</category>
+      </categories>
+      <tags>
+        <tag>bloomfilter</tag>
+      </tags>
+  </entry>
+  <entry>
     <title></title>
     <url>%2Fdb%2Fhbase%2Fhbase%2F</url>
     <content type="text"><![CDATA[为什么不建议在 HBase 中使用过多的列族内存磁盘]]></content>
@@ -19,6 +30,9 @@
     <title><![CDATA[redis的过期策略如何实现]]></title>
     <url>%2Fredis%2Fredis%E7%9A%84%E8%BF%87%E6%9C%9F%E7%AD%96%E7%95%A5%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%2F</url>
     <content type="text"><![CDATA[面试官：我看你简历提到xxx项目使用了redis 小弱鸡：嗯，因为xxxx的性能问题，经过排查之后，发现性能瓶颈在数据库上面，所以引入了redis 面试官：行，那你了解redis的过期策略吗？ 小弱鸡：有了解过，因为redis是基于内存来进行高性能、高并发的读写操作的，既然是内存，那肯定有空间的限制，如果只有10g内存，一直往里面写数据，那肯定不行，所以采用一些过期策略把不需要的数据删除、或者是淘汰掉。 面试官：那都有哪些过期策略？ 小弱鸡：我了解的有 定期删除、惰性删除两种 面试官：你先讲讲定期删除怎么实现？ 小弱鸡好像有点兴奋：所谓定期删除，指的是 redis 默认是每隔 100ms 就随机抽取一些设置了过期时间的 key，检查其是否过期，如果过期就删除。 面试官：为什么是随机抽取？ 小弱鸡：假如在redis 里插入10w个key，并且都设置了过期时间，如果每次都检查所有key，那cpu基本上都消耗在过期key的检查上了，redis对外的性能也会大大降低，简直就是一场灾难。 面试官：随机检查会存在什么问题？ 小弱鸡：可能导致本已经过期的key没有被扫描到，而继续留在内存中，并占用空间，等待被删除。 面试官：这种情况怎么解决？ 小弱鸡又兴奋了：这时候就需要第二种过期策略了，惰性删除，就是在获取某个 key 的时候，redis 会检查一下 ，如果这个 key 设置了过期时间，并且已经过期了，那么就直接删除，返回空。 面试官面带一丝笑意：嗯，那再考虑一种情况，如果大量的key没有被扫描到，且已过期，也没有被再次访问，即没有走惰性删除，这些大量过期 key 堆积在内存里，导致 redis 内存块耗尽了，这种情况下，怎么办？ 小菜鸡想了会，抓了抓脑袋：redis内部提供了内存淘汰机制，应该有好几种策略，但我只知道LRU算法。 面试官：嗯，那你手写一个LRU算法？ 小菜鸡*花一紧，这不是给自己挖坑么！！！ 如果从头开始写一个完整的LRU算法，那会要了命，幸好小菜鸡还记得 LinkedHashMap，可以基于 LinkedHashMap实现一个简单版本的LRU算法。]]></content>
+      <tags>
+        <tag>redis</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[MappedByteBuffer VS FileChannel 孰强孰弱？]]></title>
@@ -513,6 +527,7 @@
         <category>redis</category>
       </categories>
       <tags>
+        <tag>redis</tag>
         <tag>cache</tag>
       </tags>
   </entry>
@@ -719,8 +734,8 @@
         <category>java</category>
       </categories>
       <tags>
-        <tag>gc</tag>
         <tag>jvm</tag>
+        <tag>gc</tag>
       </tags>
   </entry>
   <entry>
