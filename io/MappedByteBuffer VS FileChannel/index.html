@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.1.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.1.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.1.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.1.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="前言Java 在 JDK 1.4 引入了 ByteBuffer 等 NIO 相关的类，使得 Java 程序员可以抛弃基于 Stream ，从而使用基于 Block  的方式读写文件，另外，JDK 还引入了 IO 性能优化之王—— 零拷贝  sendFile 和 mmap。但他们的性能究竟怎么样？ 和 RandomAccessFile 比起来，快多少？ 什么情况下快？到底是 FileChannel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MappedByteBuffer VS FileChannel 孰强孰弱？">
+<meta property="og:url" content="http://www.antizhou.com/io/MappedByteBuffer VS FileChannel/index.html">
+<meta property="og:site_name" content="World of Anti Zhou">
+<meta property="og:description" content="前言Java 在 JDK 1.4 引入了 ByteBuffer 等 NIO 相关的类，使得 Java 程序员可以抛弃基于 Stream ，从而使用基于 Block  的方式读写文件，另外，JDK 还引入了 IO 性能优化之王—— 零拷贝  sendFile 和 mmap。但他们的性能究竟怎么样？ 和 RandomAccessFile 比起来，快多少？ 什么情况下快？到底是 FileChannel">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/antizhou/material/master/images/1557669126362-bb705e6f-3289-45ff-9f51-38debe36c3e3.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/antizhou/material/master/images/1557669126293-f1b23e6d-e7a5-49ef-b168-254750b74c7d.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/antizhou/material/master/images/1557669126451-95cfa344-61b6-4761-85d9-60334d8d9504.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/antizhou/material/master/images/1557669126347-04361229-1b8b-4d24-b39f-50bd9cb8ca9d.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/antizhou/material/master/images/1557669126361-7f5ecc22-0dc7-4c69-a466-a165d674d84d.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/antizhou/material/master/images/1557669126404-c31df221-6555-4f6c-8f12-e66ac645c908.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/antizhou/material/master/images/1557669126639-301ec560-32ee-4d63-817b-739a5fb196bb.png">
+<meta property="og:updated_time" content="2019-05-13T15:20:59.304Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MappedByteBuffer VS FileChannel 孰强孰弱？">
+<meta name="twitter:description" content="前言Java 在 JDK 1.4 引入了 ByteBuffer 等 NIO 相关的类，使得 Java 程序员可以抛弃基于 Stream ，从而使用基于 Block  的方式读写文件，另外，JDK 还引入了 IO 性能优化之王—— 零拷贝  sendFile 和 mmap。但他们的性能究竟怎么样？ 和 RandomAccessFile 比起来，快多少？ 什么情况下快？到底是 FileChannel">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/antizhou/material/master/images/1557669126362-bb705e6f-3289-45ff-9f51-38debe36c3e3.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="World of Anti Zhou" type="application/atom+xml" />
+
+
+
+
+  <link rel="canonical" href="http://www.antizhou.com/io/MappedByteBuffer VS FileChannel/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>MappedByteBuffer VS FileChannel 孰强孰弱？ | World of Anti Zhou</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">World of Anti Zhou</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.antizhou.com/io/MappedByteBuffer VS FileChannel/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Anti Zhou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="World of Anti Zhou">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">MappedByteBuffer VS FileChannel 孰强孰弱？
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+                
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-13T23:12:56+08:00">2019-05-13</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/io/MappedByteBuffer VS FileChannel/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="io/MappedByteBuffer VS FileChannel/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Java 在 JDK 1.4 引入了 ByteBuffer 等 NIO 相关的类，使得 Java 程序员可以抛弃基于 Stream ，从而使用基于 Block  的方式读写文件，另外，JDK 还引入了 IO 性能优化之王—— 零拷贝  sendFile 和 mmap。但他们的性能究竟怎么样？ 和 RandomAccessFile 比起来，快多少？ 什么情况下快？到底是 FileChannel 快还是 MappedByteBuffer 快……</p>
+<p>(零拷贝参考 <a href="https://www.linuxjournal.com/article/6345" target="_blank" rel="noopener">Zero Copy I: User-Mode Perspective</a>)</p>
+<p>天啊，问题太多了！！！！！！</p>
+<p>让我们慢慢分析。</p>
+<h2 id="看看善于利用-IO-零拷贝的-MQ-们"><a href="#看看善于利用-IO-零拷贝的-MQ-们" class="headerlink" title="看看善于利用 IO 零拷贝的 MQ 们"></a>看看善于利用 IO 零拷贝的 MQ 们</h2><p>我们知道，Java 世界有很多 MQ：ActiveMQ，kafka，RocketMQ，去哪儿 MQ，而他们则是 Java 世界使用 NIO 零拷贝的大户。</p>
+<p>然而，他们的性能却大相同，抛开其他的因素，例如网络传输方式，数据结构设计，文件存储方式，我们仅仅讨论 Broker 端对文件的读写，看看他们有什么不同。</p>
+<p>下图是楼主查看源码总结的各个 MQ 使用的文件读写方式。</p>
+<p><img src="https://raw.githubusercontent.com/antizhou/material/master/images/1557669126362-bb705e6f-3289-45ff-9f51-38debe36c3e3.png" alt="img"></p>
+<ul>
+<li>kafka：record 的读写都是基于 FileChannel。index 读写基于 MMAP（厮大提示）。</li>
+<li>RocketMQ：读盘基于 MMAP，写盘默认使用 MMAP，可通过修改配置，配置成 FileChannel，原因是作者想避免 PageCache 的锁竞争，通过两层架构实现读写分离。</li>
+<li>QMQ： 去哪儿 MQ，读盘使用 MMAP，写盘使用 FileChannel。</li>
+<li>ActiveMQ 5.15： 读写全部都是基于 RandomAccessFile，这也是我们抛弃 ActiveMQ 的原因。</li>
+</ul>
+<p>那么，到底是 MMAP 强，还是 FileChannel 强？</p>
+<p>MMAP 众所周知，基于 OS 的 mmap 的内存映射技术，通过 MMU 映射文件，使随机读写文件达到了和读写内存相似的速度。</p>
+<p>那 FileChannel 呢？是零拷贝吗？很遗憾，不是。FileChannel 快，只是因为他是基于 block 的。</p>
+<p>接下来，benchmark everything —— 徐妈.</p>
+<h2 id="Benchmark-？"><a href="#Benchmark-？" class="headerlink" title="Benchmark ？"></a>Benchmark ？</h2><p>如何 Benchmark？ Benchmark 哪些？</p>
+<p>既然是读写文件，自然就要看读写性能，这是最基本的。但，注意，通常 MQ 会使用定时刷盘，防止数据丢失，MMAP 和 FileChannel 都有 force 方法，用于将 pageCache 的数据刷到硬盘上。force 会影响性能吗？ 答案是会。影响到什么程度呢？ 不知道。每次写入的数据大小会影响性能吗，毫无疑问会，但规则是什么呢？FileOutputStream 真的一无是处吗？答案是不一定。</p>
+<p>一直以来，文件调优都是艺术，因为影响性能的因素太多，首先，SSD 的出现，已经让传统基于 B+ tree 的树形结构产生了自我疑问，第二，每个文件系统的性能不同，Linux ext3 和 ext4 性能天壤之别（删除文件的性能差距在 20 倍左右）。而 Max OS 的 HFS+  系统被 Linus 称之为“有史以来最垃圾的文件系统”，幸运的是，苹果终于在 2017 年推送了 macOS High Sierra 和  iOS 10.3  系统，这个两个系统都抛弃了 HFS+，换成了性能更高的 APFS。而每个文件系统又可以设置不同的调度算法，另外，还有虚拟内存缺页中断带来的性能毛刺…….</p>
+<p>（tips：良心的 RocketMQ 提供了 Linux IO 调优的脚本，这点做的不错 ：）</p>
+<p>跑题了。</p>
+<p>楼主写了一个小项目，用于测试 Java MappedByteBuffer &amp; FileChannel &amp; RandomAccessFile  &amp;  FileXXXputStream 的读写性能。大家也可以在自己的机器上跑跑看。</p>
+<h2 id="测试环境"><a href="#测试环境" class="headerlink" title="测试环境"></a>测试环境</h2><p>CPU：intel i7 4核8线程  4.2GHz</p>
+<p>内存：40GB DDR4</p>
+<p>磁盘：SSD 读写 2GB/s 左右</p>
+<p>JDK1.8</p>
+<p>OS：Mac OS 10.13.6</p>
+<p>虚拟内存： 未关闭，大小 9GB</p>
+<p>测试注意点：</p>
+<ol>
+<li>为了防止 PageCache 缓存的影响，每次都生成一个新的文件进行读取。</li>
+<li>为了测试不同数据包对性能的影响，需要使用不同大小的数据包进行多次测试。</li>
+<li>force 对性能影响很大，应该单独测试。</li>
+<li>使用 1GB 文件进行测试（小文件没有参考意义，大文件 mmap 无法映射）</li>
+</ol>
+<h2 id="纯粹读测试"><a href="#纯粹读测试" class="headerlink" title="纯粹读测试"></a>纯粹读测试</h2><p>1GB 文件：</p>
+<p>测试 MappedByteBuffer &amp; FileChannel &amp; RandomAccessFile &amp; FileInputStream.</p>
+<p><img src="https://raw.githubusercontent.com/antizhou/material/master/images/1557669126293-f1b23e6d-e7a5-49ef-b168-254750b74c7d.png" alt="img"></p>
+<p>从这张图里，我们看到，mmap   性能完胜，特别是在小数据量的情况下。其他的流，只有在4kb 的情况下，才开始反杀 mmap。<strong>因此，读 4kb 以下的数据，请使用 mmap。</strong></p>
+<p>再放大看看 mmap 和 FileChannel 的比较：</p>
+<p><img src="https://raw.githubusercontent.com/antizhou/material/master/images/1557669126451-95cfa344-61b6-4761-85d9-60334d8d9504.png" alt="img"></p>
+<p>根据上图，我们看到，在写入数据包大于 4kb 以上的情况下，FileChannel 等一众非零拷贝，基本完胜 mmap，除了那个一次读 1G 文件的 BT 测试。</p>
+<p><strong>因此，如果你的数据包大于 4kb，请使用 FileChannel</strong>。</p>
+<h2 id="纯粹写测试"><a href="#纯粹写测试" class="headerlink" title="纯粹写测试"></a>纯粹写测试</h2><p>1GB 文件：</p>
+<p>测试 MappedByteBuffer &amp; FileChannel &amp; RandomAccessFile &amp; FileInputStream.</p>
+<p><img src="https://raw.githubusercontent.com/antizhou/material/master/images/1557669126347-04361229-1b8b-4d24-b39f-50bd9cb8ca9d.png" alt="img"></p>
+<p>从上图，我们可以看出，mmap 性能还是一样的稳定。FileChannel 也不差，但是在 32 字节数据量的情况下，还差点意思。</p>
+<p>再看缩略图：</p>
+<p><img src="https://raw.githubusercontent.com/antizhou/material/master/images/1557669126361-7f5ecc22-0dc7-4c69-a466-a165d674d84d.png" alt="img"></p>
+<p>我们看到，64字节 是 FileChannel 和 mmap 性能的分水岭，从  64字节开始，FileChannel 一路反杀，直到 BT 1GB 文件稍稍输了一丢丢。</p>
+<p>因此，我们建议：<strong>如果你的数据包大小在 64 字节以上，请使用 FileChannel 写入。</strong></p>
+<h2 id="异步-force-测试"><a href="#异步-force-测试" class="headerlink" title="异步 force 测试"></a>异步 force 测试</h2><p>我们知道，RocketMQ 使用异步刷盘，那么异步 force 对性能有没有影响呢？benchmark everything。我们使用异步线程，每 16kb 刷盘一次，看看性能如何。</p>
+<p><img src="https://raw.githubusercontent.com/antizhou/material/master/images/1557669126404-c31df221-6555-4f6c-8f12-e66ac645c908.png" alt="img"></p>
+<p>mmap 一直落后，且性能很差，除了在 2048 字节那里有一点点抖动，基本维持 在 4000 左右，而没有 force 的情况下，则在 1500 左右。而 FileChannel 则完全不受 force 的影响。在我的测试中，1GB 的文件，一次 force 需要 800 毫秒左右。buffer 越大，时间越多，反之则越小。</p>
+<p>说个题外话，Kafka 一直不建议使用 force，大概也有这个原因。当然，Kafka 还有自己的多副本策略保证数据安全。</p>
+<p><strong>这里，我们得出结论，如果你需要经常执行 force，即使是异步的，也请一定不要使用 mmap，请使用 FileChannel。</strong></p>
+<h2 id="总结。"><a href="#总结。" class="headerlink" title="总结。"></a>总结。</h2><p>基于以上测试，我们得出一张图表：</p>
+<p><img src="https://raw.githubusercontent.com/antizhou/material/master/images/1557669126639-301ec560-32ee-4d63-817b-739a5fb196bb.png" alt="img"></p>
+<p>现在，假设我们要开发一个文件系统，系统的数据包在 1024 - 2048 byte 左右，我们应该使用什么策略？</p>
+<p>答：读使用 mmap，仅仅写使用 FileChannel。</p>
+<p>再回过头看看 MQ 的实现者们，似乎只有 QMQ 是 这么做的。当然，RocketMQ 也提供了 FileChannel 的选项。但默认  mmap 写加异步刷盘，应该是 broker busy 的元凶吧。</p>
+<p>而 Kafka，因为默认不 force，也是使用 FileChannel 进行写入的，为什么使用 FileChannel 读呢？大概是因为消息的大小在 4kb 以上吧。</p>
+<p>这样一揣测，这些 MQ 的设计似乎都非常合理。</p>
+<p>最后，能不用 force 就别用 force。如果要用 force ，就请使用 FileChannel。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://www.yuque.com/monaludao/nkut87/vzm91k" target="_blank" rel="noopener">MappedByteBuffer VS FileChannel 孰强孰弱？</a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/mq/17 个方面，综合对比 Kafka、RabbitMQ、RocketMQ、ActiveMQ 四个分布式消息队列/" rel="next" title="17 个方面，综合对比 Kafka、RabbitMQ、RocketMQ、ActiveMQ 四个分布式消息队列">
+                <i class="fa fa-chevron-left"></i> 17 个方面，综合对比 Kafka、RabbitMQ、RocketMQ、ActiveMQ 四个分布式消息队列
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/redis/redis的过期策略如何实现/" rel="prev" title="redis的过期策略如何实现">
+                redis的过期策略如何实现 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Anti Zhou</p>
+              <p class="site-description motion-element" itemprop="description">一入java深似海，从此娱乐是路人。</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">102</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">25</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">44</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://yakirchen.com/" title="yakir's notes" target="_blank">yakir's notes</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#看看善于利用-IO-零拷贝的-MQ-们"><span class="nav-number">2.</span> <span class="nav-text">看看善于利用 IO 零拷贝的 MQ 们</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Benchmark-？"><span class="nav-number">3.</span> <span class="nav-text">Benchmark ？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试环境"><span class="nav-number">4.</span> <span class="nav-text">测试环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#纯粹读测试"><span class="nav-number">5.</span> <span class="nav-text">纯粹读测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#纯粹写测试"><span class="nav-number">6.</span> <span class="nav-text">纯粹写测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#异步-force-测试"><span class="nav-number">7.</span> <span class="nav-text">异步 force 测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结。"><span class="nav-number">8.</span> <span class="nav-text">总结。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">9.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Anti Zhou</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Mist</a> v6.1.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.1.0"></script>
+
+
+
+  
+
+  
+    <script id="dsq-count-scr" src="https://zj23qq.disqus.com/count.js" async></script>
+  
+
+  
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'http://www.antizhou.com/io/MappedByteBuffer VS FileChannel/';
+        this.page.identifier = 'io/MappedByteBuffer VS FileChannel/';
+        this.page.title = 'MappedByteBuffer VS FileChannel 孰强孰弱？';
+      };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://zj23qq.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+      
+        loadComments();
+      
+    </script>
+  
+
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

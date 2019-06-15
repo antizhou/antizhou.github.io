@@ -99,18 +99,20 @@
 
 
 
-  <meta name="description" content="缓存穿透什么是缓存穿透？一般的缓存系统，都是按照key去缓存查询，如果不存在对应的value，就应该去后端系统查找（比如DB）。如果key对应的value是一定不存在的，并且对该key并发请求量很大，就会对后端系统造成很大的压力。这就叫做缓存穿透。 如何避免？1：对查询结果为空的情况也进行缓存，缓存时间设置短一点，或者该key对应的数据insert了之后清理缓存。2：对一定不存在的key进行过滤。">
+  <meta name="description" content="本质大量查询直接打到后面的数据库，方法如下：  提高容灾能力 限制查询的数量  针对某个key的大量查询，导致缓存击穿  加锁，一次只能一个现场访问数据库，将访问结果放到缓存，后面的查询走缓存  大量key击穿缓存：缓存雪崩  启动限流 提高集群的性能  缓存穿透什么是缓存穿透？一般的缓存系统，都是按照key去缓存查询，如果不存在对应的value，就应该去后端系统查找（比如DB）。如果key对应的">
 <meta name="keywords" content="cache">
 <meta property="og:type" content="article">
 <meta property="og:title" content="redis缓存">
 <meta property="og:url" content="http://www.antizhou.com/redis/redis缓存/index.html">
 <meta property="og:site_name" content="World of Anti Zhou">
-<meta property="og:description" content="缓存穿透什么是缓存穿透？一般的缓存系统，都是按照key去缓存查询，如果不存在对应的value，就应该去后端系统查找（比如DB）。如果key对应的value是一定不存在的，并且对该key并发请求量很大，就会对后端系统造成很大的压力。这就叫做缓存穿透。 如何避免？1：对查询结果为空的情况也进行缓存，缓存时间设置短一点，或者该key对应的数据insert了之后清理缓存。2：对一定不存在的key进行过滤。">
+<meta property="og:description" content="本质大量查询直接打到后面的数据库，方法如下：  提高容灾能力 限制查询的数量  针对某个key的大量查询，导致缓存击穿  加锁，一次只能一个现场访问数据库，将访问结果放到缓存，后面的查询走缓存  大量key击穿缓存：缓存雪崩  启动限流 提高集群的性能  缓存穿透什么是缓存穿透？一般的缓存系统，都是按照key去缓存查询，如果不存在对应的value，就应该去后端系统查找（比如DB）。如果key对应的">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-04-14T07:01:28.000Z">
+<meta property="og:image" content="http://www.antizhou.com/images/redis/640.png">
+<meta property="og:updated_time" content="2019-04-11T14:35:13.076Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis缓存">
-<meta name="twitter:description" content="缓存穿透什么是缓存穿透？一般的缓存系统，都是按照key去缓存查询，如果不存在对应的value，就应该去后端系统查找（比如DB）。如果key对应的value是一定不存在的，并且对该key并发请求量很大，就会对后端系统造成很大的压力。这就叫做缓存穿透。 如何避免？1：对查询结果为空的情况也进行缓存，缓存时间设置短一点，或者该key对应的数据insert了之后清理缓存。2：对一定不存在的key进行过滤。">
+<meta name="twitter:description" content="本质大量查询直接打到后面的数据库，方法如下：  提高容灾能力 限制查询的数量  针对某个key的大量查询，导致缓存击穿  加锁，一次只能一个现场访问数据库，将访问结果放到缓存，后面的查询走缓存  大量key击穿缓存：缓存雪崩  启动限流 提高集群的性能  缓存穿透什么是缓存穿透？一般的缓存系统，都是按照key去缓存查询，如果不存在对应的value，就应该去后端系统查找（比如DB）。如果key对应的">
+<meta name="twitter:image" content="http://www.antizhou.com/images/redis/640.png">
 
 
 
@@ -426,12 +428,27 @@
       
 
       
-        <h2 id="缓存穿透"><a href="#缓存穿透" class="headerlink" title="缓存穿透"></a>缓存穿透</h2><p>什么是缓存穿透？<br>一般的缓存系统，都是按照key去缓存查询，如果不存在对应的value，就应该去后端系统查找（比如DB）。如果key对应的value是一定不存在的，并且对该key并发请求量很大，就会对后端系统造成很大的压力。这就叫做缓存穿透。</p>
+        <h2 id="本质"><a href="#本质" class="headerlink" title="本质"></a>本质</h2><p>大量查询直接打到后面的数据库，方法如下：</p>
+<ul>
+<li>提高容灾能力</li>
+<li>限制查询的数量</li>
+</ul>
+<p>针对某个key的大量查询，导致缓存击穿</p>
+<ul>
+<li>加锁，一次只能一个现场访问数据库，将访问结果放到缓存，后面的查询走缓存</li>
+</ul>
+<p>大量key击穿缓存：缓存雪崩</p>
+<ul>
+<li>启动限流</li>
+<li>提高集群的性能</li>
+</ul>
+<h2 id="缓存穿透"><a href="#缓存穿透" class="headerlink" title="缓存穿透"></a>缓存穿透</h2><p>什么是缓存穿透？<br>一般的缓存系统，都是按照key去缓存查询，如果不存在对应的value，就应该去后端系统查找（比如DB）。如果key对应的value是一定不存在的，并且对该key并发请求量很大，就会对后端系统造成很大的压力。这就叫做缓存穿透。</p>
 <p>如何避免？<br>1：对查询结果为空的情况也进行缓存，缓存时间设置短一点，或者该key对应的数据insert了之后清理缓存。<br>2：对一定不存在的key进行过滤。可以把所有的可能存在的key放到一个大的Bitmap中，查询时通过该bitmap过滤。【感觉应该用的不多吧】</p>
 <p>开发提示：<br>有关布隆过滤器的相关知识，可以参考：<a href="https://en.wikipedia.org/wiki/Bloom_filter" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Bloom_filter</a><br>可以利用 Redis 的 Bitmaps 实现布隆过滤器，GitHub 上已经开源了类似的方案，读者可以进行参考：<br><a href="https://github.com/erikdubbelboer/Redis-Lua-scaling-bloom-filter" target="_blank" rel="noopener">https://github.com/erikdubbelboer/Redis-Lua-scaling-bloom-filter</a></p>
+<p>BloomFilter<br>类似于一个hbase set 用来判断某个元素（key）是否存在于某个集合中。<br>这种方式在大数据场景应用比较多，比如 Hbase 中使用它去判断数据是否在磁盘上。还有在爬虫场景判断url 是否已经被爬取过。<br>这种方案可以加在第一种方案中，在缓存之前在加一层 BloomFilter ，在查询的时候先去 BloomFilter 去查询 key 是否存在，如果不存在就直接返回，存在再走查缓存 -&gt; 查 DB。<br>流程如下：<br><img src="/images/redis/640.png" alt="2016-11-25 12 12 28"></p>
 <h2 id="缓存雪崩"><a href="#缓存雪崩" class="headerlink" title="缓存雪崩"></a>缓存雪崩</h2><p>什么是缓存雪崩？<br>当缓存服务器重启或者大量缓存集中在某一个时间段失效，这样在失效的时候，也会给后端系统(比如DB)带来很大压力。</p>
 <p>如何避免？</p>
-<p>预防</p>
+<p>事前</p>
 <ul>
 <li>保证缓存层服务高可用性（多个节点）</li>
 <li>不同的key，设置不同的过期时间，让缓存失效的时间点尽量均匀。</li>
@@ -440,7 +457,11 @@
 <li>做二级缓存，A1为原始缓存，A2为拷贝缓存，A1失效时，可以访问A2，A1缓存失效时间设置为短期，A2设置为长期</li>
 <li>提前演练</li>
 </ul>
-<p>事后处理</p>
+<p>事中：</p>
+<ul>
+<li>ehcache本地缓存 + Hystrix限流&amp;降级,避免MySQL被打死</li>
+</ul>
+<p>事后</p>
 <ul>
 <li>在缓存失效后，通过加锁或者队列来控制读数据库写缓存的线程数量。比如对某个key只允许一个线程查询数据和写缓存，其他线程等待。</li>
 <li>依赖隔离组件为后端限流并降级</li>
@@ -589,7 +610,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">87</span>
+                    <span class="site-state-item-count">102</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -644,7 +665,15 @@
                     
                       
                     
-                    <span class="site-state-item-count">21</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">25</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -735,7 +764,17 @@
                     
                       
                     
-                    <span class="site-state-item-count">38</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">44</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -792,7 +831,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#缓存穿透"><span class="nav-number">1.</span> <span class="nav-text">缓存穿透</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缓存雪崩"><span class="nav-number">2.</span> <span class="nav-text">缓存雪崩</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缓存预热"><span class="nav-number">3.</span> <span class="nav-text">缓存预热</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缓存数据的淘汰"><span class="nav-number">4.</span> <span class="nav-text">缓存数据的淘汰</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#本质"><span class="nav-number">1.</span> <span class="nav-text">本质</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缓存穿透"><span class="nav-number">2.</span> <span class="nav-text">缓存穿透</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缓存雪崩"><span class="nav-number">3.</span> <span class="nav-text">缓存雪崩</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缓存预热"><span class="nav-number">4.</span> <span class="nav-text">缓存预热</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缓存数据的淘汰"><span class="nav-number">5.</span> <span class="nav-text">缓存数据的淘汰</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>
@@ -812,7 +851,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>
